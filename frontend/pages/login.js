@@ -25,6 +25,8 @@ export default function LoginWrapper(){
     } else {}
 
     return(
+   
+        
         <div className={styles.container}>
         <Head>
           <title>LOGIN!</title>
@@ -36,7 +38,8 @@ export default function LoginWrapper(){
                     {/* <LoginMessage /> */}
                     {session
                     ?
-                    <span>Hi {session.user.name}! Click hub or personal</span>
+                    // <span>Hi {session.user.name}! Click hub or personal</span>
+                    null
                     :
                     <span>You will need to log in!</span>
                     }
@@ -56,6 +59,7 @@ export default function LoginWrapper(){
             </a>
         </footer>
     </div>
+    
     )
 }
 

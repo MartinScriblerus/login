@@ -7,15 +7,16 @@ const Post = () => {
     useEffect(()=>{
         if(!router.isReady) return;
         else {
-            console.log("THIS IS GOOD ", router.query)
-            setPidAdmin(router.query.pidAdmin);
+            // console.log("THIS IS GOOD ", router.query.pidAdmin)
+            if(router.query.pidAdmin && pidAdmin !== router.query.pidAdmin){
+                setPidAdmin(router.query.pidAdmin);
+            }
         }
-    }, [router.isReady, router.query, setPidAdmin, pidAdmin]);
+    }, [router.isReady, router.query.pidAdmin, setPidAdmin]);
 
     return (
         <h2>Hello admin {pidAdmin}</h2>
     )
 }
-
 
 export default Post

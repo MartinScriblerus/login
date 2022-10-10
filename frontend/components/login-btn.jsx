@@ -1,29 +1,20 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css';
+import axios from 'axios';
 
-// function RedirectPage({ ctx }) {
-//   const router = useRouter()
-//   // Make sure we're in the browser
-//   if (typeof window !== 'undefined') {
-//     router.push('/login');
-//     return; 
-//   }
-// }
-
-// RedirectPage.getInitialProps = ctx => {
-//   // We check for ctx.res to make sure we're on the server.
-//   if (ctx.res) {
-//     ctx.res.writeHead(302, { Location: '/login' });
-//     ctx.res.end();
-//   }
-//   return { };
-// }
-
-
+// function  onSubmit (value) {
+//     console.log("VAL ", value)
+//     let data={content : value}
+//     axios.post('/api/post', data)
+//     .then((response) => {
+//         console.log(response)
+//     })
+//     .catch((e) => { console.log(e)}
+// )}
 
 export default function LogInOutButton() {
-
+    // onSubmit();
     const router = useRouter();
 
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
@@ -46,12 +37,14 @@ export default function LogInOutButton() {
         let editedUsername = hasSpaces ? session.user.name.replace(" ","_") : session.user.name;
 
         return (
-        <div className={styles.grid}>
+        <div className={styles.main}>
             Hello {session.user.name} <br/>
-            Signed in as {session.user.email} <br />
-            <button onClick={()=> router.push('/')}>Hub</button>
-            <button onClick={()=> router.push(`/post/${session.user.name}`)} >Admin</button>
-            <button onClick={() => signOut()}>Sign out</button>
+            Signed in.... as {session.user.email} <br />
+            <div id="horizontalRow">
+                <button onClick={()=> router.push('/')}>Hub</button>
+                <button onClick={()=> router.push(`/post/${session.user.name}`)} >Admin</button>
+                <button onClick={() => signOut()}>Sign out</button>
+            </div>
         </div>
         )
     } 
@@ -59,8 +52,8 @@ export default function LogInOutButton() {
     //              and an empty else to default to login failure
     return (
         <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
+        {/* Not signed in <br /> */}
+        <button onClick={() => signIn()}>Signs in</button>
         </>
     )
 }

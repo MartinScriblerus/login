@@ -1,32 +1,37 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link'
+// import Image from 'next/image';
+// import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import LogInOutButton from '../components/login-btn';
-import PropTypes from "prop-types";
-// import { withRouter } from "react-router";
-
+// import LoginWrapper from './login'
+import {useState, useEffect} from 'react';
 import { getSession } from "next-auth/react";
 
 import { useRouter } from 'next/router';
 
-function RedirectPage({ ctx }) {
+async function RedirectPage() {
+    const [routing,setRouting] = useState(false);
   const router = useRouter()
   // Make sure we're in the browser
   if (typeof window !== 'undefined') {
-    router.push('/login');
+    if(!routing){
+        setRouting(true);
+        router.push('/login');
+        setTimeout(()=>{setRouting(false)}, 2000);
+        clearTimeout();
+    }
     return; 
   }
 }
 
-RedirectPage.getInitialProps = ctx => {
-  // We check for ctx.res to make sure we're on the server.
-  if (ctx.res) {
-    ctx.res.writeHead(302, { Location: '/login' });
-    ctx.res.end();
-  }
-  return { };
-}
+// RedirectPage.getInitialProps = ctx => {
+//   // We check for ctx.res to make sure we're on the server.
+//   if (ctx.res) {
+//     ctx.res.writeHead(302, { Location: '/login' });
+//     ctx.res.end();
+//   }
+//   return { };
+// }
 
 export default function Dashboard({session}){
     console.log("WHAT IS SESSION? ", session);
@@ -48,24 +53,16 @@ export default function Dashboard({session}){
                         <LogInOutButton />
                     </h1>
                 </main>
-                <footer className={styles.footer}>
-                    <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >
-                        Powered by{' '}
-                        <span className={styles.logo}>
-                            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-                        </span>
-                    </a>
-                </footer>
             </div>
         )
     } else {
         console.log("no current session");
         // // redirect
-        return <RedirectPage/>
+        try{
+            RedirectPage();
+        } catch {
+
+        }
     }
 
 
@@ -74,15 +71,6 @@ export default function Dashboard({session}){
 
 export async function getServerSideProps(context){
     const session = await getSession(context);
-    // console.log("context is: ", context);
-    // // redirect
-    // if(!session) {
-    //     console.log("no sesh!");
-    //     return { redirect: { destination: '/login', permanent: false }}
-    // } else {
-    //     console.log("returning a session!!!");
-    // }
-
     return {
         props: { session }
     }
