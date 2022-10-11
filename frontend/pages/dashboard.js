@@ -17,7 +17,7 @@ async function RedirectPage() {
     if(!routing){
         setRouting(true);
         router.push('/login');
-        setTimeout(()=>{setRouting(false)}, 2000);
+        // setTimeout(()=>{setRouting(false)}, 10000);
         clearTimeout();
     }
     return; 
@@ -34,12 +34,12 @@ async function RedirectPage() {
 // }
 
 export default function Dashboard({session}){
-    console.log("WHAT IS SESSION? ", session);
+    // console.log("WHAT IS SESSION? ", session);
     const user = session?.user;
 
     console.log("USER IS: ", user);
-    
-    if(session){
+    console.log("IS there a session??? : ", session)
+    if(session || user){
         return (
             <div className={styles.container}>
                 <Head>
@@ -58,7 +58,8 @@ export default function Dashboard({session}){
     } else {
         console.log("no current session");
         // // redirect
-        try{
+        try{ 
+            
             RedirectPage();
         } catch {
 
@@ -71,6 +72,7 @@ export default function Dashboard({session}){
 
 export async function getServerSideProps(context){
     const session = await getSession(context);
+    console.log("%% DO WE HAVE A SSESSION?!?!?!? ", session)
     return {
         props: { session }
     }

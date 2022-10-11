@@ -21,7 +21,6 @@ export default function LoginWrapper(){
     const { data: session } = useSession()
     if(session){
         console.log('in LOOOGHIN: ', session);
-    
     } else {}
 
     return(
@@ -63,14 +62,3 @@ export default function LoginWrapper(){
     )
 }
 
-// function LoginMessage(){
-//     const { data: session } = useSession()
-//     if(session){
-//         console.log('in LOOOGHIN: ', session);
-//     } 
-//     if(session){
-//         return <h2>Yo !</h2>
-//     } else {
-//         return <h2>You will need to log in</h2>
-//     }
-// }

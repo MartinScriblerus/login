@@ -12,7 +12,7 @@ const Post = () => {
                 setPidAdmin(router.query.pidAdmin);
             }
         }
-    }, [router.isReady, router.query.pidAdmin, setPidAdmin]);
+    }, [pidAdmin, router.isReady, router.query.pidAdmin, setPidAdmin]);
 
     return (
         <h2>Hello admin {pidAdmin}</h2>

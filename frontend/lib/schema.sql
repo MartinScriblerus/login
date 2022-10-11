@@ -1,3 +1,4 @@
+DROP TABLE accounts;
 CREATE TABLE accounts
 (
   id                   SERIAL,
@@ -14,6 +15,7 @@ CREATE TABLE accounts
   PRIMARY KEY (id)
 );
 
+DROP TABLE sessions;
 CREATE TABLE sessions
 (
   id            SERIAL,
@@ -26,22 +28,25 @@ CREATE TABLE sessions
   PRIMARY KEY (id)
 );
 
+DROP TABLE users;
 CREATE TABLE users
 (
   id             SERIAL,
-  name           VARCHAR(255),
+  user_name      VARCHAR(255),
   email          VARCHAR(255),
   email_verified TIMESTAMPTZ,
   image          TEXT,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at     TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  subusers_array TEXT[],
   PRIMARY KEY (id)
 );
 
+DROP TABLE subusers;
 CREATE TABLE subusers
 (
   id             SERIAL,
-  name           VARCHAR(255),
+  user_name      VARCHAR(255),
   email          VARCHAR(255),
   email_verified TIMESTAMPTZ,
   image          TEXT,

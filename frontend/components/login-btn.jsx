@@ -3,23 +3,25 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Home.module.css';
 import axios from 'axios';
 
-// function  onSubmit (value) {
-//     console.log("VAL ", value)
-//     let data={content : value}
-//     axios.post('/api/post', data)
-//     .then((response) => {
-//         console.log(response)
-//     })
-//     .catch((e) => { console.log(e)}
-// )}
+function  onSubmit (value) {
+    console.log("VAL ", value);
+    let data={content : value}
+    axios.post('/api/auth/callback', data)
+    .then((response) => {
+        console.log(response)
+    })
+    .catch((e) => { console.log(e)}
+)}
 
 export default function LogInOutButton() {
-    // onSubmit();
+    
     const router = useRouter();
 
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
 
     const { data: session } = useSession();
+
+    console.log("WHAT WHAT WHAT IS SESSHHH? ", session);
 
     if (session) {
 
@@ -53,7 +55,7 @@ export default function LogInOutButton() {
     return (
         <>
         {/* Not signed in <br /> */}
-        <button onClick={() => signIn()}>Signs in</button>
+        <button onClick={() => signIn()}>Signz in</button>
         </>
     )
 }
