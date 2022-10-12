@@ -25,6 +25,12 @@ export default function LogInOutButton() {
 
     if (session) {
 
+        if(!session.user.name){
+            // return;
+            // hardcode name value to prevent big break
+            session.user.name = 'default test'
+        }
+
         console.log('in login-btn SESSH', session);
         const { pidAdmin } = session.user.name;
 
@@ -44,7 +50,7 @@ export default function LogInOutButton() {
             Signed in.... as {session.user.email} <br />
             <div id="horizontalRow">
                 <button onClick={()=> router.push('/')}>Hub</button>
-                <button onClick={()=> router.push(`/post/${session.user.name}`)} >Admin</button>
+                <button onClick={()=> router.push(`/post/${editedUsername}`)} >Admin</button>
                 <button onClick={() => signOut()}>Sign out</button>
             </div>
         </div>
