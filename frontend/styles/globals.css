@@ -23,6 +23,10 @@ img {
   filter: blur(2px);
 }
 
+/* span {
+  background-color:rgba(0, 112, 243, 0.5);
+} */
+
 input {
   background: rgba(50,50,50,.78);
   border: solid 1px rgba(100,100,100,.078);

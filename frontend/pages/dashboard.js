@@ -60,13 +60,14 @@ export default function Dashboard({session}){
                 <main style={{objectFit:"cover"}}>
                     <h1 className={styles.title}>   
                         <Image 
-                            style={{zIndex:"-1",objectFit:"cover"}}
+                            style={{zIndex:"-1"}}
                             
                             alt="RiverScene"
                             // width={500}
                             // height={500}
                             loader={() => src}
                             layout="fill"
+                            unoptimized
                             src={src}
                         />
                         This is a dashboard for logged in users only <br/>

@@ -20,8 +20,8 @@ export default function LoginWrapper(){
         
         <div className={styles.container}>
                         <Image 
-                            style={{zIndex:"-1",objectFit:"cover"}}
-                            
+                            style={{zIndex:"-1",color:"rgba(0, 112, 243, 0.5)",backgroundColor:"rgba(0, 112, 243, 0.5)",background:"rgba(0, 112, 243, 0.5)"}}
+                            unoptimized
                             alt="FarmScene"
                             // width={500}
                             // height={500}

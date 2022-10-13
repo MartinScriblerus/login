@@ -119,7 +119,7 @@ export default function LogInOutButton(user, props) {
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
         }
-        let match = fetch('/api/getAllUsers', {
+        let match = fetch('http://localhost:3000/api/getAllUsers', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ export default function LogInOutButton(user, props) {
     
         }
         console.log("an object with data: ", objectWithData);
-        fetch('/api/register', {
+        fetch('http://localhost:3000/api/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ export default function LogInOutButton(user, props) {
     <ThemedButton onClick={()=>{setTheme(!theme)}}>
         {theme
         ?<>
-        <span onClick={()=>handleSubmit()}>Back</span>
+        <span onClick={()=>handleSubmit()}>Backz</span>
         </>
         :
         <span>New Users</span>
@@ -194,7 +194,7 @@ export default function LogInOutButton(user, props) {
         theme
         ?
         <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
-            <input maxLength={32} id="name_NewUserRegistration" placeholder="Name" inputref={nameRef} onChange={()=>{handleNameUpdate()}}></input>
+            <input maxLength={32} id="name_NewUserRegistration" placeholder="Choose a username..." inputref={nameRef} onChange={()=>{handleNameUpdate()}}></input>
             {
                 nameVerified
             ?
