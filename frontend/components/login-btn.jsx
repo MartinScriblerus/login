@@ -58,7 +58,7 @@ export default function LogInOutButton(user, props) {
         let editedUsername = hasSpaces ? session.user.name.replace(" ","_") : session.user.name;
         //router.push(`/post/${editedUsername}`)
         return (
-        <div className={styles.main}>
+        <div id="main">
             Hello {session.user.name} <br/>
             {/* Signed in.... as {session.user.email} <br /> */}
             <div id="horizontalRow">

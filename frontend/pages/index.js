@@ -41,7 +41,14 @@ export default function Home(props) {
           ?
           <>
         <h1 className={styles.title}>
-          Here is a <span style={{color:"#0070f3"}}>login flow</span>
+          Status:  
+          {
+            session
+            ?
+            <span style={{color:"#0070f3"}}> logged in</span>
+            :
+            <span style={{color:"#0070f3"}}> logged out</span>
+          }
         </h1>
         <LoginWrapper></LoginWrapper>
         </>
@@ -55,9 +62,9 @@ export default function Home(props) {
 
       </main>
 
-      <footer className={styles.footer}>
+      {/* <footer className={styles.footer}>
 
-      </footer>
+      </footer> */}
     </div>
   )
 }

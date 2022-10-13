@@ -23,7 +23,7 @@ class ThemedButton extends React.Component {
    
       <button 
         {...props}
-        style={{backgroundColor: theme ? "blue" : "green"}}
+        style={{backgroundColor: theme ? "#000" : "#0070f3"}}
       />
     );
   }

@@ -7,18 +7,22 @@
   overflow-y: hidden;
 }
 
-.main {
+#main {
   /* min-height: 100vh; */
+  /* height:100vh; */
   padding: 1rem 0;
+  border:solid 1px transparent;
   flex: 1;
   /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top:60px;
 }
 
 .footer {
   display: flex;
+  border:solid 1px transparent;
   flex: 1;
   padding: 2rem 0;
   border-top: 1px solid #eaeaea;
