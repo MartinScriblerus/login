@@ -85,7 +85,16 @@ export const authOptions = {
               return 
             }
             // return the user's info
-            return result.rows[0];
+            const user = {
+              id: result.rows[0].id,
+              name: result.rows[0].user_name,
+              email: result.rows[0].email,
+              image: result.rows[0].image,
+              created_at: result.rows[0].created_at,
+              updated_at: result.rows[0].updated_at
+            } 
+            // return result.rows[0];
+            return user;
           
           } catch(err) {
             console.log(err);

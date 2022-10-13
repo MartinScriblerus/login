@@ -47,6 +47,7 @@ export default function Dashboard({session}){
     console.log("session in dashboard : ", session);
 
     if(session && user){
+        console.log("IDENTIFY USER: ", user);
         return (
             <div className={styles.container}>
                 <Head>
