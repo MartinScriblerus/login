@@ -135,9 +135,11 @@ export default function LogInOutButton(user, props) {
         // if(!checkNames){
         //     return;
         // }
-          console.log("WHAT IS NAME REF?? ", nameRef.current)
+    
         handleSubmit(nameRef.current,passRef2.current);
         // There should be an intermediary function here to encrypt passwords
+
+        router.push("/login");
     }
 
     async function handleSubmit(user_name, email){
