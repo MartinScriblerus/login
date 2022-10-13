@@ -5,7 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import PostgresAdapter from "../../../lib/adapter.js";
 import { PrismaClient } from "@prisma/client";
 import {useState, useEffect} from 'react';
-
+import {getOutput} from '../../../components/test';
 const prisma = new PrismaClient();
 
 let userAccount = null;
@@ -23,20 +23,22 @@ const bcrypt = require('bcrypt');
 // }
 
 
-import { Pool } from "pg";
 
-let pool;
+import { getPool } from '../../../lib/dbPool';
+let pool = getPool();
+// let pool;
 
-if (!pool) {
-  pool = new Pool({
-    user: process.env.AZURE_DB_USER,
-    password: process.env.AZURE_DB_PASSWORD,
-    host: process.env.AZURE_DB_HOST,
-    port: process.env.AZURE_DB_PORT,
-    database: process.env.AZURE_DB_NAME,
-  });
-}
+// if (!pool) {
+//   pool = new Pool({
+//     user: process.env.AZURE_DB_USER,
+//     password: process.env.AZURE_DB_PASSWORD,
+//     host: process.env.AZURE_DB_HOST,
+//     port: process.env.AZURE_DB_PORT,
+//     database: process.env.AZURE_DB_NAME,
+//   });
+// }
 // console.log("what is pool: ", pool);
+
 
 
 export const authOptions = {
@@ -71,6 +73,8 @@ export const authOptions = {
       async authorize(credentials, req) {
         console.log("req body username: ", req.body.username);
         const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
+        
+        
 
         // CREATE USER
         async function createUser(user) {
@@ -81,19 +85,24 @@ export const authOptions = {
             RETURNING id, user_name, email, email_verified, image, subusers_array`;
             let result = await pool.query(sql, [req.body.username, '', null, null, []]);
             console.log("Result after create user ", result);
+         
             return result.rows[0];
           } catch (err) {
             console.log("error: ", err);
             return;
           }
         }
-        createUser();
+        
+        // if(getOutput()){
+          createUser();
+        // }
         
         async function getUserByName(user_name){
           try {
             const sql = `select * from users where users.user_name = $1`;
             let result = await pool.query(sql, [user_name]);
             console.log("found this user in database: ", result);
+         
             return result.rows[0];
           } catch(err) {
             console.log(err);
@@ -134,18 +143,22 @@ export const authOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
+
       return true
     },
     async redirect({ url, baseUrl }) {
+
       return baseUrl
     },
     async session({ session, user, token }) {
+
       if(!session){
         return;
       }
       return session
     },
     async jwt({ token, user, account, profile, isNewUser }) {
+
       console.log("Check this user: ", user);
       return token
     }

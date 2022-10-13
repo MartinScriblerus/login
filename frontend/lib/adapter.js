@@ -3,6 +3,8 @@ export default function PostgresAdapter(client, options = {}) {
     console.log("WHAT IS CLIENT ???? ", client);
     console.log("WHAT ARE OPTIONS ??? ", options);
 
+
+
     return {
 		// async createUser(user) {
         //     console.log("^^^^ trying to create user... ", user)
@@ -20,17 +22,17 @@ export default function PostgresAdapter(client, options = {}) {
 		// 		return;
 		// 	}
 		// },
-        async getUserByName(user_name){
-            try {
-                const sql = `select * from users where user_name = $1`;
-                let result = await client.query(sql, [user_name]);
-                console.log("^^ HEYYY! ", result);
-                return result.rows[0];
-            } catch(err) {
-				console.log(err);
-				return;
-            }
-        },
+        // async getUserByName(user_name){
+        //     try {
+        //         const sql = `select * from users where user_name = $1`;
+        //         let result = await client.query(sql, [user_name]);
+        //         console.log("^^ HEYYY! ", result);
+        //         return result.rows[0];
+        //     } catch(err) {
+		// 		console.log(err);
+		// 		return;
+        //     }
+        // },
 		async getUser(id) {
             console.log("^^ trying to get user");
 			try {

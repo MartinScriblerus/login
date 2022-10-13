@@ -1,26 +1,18 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import Head from 'next/head';
+import Image from 'next/image';
+import RegisterNewUser from '../components/registerNewUser';
 import styles from '../styles/Home.module.css'
-
+import {createRef, useContext} from 'react';
 import { useSession } from "next-auth/react";
-import LogInOutButton from '../components/login-btn'
+import LogInOutButton from '../components/login-btn';
 
-import { useRouter } from 'next/router'
 
-// RedirectPage.getInitialProps = ctx => {
-//   // We check for ctx.res to make sure we're on the server.
-//   if (ctx.res) {
-//     ctx.res.writeHead(302, { Location: '/' });
-//     ctx.res.end();
-//   }
-//   return { };
-// }
 
 export default function LoginWrapper(){
     
     const { data: session } = useSession()
     if(session){
-        console.log('in LOOOGHIN: ', session);
+        console.log('in /login: ', session);
     } else {}
 
     return(
@@ -43,6 +35,7 @@ export default function LoginWrapper(){
                     <span>You will need to log in!</span>
                     }
                     <LogInOutButton />
+                    {/* <RegisterNewUser /> */}
             </h1>
         </main>
         <footer className={styles.footer}>
