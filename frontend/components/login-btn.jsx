@@ -37,14 +37,15 @@ export default function LogInOutButton(user, props) {
  
     if (session) {
 
-        if(!session.user.name){
+        if(!session.expires){
+            console.log("NO USER NAME!!! ", session);
             return;
             // hardcode name value to prevent big break
             //session.user.name = 'default test'
-        }
+        } 
 
         console.log('in login-btn session', session);
-        const { pidAdmin } = session.user.name;
+        const { pidAdmin } = session.user.email;
 
         let hasSpaces = false;
 
@@ -55,13 +56,13 @@ export default function LogInOutButton(user, props) {
         }
 
         let editedUsername = hasSpaces ? session.user.name.replace(" ","_") : session.user.name;
-
+        //router.push(`/post/${editedUsername}`)
         return (
         <div className={styles.main}>
             Hello {session.user.name} <br/>
             {/* Signed in.... as {session.user.email} <br /> */}
             <div id="horizontalRow">
-                <button onClick={()=> router.push('/')}>Hub</button>
+                {/* <button onClick={()=> router.push('/')}>Hub</button> */}
                 <button onClick={()=> router.push(`/post/${editedUsername}`)} >Admin</button>
                 <button onClick={() => signOut()}>Sign out</button>
             </div>
@@ -125,15 +126,16 @@ export default function LogInOutButton(user, props) {
             },
             
           })
-          console.log("trying to create new user");
+          console.log("trying to create new user ", nameRef.current);
           if(match){
+            console.log("WHAT IS MATCH? ", match)
             setNameVerified(false);
-            return;
+            // return;
           }
         // if(!checkNames){
         //     return;
         // }
-
+          console.log("WHAT IS NAME REF?? ", nameRef.current)
         handleSubmit(nameRef.current,passRef2.current);
         // There should be an intermediary function here to encrypt passwords
     }
@@ -167,7 +169,7 @@ export default function LogInOutButton(user, props) {
         <ThemeContext.Provider value={theme}>
    
         
-    <ThemedButton onClick={()=>{setTheme(!theme); handleSubmit()}}>
+    <ThemedButton onClick={()=>{setTheme(!theme)}}>
         {theme
         ?<>
         <span onClick={()=>handleSubmit()}>Back</span>
@@ -190,29 +192,29 @@ export default function LogInOutButton(user, props) {
         theme
         ?
         <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
-            <input maxLength={32} id="name_NewUserRegistration" style={{margin:"1%", minHeight:"36px"}} placeholder="Name" inputref={nameRef} onKeyPress={()=>{handleNameUpdate()}}></input>
+            <input maxLength={32} id="name_NewUserRegistration" placeholder="Name" inputref={nameRef} onKeyPress={()=>{handleNameUpdate()}}></input>
             {
                 nameVerified
             ?
-            <label style={{fontWeight:"100",textAlign:"left", color:"white", fontSize:"12px"}}>Name</label>
+            <label style={{color:"rgba(255,255,255,0.78)"}}>Name</label>
             :
-            <label style={{fontWeight:"100",textAlign:"left", color:"red", fontSize:"12px"}}>Name</label>
+            <label style={{color:"red"}}>Name</label>
             }
-            <input maxLength={32} id="pass1_NewUserRegistration" type="password" style={{margin:"1%", minHeight:"36px"}} placeholder="Pass" inputref={passRef} onChange={()=>handlePassRef1Update()}></input>
+            <input maxLength={32} id="pass1_NewUserRegistration" type="password" placeholder="**********" inputref={passRef} onChange={()=>handlePassRef1Update()}></input>
             {
                 passMismatch
                 ?
-                <label style={{fontWeight:"100",textAlign:"left", color:"red",fontSize:"12px"}}>Password Mismatch</label>
+                <label style={{color:"red"}}>Password Mismatch</label>
                 :
-                <label style={{fontWeight:"100",textAlign:"left", color:"green", fontSize:"12px"}}>Passwords Match</label>
+                <label style={{color:"green"}}>Passwords Match</label>
             }
-            <input maxLength={32}type="password" id="pass2_NewUserRegistration" style={{margin:"1%", minHeight:"36px"}} placeholder="Confirm" inputref={passRef2} onChange={()=>handlePassRef2Update()}></input>
+            <input maxLength={32}type="password" id="pass2_NewUserRegistration" placeholder="Confirm" inputref={passRef2} onChange={()=>handlePassRef2Update()}></input>
             {
                 passMismatch
                 ?
-                <label style={{fontWeight:"100",textAlign:"left", color:"red",fontSize:"12px"}}>Password Mismatch</label>
+                <label style={{color:"red"}}>Password Mismatch</label>
                 :
-                <label style={{fontWeight:"100",textAlign:"left",color:"green", fontSize:"12px"}}>Passwords Match</label>
+                <label style={{color:"green"}}>Passwords Match</label>
             }
             <button style={{width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>SUBMIT</button>
         </div>

@@ -74,48 +74,33 @@ export const authOptions = {
         console.log("req body username: ", req.body.username);
         const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
         
-        
-
-        // CREATE USER
-        async function createUser(user) {
-          try {
-            const sql = `
-            INSERT INTO users (user_name, email, email_verified, image, subusers_array) 
-            VALUES ($1, $2, $3, $4, $5) 
-            RETURNING id, user_name, email, email_verified, image, subusers_array`;
-            let result = await pool.query(sql, [req.body.username, '', null, null, []]);
-            console.log("Result after create user ", result);
-         
-            return result.rows[0];
-          } catch (err) {
-            console.log("error: ", err);
-            return;
-          }
-        }
-        
-        // if(getOutput()){
-          createUser();
-        // }
-        
+        // Check whether the user_name exists in our database
         async function getUserByName(user_name){
           try {
             const sql = `select * from users where users.user_name = $1`;
             let result = await pool.query(sql, [user_name]);
             console.log("found this user in database: ", result);
-         
+            if(!result){
+              // return null to reject entry if no record found
+              return 
+            }
+            // return the user's info
             return result.rows[0];
+          
           } catch(err) {
             console.log(err);
             return;
           }
         }
-        getUserByName(req.body.username);
+        let isUserInDb = getUserByName(req.body.username);
         // console.log("credentials: ", credentials);
-        return {_id:'17',name:req.body.username,image:'helloz', email:req.body.password};
+        
+        // this works for testing... just in case
+        //return {_id:'17',name:req.body.username,image:'helloz', email:req.body.password};
 
-        console.log("DO WE HAVE A USER YET? ", user);
-        // return user
-        return {}
+        // console.log("DO WE HAVE A USER YET? ", user);
+        // return {}
+        return isUserInDb;
       }
     })
     // ...add more providers here
@@ -125,10 +110,8 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 
-  
-  // adapter: PostgresAdapter(pool),
-
   // TO DO: => SSL CERTIFICATION!
+  // this may be redudant or unwanted with prisma orm being used elsewhere... 
   database: {
     type: "postgres",
     host: process.env.AZURE_DB_HOST,
@@ -143,33 +126,33 @@ export const authOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
-
+      console.log("user check: ", user);
       return true
     },
     async redirect({ url, baseUrl }) {
-
+      console.log("url check ", url);
       return baseUrl
     },
     async session({ session, user, token }) {
-
+      console.log("session check ", session)
       if(!session){
         return;
       }
       return session
     },
     async jwt({ token, user, account, profile, isNewUser }) {
-
       console.log("Check this user: ", user);
+      console.log("Check for token: ", token);
       return token
     }
   },
-  // redirect: async (url, _baseUrl) => {
-  //   if (url === '/login'){
-  //     console.log("REDIRECTING!!!");
-  //     return Promise.reolve('/');
-  //   }
-  //   return Promise.resolve('/');
-  // }
+  redirect: async (url, _baseUrl) => {
+    if (url === '/login'){
+      console.log("REDIRECTING!!!");
+      return Promise.reolve(`/`);
+    }
+    return Promise.resolve('/');
+  }
 }
 
 export default NextAuth(authOptions)

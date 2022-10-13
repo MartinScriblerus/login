@@ -19,6 +19,22 @@ a {
   background:rgba(50,125,225,0.45) !important;
 }
 
+input {
+  background: rgba(255,255,255,.078);
+  border: solid 1px rgba(255,255,255,.078);
+  color:rgba(255,255,255,.8);
+  margin:1%; 
+  min-height:44px;
+  line-height:1;
+  font-size:16px;
+}
+
+label {
+  font-size:18px;
+  font-weight:100;
+  text-align:left;
+}
+
 button {
   height: 24%;
   min-height: 64px;
@@ -28,20 +44,33 @@ button {
   border: solid 1px transparent;
   border-radius: 8px;
   margin: 4%;
+  color: rgba(255,255,255,0.9);
+  font-weight:300;
+  font-size:18px;
+  cursor:pointer;
+
   /* color: rgba(255,255,255,1);
   font-family: Arial, Helvetica, sans-serif; */
 }
 
+button:active {
+  background: rgba(100,100,200,.5);
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1;
+   outline: none;
+}
+
 #horizontalRow {
   width: 100%;
-  display:flex;
+  /* display:flex; */
   flex-direction: row;
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
+  /* html {
     color-scheme: dark;
-  }
+  } */
   body {
     color: white;
     background: black;

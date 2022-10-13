@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-
+import styles from '../../styles/Admin.module.css'
 const Post = () => {
     const [ pidAdmin, setPidAdmin ] = useState('');
   const router = useRouter();
     useEffect(()=>{
         if(!router.isReady) return;
         else {
-            // console.log("THIS IS GOOD ", router.query.pidAdmin)
+            console.log("THIS IS GOOD ", router.query.pidAdmin)
             if(router.query.pidAdmin && pidAdmin !== router.query.pidAdmin){
                 setPidAdmin(router.query.pidAdmin);
             }
@@ -15,7 +15,10 @@ const Post = () => {
     }, [pidAdmin, router.isReady, router.query.pidAdmin, setPidAdmin]);
 
     return (
+        <>
         <h2>Hello admin {pidAdmin}</h2>
+        <button id="adminBackBtn" onClick={()=> router.push('/')}>Back</button>
+        </>
     )
 }
 

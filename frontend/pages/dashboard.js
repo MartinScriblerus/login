@@ -13,14 +13,18 @@ async function RedirectPage() {
     const [routing,setRouting] = useState(false);
     const session = getSession();
     const user = session.user;
-  const router = useRouter()
+    const router = useRouter()
+    router.push('/login');
+  //setTimeout(()=>{console.log("long resolution...")},5000)
   // Make sure we're in the browser
   if (typeof window !== 'undefined') {
-    if(!routing && !user){
+    if(!routing || !user || !session){
         setRouting(true);
         router.push('/login');
         // setTimeout(()=>{setRouting(false)}, 10000);
         // clearTimeout();
+    } else {
+
     } 
     return; 
   }
@@ -42,7 +46,7 @@ export default function Dashboard({session}){
     console.log("user in dashboard: ", user);
     console.log("session in dashboard : ", session);
 
-    if(session || user){
+    if(session && user){
         return (
             <div className={styles.container}>
                 <Head>
