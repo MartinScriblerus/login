@@ -1,8 +1,7 @@
 import {ThemeContext} from './registerNewUser';
 import React from 'react';
 import { getSession } from "next-auth/react";
-import { getOutput, test } from './test';
-import { createUserRoute } from '../pages/post/createUserRoute';
+
 const sesh = getSession();
 class ThemedButton extends React.Component {
   render() {
@@ -19,12 +18,6 @@ class ThemedButton extends React.Component {
     // console.log("THEM<E> ", theme);
     // console.log("sesh ?? ", sesh.newUser);
     //document.isNew = theme;
-    if(theme){
-        test(false);
-    } else {
-    
-        test(true);
-    }
 
     return (
    

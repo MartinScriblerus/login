@@ -23,6 +23,7 @@ function  onSubmit (value) {
 export default function LogInOutButton(user, props) {
 
     const [theme,setTheme] = useState(false);
+    const [passMismatch,setPassMisMatch]=useState(false);
 
     const router = useRouter();
     const nameRef = useRef('');
@@ -67,16 +68,54 @@ export default function LogInOutButton(user, props) {
         )
     } 
 
-    async function handleSubmit(){
+    function handleInputUpdate(){
+        console.log("ping");
+        let name = document.getElementById("name_NewUserRegistration");
+        if(name){
+            nameRef.current = name.value;
+            console.log("name ref: ", nameRef.current);
+        }
+    }
 
+    function handlePassRef1Update(){
+        let pass1 = document.getElementById("pass1_NewUserRegistration");
+        console.log("pass 1 ", pass1);
+        if(pass1){
+            passRef.current = pass1.value;
+            console.log("name ref: ", passRef.current);
+        }
+    }
+
+    function handlePassRef2Update(){
+        let pass2 = document.getElementById("pass2_NewUserRegistration");
+        if(pass2){
+            passRef2.current = pass2.value;
+            console.log("name ref: ", passRef2.current);
+            if(passRef2.current !== passRef.current){
+                setPassMisMatch(true);
+            }
+        }
+    }
+
+    function userDataSubmitted(){
+        console.log("hit data submitted");
+        // This is a function for checking the input
+        if(passRef2.current !== passRef.current){
+            setPassMisMatch(true);
+        }
+        handleSubmit(nameRef.current,passRef2.current);
+        // There should be an intermediary function here to encrypt passwords
+    }
+
+    async function handleSubmit(user_name, email){
+        console.log("in handle submit: ", user_name);
         let objectWithData = {
        
-                user_name: "newUser***!!!!",
-                email: "email",
-                
-              
+                user_name: user_name,
+                email: email,
+    
         }
-
+        console.log("an object with data: ", objectWithData);
         fetch('/api/register', {
             method: 'POST',
             headers: {
@@ -119,10 +158,25 @@ export default function LogInOutButton(user, props) {
 
         theme
         ?
-        <div style={{  display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
-            <input style={{margin:"1%", minHeight:"36px"}} placeholder="Name" inputref={nameRef}></input>
-            <input type="password" style={{margin:"1%", minHeight:"36px"}} placeholder="Pass" inputref={passRef}></input>
-            <input type="password" style={{margin:"1%", minHeight:"36px"}} placeholder="Confirm" inputref={passRef2}></input>
+        <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
+            <input id="name_NewUserRegistration" style={{margin:"1%", minHeight:"36px"}} placeholder="Name" inputref={nameRef} onChange={()=>{handleInputUpdate()}}></input>
+            <input id="pass1_NewUserRegistration" type="password" style={{margin:"1%", minHeight:"36px"}} placeholder="Pass" inputref={passRef} onChange={handleInputUpdate()}></input>
+            {
+                passMismatch
+                ?
+                <label style={{color:"red"}}>Password Mismatch</label>
+                :
+                null
+            }
+            <input  type="password" id="pass2_NewUserRegistration" style={{margin:"1%", minHeight:"36px"}} placeholder="Confirm" inputref={passRef2} onChange={handleInputUpdate()}></input>
+            {
+                passMismatch
+                ?
+                <label style={{color:"red"}}>Password Mismatch</label>
+                :
+                null
+            }
+            <button style={{width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>SUBMIT</button>
         </div>
         :
         null
