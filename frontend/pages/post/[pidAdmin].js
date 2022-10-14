@@ -64,7 +64,7 @@ const Post = (props) => {
         console.log("an object with data: ", objectWithData);
         if(objectWithData.user_name){
             try{
-            fetch('http://localhost:3000/api/addSubuser', {
+            fetch('/api/addSubuser', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const Post = (props) => {
             // email: email,
             subuserName:subuserNameDeleteRef.current
         }
-        let ok = await fetch('http://localhost:3000/api/deleteSubuser', {
+        let ok = await fetch('/api/deleteSubuser', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

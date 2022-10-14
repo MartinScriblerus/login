@@ -124,7 +124,7 @@ export default function LogInOutButton(user, props) {
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
         }
-        let match = fetch('http://localhost:3000/api/getAllUsers', {
+        let match = fetch('/api/getAllUsers', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ export default function LogInOutButton(user, props) {
     
         }
         console.log("an object with data: ", objectWithData);
-        fetch('http://localhost:3000/api/register', {
+        fetch('/api/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
