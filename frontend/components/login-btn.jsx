@@ -128,6 +128,7 @@ export default function LogInOutButton(user, props) {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
+              'User-Agent': '*',
             },
             
           })
@@ -160,6 +161,7 @@ export default function LogInOutButton(user, props) {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
           })

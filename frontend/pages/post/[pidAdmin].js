@@ -68,6 +68,7 @@ const Post = (props) => {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
+                'User-Agent': '*',
                 },
                 body: JSON.stringify(objectWithData),
             })
@@ -100,6 +101,7 @@ const Post = (props) => {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
         }).then(data=>{return data})
