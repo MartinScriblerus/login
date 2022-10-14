@@ -60,7 +60,13 @@ export default function Dashboard({session}){
                 <main style={{objectFit:"cover"}}>
                     <h1 className={styles.title}>   
                         <Image 
-                            style={{zIndex:"-1"}}
+                            style={{
+                                zIndex:"-1",
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat",
+                                minWidth:"750px",
+                                minHeight:"550px"
+                            }}
                             
                             alt="RiverScene"
                             // width={500}

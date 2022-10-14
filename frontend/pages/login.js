@@ -20,7 +20,16 @@ export default function LoginWrapper(){
         
         <div className={styles.container}>
                         <Image 
-                            style={{zIndex:"-1",color:"rgba(0, 112, 243, 0.5)",backgroundColor:"rgba(0, 112, 243, 0.5)",background:"rgba(0, 112, 243, 0.5)"}}
+                            style={{
+                                zIndex:"-1",
+                                color:"rgba(0, 112, 243, 0.5)",
+                                backgroundColor:"rgba(0, 112, 243, 0.5)",
+                                background:"rgba(0, 112, 243, 0.5)",
+                                backgroundSize:"cover",
+                                backgroundRepeat: "no-repeat",
+                                width: "100%"
+                            }}
+                            
                             unoptimized
                             alt="FarmScene"
                             // width={500}
@@ -42,6 +51,7 @@ export default function LoginWrapper(){
                     <span>Hi {session.user.email}! Click hub or personal</span>
                     // null
                     :
+                
                     <span style={{fontSize:"32px"}}>You will need to log in!</span>
                     }
                     <LogInOutButton />

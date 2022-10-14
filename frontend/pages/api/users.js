@@ -2,7 +2,6 @@
 import { getSession } from "next-auth/react";
 import {getsNew} from '../../components/registerNewUser'
 export default async function handler(req, res) {
-  console.log("GET IS NEW>? ", getIsNew().new);
   console.log("what is req ", req);
   console.log("what is response: ", res);
   const session = await getSession({req});

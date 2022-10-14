@@ -1,13 +1,14 @@
-.container {
+.rgba(225,70,80,.9) {
   padding: 0 2rem;
+  padding-top: 120px;
 }
 
 #__next {
-  max-height: calc(100vh -120px);
+  max-height: calc(100vh -60px);
   overflow-y: hidden;
   padding:4%;
   margin:4%;
-  padding-top:120px;
+  padding-top:60px;
 }
 
 #main {
@@ -61,7 +62,7 @@ element.style {
   color: rgba(255,255,255,.9);
   padding:10%;
   padding: 2%;
-  margin-top: 12px;
+  margin-top: 36px;
 }
 
 .title,

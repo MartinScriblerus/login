@@ -59,7 +59,7 @@ export default function LogInOutButton(user, props) {
         //router.push(`/post/${editedUsername}`)
         return (
         <div id="main">
-            <span style={{fontSize:"32px"}}>
+            <span style={{fontSize:"32px",color:'rgba(20,180,255,.8)'}}>
                 Logged in as 
                 <span style={{color:"rgba(225,70,80,.9)"}}>
                      {" " + session.user.name} <br/>
@@ -180,10 +180,10 @@ export default function LogInOutButton(user, props) {
         {theme
         ?
         <>
-        <span onClick={()=>handleSubmit()}>Back</span>
+        <span onClick={()=>handleSubmit()}>Backz</span>
         </>
         :
-        <span >New Users</span>
+        <span>New Users</span>
         }
     </ThemedButton>
     {/* </ThemeContext.Provider> */}
@@ -191,7 +191,7 @@ export default function LogInOutButton(user, props) {
             theme
             ?
                 null    
-            //<button style={{backgroundColor:"rgba(100,100,100,0.3)",pointerEvents:"none"}} disabled onClick={() => signIn()}>Awaiting Account</button>
+            //<button style={{backgroundColor:"rgba(100,100,100,0.3)",pointerEvents:"none"}} disabled onClick={() => signIn()}>rgba(225,70,80,.9)Account</button>
             :
                 <button style={{pointerEvents:"auto"}} onClick={() => signIn()}>Sign in</button>
         }

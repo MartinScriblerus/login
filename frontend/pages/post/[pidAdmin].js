@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/Admin.module.css'
 import { useSession } from "next-auth/react";
@@ -8,12 +9,13 @@ const Post = (props) => {
     const session = useSession();
     const router = useRouter();
 
-    console.log("WHAT is session?????? ", session);
+    //console.log("WHAT is session?????? ", session);
 
     const [ subusersData, setSubusersData ] = useState([]); 
     const [ pidAdmin, setPidAdmin ] = useState('');
     const [ username,setUsername] = useState('');
     const subuserNameRef = useRef('');
+    const subuserNameDeleteRef = useRef('')
   
     useEffect(()=>{
         if(!router.isReady) return;
@@ -24,7 +26,7 @@ const Post = (props) => {
                 
             }
             console.log("LOOK HERE ", router)
-            console.log("THIS IS GOOD ", router.query.pidAdmin)
+            // console.log("THIS IS GOOD ", router.query.pidAdmin)
             if(router.query.pidAdmin && pidAdmin !== router.query.pidAdmin){
                 if(router.query.pidAdmin.indexOf("_") !== -1){
                     setUsername(router.query.pidAdmin.replace("_"," "));
@@ -50,6 +52,7 @@ const Post = (props) => {
         let subuserName = document.getElementById("name_NewSubuserRegistration");
         if(subuserName){
             subuserNameRef.current = subuserName.value;
+            subuserName.value = '';
             console.log("subuser name ref: ", subuserNameRef.current);
         }
         console.log("in handle add subuser: ", username);
@@ -60,92 +63,79 @@ const Post = (props) => {
         }
         console.log("an object with data: ", objectWithData);
         if(objectWithData.user_name){
+            try{
             fetch('http://localhost:3000/api/addSubuser', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(objectWithData),
-            }).then(response => {
-                // res.statusCode = 200
-                // res.setHeader('Content-Type', 'application/json');
-                // res.setHeader('Cache-Control', 'max-age=180000');
-                // res.end(JSON.stringify(response));
-                // resolve();
-                console.log("reeeeeesponse: ", response);
             })
-            .catch(error => {
-                console.log("err: ", error);
-            });
+         } catch(e){
+            console.log("e: ", e)
+         } finally{
+        
+         }
+
+            
             console.log("trying to add new subuser");
         }
-        return subuserName;
+        // return subuserName;
     }
   
-    function handleDeleteSubuser(user_name,email,subuserName){
-        console.log("in handle delete subuser: ", user_name);
-        let objectWithData = {
-       
-                user_name: user_name,
-                email: email,
-                subuserName:subuserName
-    
+    async function handleDeleteSubuser(){
+        let subuserName = document.getElementById("name_NewSubuserDelete");
+        if(subuserName){
+            subuserNameDeleteRef.current = subuserName.value;
+            subuserName.value = '';
+            console.log("subuser name ref: ", subuserNameDeleteRef.current);
         }
-        console.log("an object with data: ", objectWithData);
-        fetch('http://localhost:3000/api/deleteSubuser', {
+        console.log("in handle add subuser: ", username);
+        let objectWithData = {
+            user_name: username,
+            // email: email,
+            subuserName:subuserNameDeleteRef.current
+        }
+        let ok = await fetch('http://localhost:3000/api/deleteSubuser', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(objectWithData),
-        }).then(response => {
-            // res.statusCode = 200
-            // res.setHeader('Content-Type', 'application/json');
-            // res.setHeader('Cache-Control', 'max-age=180000');
-            // res.end(JSON.stringify(response));
-            // resolve();
-            console.log("response is./... ", response);
-          })
-          .catch(error => {
-            console.log("errrrr ", error)
-            // res.json(error);
-            // res.status(405).end();
-            // resolve(); // in case something goes wrong in the catch block (as vijay commented)
-          });
-        console.log("trying to delete a subuser");
+        }).then(data=>{return data})
+        console.log("trying to delete a subuser ", ok);
+    
 
     }
 
     function handleSubuserNameUpdate(){
-
+        console.log(subuserNameRef.current)
     };
+    function handleSubuserNameDelete(){
+        console.log(subuserNameRef.current)
+    }; 
 
     function handleSelect(){
-
+        console.log("SUBUSERS!!! ", subusersData);
     }
-
-    console.log("WHAT IS SUBUSERS DATA??? ", subusersData);
 
     return (
         <>
-        <h2 style={{textAlign:"center",position:"relative",fontSize:"64px"}}>Hello admin {pidAdmin}</h2>
-        <button id="adminBackBtn" style={{position:"absolute",right:"0px",top:"0px",height:"24px",width:"64px",background:"transparent",color:"rgba(255,255,255,.8)"}} onClick={()=> router.push('/')}>Back</button>
+                      <Head>
+                <title>{username}</title>
+                <meta name="description" content="Generated by create next app" />
+                <link rel="icon" href="/favicon.ico" />
+                </Head>
+        <h2 style={{textAlign:"center",position:"relative",marginTop:"12vh",fontSize:"48px", flexFlow: "column", display: "flex", flexDirection: "column"}}>Hello admin <span style={{color:"rgba(225,70,80,.9)"}}>{pidAdmin}</span></h2>
+        <button id="adminBackBtn" style={{position:"absolute",right:"0px",top:"0px",height:"8px",width:"12px",background:"transparent",color:"rgba(255,255,255,.8)"}} onClick={()=> router.push('/')}><span style={{background:"transparent"}}>&#11013;</span>  Back</button>
         <div style={{display:"flex", flexDirection:"column", width:"100%",alignItems:"center",justifyContent:"center"}}>
             <input maxLength={32} id="name_NewSubuserRegistration" style={{position: "relative",minWidth:"232px"}} inputref={subuserNameRef} onChange={()=>{handleSubuserNameUpdate()}}/>
             <label style={{color:"rgba(255,255,255,0.78)"}}>Subuser Name</label>
             <button id="adminAddSubuserBtn" onClick={()=> {handleAddSubuser()}} style={{paddingLeft:"10%",paddingRight:"10%"}}>Add Subuser</button>
-            <select id="subusersSelect" onChange={handleSelect} style={{minHeight:"32px", minWidth:"240px"}}>
-                <option default key={"Subusers"} value={"Subusers"}>--- subusers ---</option>
-                {subusersData.map((item) =>
-               
-                item.subusers_array.map((subuser) => (
-                    <option key={subuserNameRef} value={subuserNameRef}>
-                    {subuser}
-                    </option>
-                ))
-                )}
-      
-            </select>
+            
+            <input maxLength={32} id="name_NewSubuserDelete" style={{position: "relative",minWidth:"232px"}} inputref={subuserNameDeleteRef} onChange={()=>{handleSubuserNameDelete()}}/>
+            <label style={{color:"rgba(255,255,255,0.78)"}}>Name to Delete</label>
+            
             <button id="adminDeleteSubuserBtn" onClick={()=> {handleDeleteSubuser()}} style={{paddingLeft:"10%",paddingRight:"10%"}}>Delete Subuser</button>
         </div>
         </>
