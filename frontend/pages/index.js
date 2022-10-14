@@ -69,36 +69,36 @@ export default function Home(props) {
   )
 }
 
-// Fetch all posts (in /pages/index.tsx)
-export async function getStaticProps() {
+// // Fetch all posts (in /pages/index.tsx)
+// export async function getStaticProps() {
 
-  const prisma = new PrismaClient()
-  // const users = await prisma.users.findMany()
-  // console.log("USERZZ ", users[0].user_name);
-  // Creating a new record
+//   const prisma = new PrismaClient()
+//   // const users = await prisma.users.findMany()
+//   // console.log("USERZZ ", users[0].user_name);
+//   // Creating a new record
 
-    // this works to create a user 
-    // (& should also provide basic info needed to enable subusers)
-    // bring back when wrapping that part up 
-    // const user = await prisma.users.create({
-    //   data: {
-    //     user_name: 'userInIndex',
-    //     email: 'emailInIndex',
-    //     image: 'imgInIndex',
-    //   },
-    // })
+//     // this works to create a user 
+//     // (& should also provide basic info needed to enable subusers)
+//     // bring back when wrapping that part up 
+//     // const user = await prisma.users.create({
+//     //   data: {
+//     //     user_name: 'userInIndex',
+//     //     email: 'emailInIndex',
+//     //     image: 'imgInIndex',
+//     //   },
+//     // })
 
-  const deleteUsers = await prisma.users.deleteMany({
-    where: {
-      email: {
-        contains: 'prisma.io',
-      },
-    },
-  })
-    const allUserNames = await prisma.users.findMany({select:{user_name:true}});
-    console.log("ttttttttthis: ", allUserNames);
+//   // const deleteUsers = await prisma.users.deleteMany({
+//   //   where: {
+//   //     email: {
+//   //       contains: 'prisma.io',
+//   //     },
+//   //   },
+//   // })
+//     // const allUserNames = await prisma.users.findMany({select:{user_name:true}});
+//     // console.log("ttttttttthis: ", allUserNames);
 
-return {
-    props : {allUserNames} 
-  }
-}
+// return {
+//     props : 'msg' 
+//   }
+// }
