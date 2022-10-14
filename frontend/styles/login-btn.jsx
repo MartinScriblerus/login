@@ -127,8 +127,8 @@ export default function LogInOutButton(user, props) {
         let match = fetch('https://login-martinscriblerus.vercel.app/api/getAllUsers', {
             method: 'GET',
             headers: {
-              'Content-Type': 'application/json',
-              'User-Agent': '*',
+                Accept: 'application/json, text/plain, */*',
+                'User-Agent': '*',
             },
             
           })
@@ -160,8 +160,8 @@ export default function LogInOutButton(user, props) {
         fetch('https://login-martinscriblerus.vercel.app/api/register', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
-              'User-Agent': '*',
+                Accept: 'application/json, text/plain, */*',
+                'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
           })

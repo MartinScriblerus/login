@@ -67,8 +67,8 @@ const Post = (props) => {
             fetch('https://login-martinscriblerus.vercel.app/api/addSubuser', {
                 method: 'POST',
                 headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': '*',
+                    Accept: 'application/json, text/plain, */*',
+                    'User-Agent': '*',
                 },
                 body: JSON.stringify(objectWithData),
             })
@@ -100,8 +100,8 @@ const Post = (props) => {
         let ok = await fetch('https://login-martinscriblerus.vercel.app/api/deleteSubuser', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
-              'User-Agent': '*',
+                Accept: 'application/json, text/plain, */*',
+                'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
         }).then(data=>{return data})
