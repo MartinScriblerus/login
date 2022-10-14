@@ -124,23 +124,23 @@ export default function LogInOutButton(user, props) {
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
         }
-        let match = fetch('https://login-martinscriblerus.vercel.app/api/getAllUsers', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json, text/plain, */*',
-                'User-Agent': '*',
-            },
+        // let match = fetch('https://login-martinscriblerus.vercel.app/api/getAllUsers', {
+        //     method: 'GET',
+        //     headers: {
+        //         Accept: 'application/json, text/plain, */*',
+        //         'User-Agent': '*',
+        //     },
             
-          })
-          console.log("trying to create new user ", nameRef.current);
-          if(match){
-            console.log("WHAT IS MATCH? ", match)
-            setNameVerified(false);
-            // return;
-          }
-        // if(!checkNames){
-        //     return;
-        // }
+        //   })
+        //   console.log("trying to create new user ", nameRef.current);
+        //   if(match){
+        //     console.log("WHAT IS MATCH? ", match)
+        //     setNameVerified(false);
+        //     // return;
+        //   }
+        // // if(!checkNames){
+        // //     return;
+        // // }
     
         handleSubmit(nameRef.current,passRef2.current);
         // There should be an intermediary function here to encrypt passwords
@@ -238,6 +238,7 @@ export default function LogInOutButton(user, props) {
 }
 
 export async function getStaticProps() {
+
     const prisma = new PrismaClient();
     const user = await prisma.user.create({
         data: {

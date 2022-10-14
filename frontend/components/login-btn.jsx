@@ -237,18 +237,18 @@ export default function LogInOutButton(user, props) {
     )
 }
 
-export async function getStaticProps() {
-    const prisma = new PrismaClient();
-    const user = await prisma.user.create({
-        data: {
-          username: String,
-          email: String,
-          image: String,
-        },
-      })
-    return {
-      props: { // This will be sent to the component as props
-        user, 
-      },
-    };
-  }
+// export async function getStaticProps() {
+//     const prisma = new PrismaClient();
+//     const user = await prisma.user.create({
+//         data: {
+//           username: String,
+//           email: String,
+//           image: String,
+//         },
+//       })
+//     return {
+//       props: { // This will be sent to the component as props
+//         user, 
+//       },
+//     };
+//   }

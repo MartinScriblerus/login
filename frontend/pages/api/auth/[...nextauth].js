@@ -162,7 +162,6 @@ export const authOptions = {
     }
     return Promise.resolve('/');
   },
-  secret: process.env.NEXTAUTH_SECRET,
 }
 
 export default NextAuth(authOptions)
