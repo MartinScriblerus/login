@@ -12,7 +12,7 @@ import {useRef, useState} from 'react';
 function  onSubmit (value) {
     console.log("VAL ", value);
     let data={content : value}
-    axios.post('/api/auth/callback', data)
+    axios.post('https://login-martinscriblerus.vercel.app/api/auth/callback', data)
     .then((response) => {
         console.log(response)
     })
@@ -124,7 +124,7 @@ export default function LogInOutButton(user, props) {
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
         }
-        let match = fetch('/api/getAllUsers', {
+        let match = fetch('https://login-martinscriblerus.vercel.app/api/getAllUsers', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ export default function LogInOutButton(user, props) {
     
         }
         console.log("an object with data: ", objectWithData);
-        fetch('/api/register', {
+        fetch('https://login-martinscriblerus.vercel.app/api/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

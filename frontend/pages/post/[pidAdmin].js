@@ -64,7 +64,7 @@ const Post = (props) => {
         console.log("an object with data: ", objectWithData);
         if(objectWithData.user_name){
             try{
-            fetch('/api/addSubuser', {
+            fetch('https://login-martinscriblerus.vercel.app/api/addSubuser', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const Post = (props) => {
             // email: email,
             subuserName:subuserNameDeleteRef.current
         }
-        let ok = await fetch('/api/deleteSubuser', {
+        let ok = await fetch('https://login-martinscriblerus.vercel.app/api/deleteSubuser', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
