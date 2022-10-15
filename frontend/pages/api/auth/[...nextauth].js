@@ -85,6 +85,9 @@ export const authOptions = {
     })
     // ...add more providers here
   ],
+  pages: {
+    signIn: "/login",
+  },
   jwt: {
     encryption: true
   },
@@ -135,28 +138,21 @@ export const authOptions = {
     },
     async session({ session, user, token }) {
       console.log("session check ", session)
-      if(!session){
-        return;
-      }
-      // return session
-      return true;
-      // return session;
+      // if(!session){
+      //   return;
+      // }
+      return session;
     },
     async jwt({ token, user, account, profile }) {
-      // console.log("Check this user: ", user);
-      // console.log("Check for token: ", token);
-      // if(token){
-      //   return token
-      // } else {
-      //   return null;
-      // }
-      if (user || account) {
-        let new_token = {};
-        new_token.access_token = account.access_token;
-        return new_token;
+      console.log("Check this user: ", user);
+      console.log("Check for token: ", token);
+      if(token){
+        return token
+      } else {
+        return null;
       }
 
-      return token;
+
     }
   },
   redirect: async (url, _baseUrl) => {
