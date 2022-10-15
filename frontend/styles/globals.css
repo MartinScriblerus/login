@@ -83,7 +83,7 @@ button:active {
   body {
     /* color: white;
     background: black; */
-    color:rgba(255,255,255,rgba(255,255,255,.8));
+    color:rgba(255,255,255,.8);
     background: rgba(20,180,255,.8);
   }
 /* } */
