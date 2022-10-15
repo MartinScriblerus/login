@@ -143,20 +143,27 @@ export const authOptions = {
       // return session;
     },
     async jwt({ token, user, account, profile }) {
-      console.log("Check this user: ", user);
-      console.log("Check for token: ", token);
-      if(token){
-        return token
-      } else {
-        return null;
+      // console.log("Check this user: ", user);
+      // console.log("Check for token: ", token);
+      // if(token){
+      //   return token
+      // } else {
+      //   return null;
+      // }
+      if (user || account) {
+        let new_token = {};
+        new_token.access_token = account.access_token;
+        return new_token;
       }
+
+      return token;
     }
   },
   redirect: async (url, _baseUrl) => {
     let public_url = process.env.PUBLIC_URL;
     if (url === public_url + '/login'){
       console.log("REDIRECTING!!!");
-      return Promise.reolve(public_url);
+      return Promise.resolve(public_url);
     }
     return Promise.resolve(public_url);
   },
