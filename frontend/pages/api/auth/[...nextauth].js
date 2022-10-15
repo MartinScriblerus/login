@@ -4,11 +4,8 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import PostgresAdapter from "../../../lib/adapter.js";
 import { PrismaClient } from "@prisma/client";
-import {useState, useEffect} from 'react';
-import {getOutput} from '../../../components/test';
-const prisma = new PrismaClient();
 
-let userAccount = null;
+const prisma = new PrismaClient();
 
 const bcrypt = require('bcrypt');
 
@@ -21,25 +18,6 @@ const bcrypt = require('bcrypt');
 //     //     });
 //     // })
 // }
-
-
-
-import { getPool } from '../../../lib/dbPool';
-let pool = getPool();
-// let pool;
-
-// if (!pool) {
-//   pool = new Pool({
-//     user: process.env.AZURE_DB_USER,
-//     password: process.env.AZURE_DB_PASSWORD,
-//     host: process.env.AZURE_DB_HOST,
-//     port: process.env.AZURE_DB_PORT,
-//     database: process.env.AZURE_DB_NAME,
-//   });
-// }
-// console.log("what is pool: ", pool);
-
-
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -74,42 +52,35 @@ export const authOptions = {
         console.log("req body username: ", req.body.username);
         const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
         
-        // Check whether the user_name exists in our database
-        async function getUserByName(user_name){
-          try {
-            const sql = `select * from users where users.user_name = $1`;
-            let result = await pool.query(sql, [user_name]);
-            console.log("found this user in database: ", result);
-            if(!result){
-              // return null to reject entry if no record found
-              return 
-            }
-            // return the user's info
+        // // Check whether the user_name exists in our database
+        // async function getUserByName(user_name){
+        //   // try {
+ 
+            //let result = await prisma.$queryRaw`select * FROM users where users.user_name = @selectedName;`
+            const result = await prisma.users.findMany({
+              where: {
+                  user_name:"99"
+                },
+            })
+ 
+            console.log("DO WE GET A RESULT? ", result);
+   
             const user = {
-              id: result.rows[0].id,
-              name: result.rows[0].user_name,
-              email: result.rows[0].email,
-              image: result.rows[0].image,
-              created_at: result.rows[0].created_at,
-              updated_at: result.rows[0].updated_at
+              id: result[0].id,
+              user_name: result[0].user_name,
+              email: result[0].email,
+              image: result[0].image,
+              created_at: result[0].created_at,
+              updated_at: result[0].updated_at
             } 
             // return result.rows[0];
             return user;
-          
-          } catch(err) {
-            console.log(err);
-            return;
-          }
-        }
-        let isUserInDb = getUserByName(req.body.username);
-        // console.log("credentials: ", credentials);
-        
-        // this works for testing... just in case
-        //return {_id:'17',name:req.body.username,image:'helloz', email:req.body.password};
+        // }
+        // let isUserInDb = getUserByName(req.body.user_name);
 
-        // console.log("DO WE HAVE A USER YET? ", user);
-        // return {}
-        return isUserInDb;
+        // // return isUserInDb;
+        // // res.status(201).json({ error: false, msg: isUserInDb});
+        // res.send(isUserInDb);
       }
     })
     // ...add more providers here
@@ -117,8 +88,6 @@ export const authOptions = {
   jwt: {
     encryption: true
   },
-  secret: process.env.NEXTAUTH_SECRET,
-
   // TO DO: => SSL CERTIFICATION!
   // this may be redudant or unwanted with prisma orm being used elsewhere... 
   database: {
@@ -134,34 +103,36 @@ export const authOptions = {
     }
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) { 
-      console.log("user check: ", user);
-      return true
-    },
-    async redirect({ url, baseUrl }) {
-      console.log("url check ", url);
-      return baseUrl
-    },
-    async session({ session, user, token }) {
-      console.log("session check ", session)
-      if(!session){
-        return;
-      }
-      return session
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      console.log("Check this user: ", user);
-      console.log("Check for token: ", token);
-      return token
-    }
+    // async signIn({ user, account, profile, email, credentials }) { 
+    //   console.log("user check: ", user);
+    //   return true
+    // },
+    // async redirect({ url, baseUrl }) {
+    //   console.log("url check ", url);
+    //   return baseUrl
+    //   return true;
+    // },
+    // async session({ session, user, token }) {
+    //   console.log("session check ", session)
+    //   if(!session){
+    //     return;
+    //   }
+    //   return session
+    // },
+    // async jwt({ token, user, account, profile, isNewUser }) {
+    //   console.log("Check this user: ", user);
+    //   console.log("Check for token: ", token);
+    //   return token
+    // }
   },
-  redirect: async (url, _baseUrl) => {
-    if (url === '/login'){
-      console.log("REDIRECTING!!!");
-      return Promise.reolve(`/`);
-    }
-    return Promise.resolve('/');
-  },
+  // redirect: async (url, _baseUrl) => {
+  //   if (url === '/login'){
+  //     console.log("REDIRECTING!!!");
+  //     return Promise.reolve(`/`);
+  //   }
+  //   return Promise.resolve('/');
+  // },
+  secret:process.env.NEXTAUTH_SECRET
 }
 
 export default NextAuth(authOptions)

@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
-export default async function getAllUsers (req, res) {
-  console.log("REQ IS!!! ", typeof req.body)
+// export default async function http://localhost:3000 (req, res) {
+//   console.log("REQ IS!!! ", typeof req.body)
 //   try{
 //     if (req.method !== "GET") {
 //       return res.status(405).json({ message: "Method not allowed" });
@@ -12,7 +12,7 @@ export default async function getAllUsers (req, res) {
 //   console.log("REQ BODY: ", req.body)
 // //   try {
 //     const input = req.body.user_name;
-//     console.log("INPUT 1 IS: ", input);
+//     console.log("INPUT IS: ", input);
 //     const matchingUser = await prisma.users.findMany({
 //         where: {
 //           user_name: {
@@ -26,5 +26,5 @@ export default async function getAllUsers (req, res) {
 //   } catch (e){
 //     console.log(e)
 //   }
-    res.status(200).json({ message: "hello" });
-  } 
+//     // res.status(200).json({ message: "hello" });
+//   } 

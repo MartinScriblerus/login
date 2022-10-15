@@ -13,12 +13,15 @@ import LoginWrapper from './login';
 export default function Home(props) {
   console.log("ALLGOODS : ", props);
   const { data: session } = useSession();
-
-  const [username, setUsername] = useState('');
+  console.log("session 1: ", session);
+  // console.log("all user names : ", props.allUserNames);
+  // const [username, setUsername] = useState('');
   const router = useRouter()
   if(session){
       console.log('$$ SESSION!!@@@@@@@@@@@@@@@@@@ ', session);
-  } 
+  } else {
+    console.log("no session yet");
+  }
     // let usersOK = await prisma.users.findMany();
   // console.log("this wrked! ", usersOK);
   return (
@@ -27,7 +30,7 @@ export default function Home(props) {
         {
         !session
         ?
-        <title>Create Next App</title>
+        <title>Verify</title>
         :
         <title>Logged In</title>
         }
@@ -50,12 +53,12 @@ export default function Home(props) {
             <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
           }
         </h1>
-        <LoginWrapper></LoginWrapper>
+        <LoginWrapper ></LoginWrapper>
         </>
         :
         <>
  
-        <Dashboard session={session} />
+        {/* <Dashboard session={session} /> */}
         </>
         }
         {/* <Dashboard session={session} /> */}
@@ -73,21 +76,22 @@ export default function Home(props) {
 // export async function getStaticProps() {
 
 //   const prisma = new PrismaClient()
-//   // const users = await prisma.users.findMany()
+//   const users = await prisma.users.findMany();
 //   // console.log("USERZZ ", users[0].user_name);
 //   // Creating a new record
 
 //     // this works to create a user 
 //     // (& should also provide basic info needed to enable subusers)
 //     // bring back when wrapping that part up 
-//     // const user = await prisma.users.create({
-//     //   data: {
-//     //     user_name: 'userInIndex',
-//     //     email: 'emailInIndex',
-//     //     image: 'imgInIndex',
-//     //   },
-//     // })
-
+//     const user = await prisma.users.create({
+//       data: {
+//         user_name: 'defaultUser',
+//         email: 'defaultEmail',
+//         image: 'defaultImg',
+//       },
+//     })
+//     console.log("static props user: ", user);
+//     console.log("static props users: ", users);
 //   // const deleteUsers = await prisma.users.deleteMany({
 //   //   where: {
 //   //     email: {
@@ -95,10 +99,10 @@ export default function Home(props) {
 //   //     },
 //   //   },
 //   // })
-//     // const allUserNames = await prisma.users.findMany({select:{user_name:true}});
+//     const allUserNames = await prisma.users.findMany({select:{user_name:true}});
 //     // console.log("ttttttttthis: ", allUserNames);
 
 // return {
-//     props : 'msg' 
+//     props : {allUserNames} 
 //   }
 // }

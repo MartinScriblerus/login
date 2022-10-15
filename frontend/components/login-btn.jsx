@@ -9,15 +9,15 @@ import {useRef, useState} from 'react';
 
 
 
-function  onSubmit (value) {
-    console.log("VAL ", value);
-    let data={content : value}
-    axios.post('https://login-martinscriblerus.vercel.app/api/auth/callback', data)
-    .then((response) => {
-        console.log(response)
-    })
-    .catch((e) => { console.log(e)}
-)}
+// function  onSubmit (value) {
+//     console.log("VAL ", value);
+//     let data={content : value}
+//     axios.post('http://localhost:3000/api/auth/callback', data)
+//     .then((response) => {
+//         console.log(response)
+//     })
+//     .catch((e) => { console.log(e)}
+// )}
 
 
 export default function LogInOutButton(user, props) {
@@ -124,20 +124,20 @@ export default function LogInOutButton(user, props) {
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
         }
-        let match = fetch('https://login-martinscriblerus.vercel.app/api/getAllUsers', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json, text/plain, */*',
-                'User-Agent': '*',
-            },
+        // let match = fetch('http://localhost:3000/api/getAllUsers', {
+        //     method: 'GET',
+        //     headers: {
+        //         Accept: 'application/json, text/plain, */*',
+        //         'User-Agent': '*',
+        //     },
             
-          })
-          console.log("trying to create new user ", nameRef.current);
-          if(match){
-            console.log("WHAT IS MATCH? ", match)
-            setNameVerified(false);
-            // return;
-          }
+        //   })
+        //   console.log("trying to create new user ", nameRef.current);
+        //   if(match){
+        //     console.log("WHAT IS MATCH? ", match)
+        //     setNameVerified(false);
+        //     // return;
+        //   }
         // if(!checkNames){
         //     return;
         // }
@@ -157,16 +157,21 @@ export default function LogInOutButton(user, props) {
     
         }
         console.log("an object with data: ", objectWithData);
-        fetch('https://login-martinscriblerus.vercel.app/api/register', {
+        // try{
+            fetch('http://localhost:3000/api/register', {
             method: 'POST',
             headers: {
-                Accept: 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
                 'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
-          })
-          console.log("trying to create new user");
-
+          }).then((result)=>{console.log("RESULT", result)})
+        //   console.log("trying to create new user");
+        // } catch (e){
+        //     console.log("what stops the fetch? ", e);
+        // } finally {
+        // }
+       // console.log("register", register);
         }
 
 
@@ -241,9 +246,9 @@ export default function LogInOutButton(user, props) {
 //     const prisma = new PrismaClient();
 //     const user = await prisma.user.create({
 //         data: {
-//           username: String,
-//           email: String,
-//           image: String,
+//           username: '',
+//           email: '',
+//           image: '',
 //         },
 //       })
 //     return {

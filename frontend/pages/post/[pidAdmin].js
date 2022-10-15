@@ -64,10 +64,10 @@ const Post = (props) => {
         console.log("an object with data: ", objectWithData);
         if(objectWithData.user_name){
             try{
-            fetch('https://login-martinscriblerus.vercel.app/api/addSubuser', {
+            fetch('http://localhost:3000/api/addSubuser', {
                 method: 'POST',
                 headers: {
-                    Accept: 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
                     'User-Agent': '*',
                 },
                 body: JSON.stringify(objectWithData),
@@ -97,14 +97,14 @@ const Post = (props) => {
             // email: email,
             subuserName:subuserNameDeleteRef.current
         }
-        let ok = await fetch('https://login-martinscriblerus.vercel.app/api/deleteSubuser', {
+        let ok = await fetch('http://localhost:3000/api/deleteSubuser', {
             method: 'POST',
             headers: {
-                Accept: 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
                 'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
-        }).then(data=>{return data})
+        }).then(data=>{console.log(data)})
         console.log("trying to delete a subuser ", ok);
     
 

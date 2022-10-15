@@ -27,10 +27,15 @@ input, select {
   background: transparent;
   border: solid 0.5px white;
   color: rgba(255,255,255,1);
+  background: rgba(25,194,241,.5);;
   margin: 0%;
   min-height: 40px;
   line-height: 1;
   font-size: 16px;
+  text-emphasis: inherit;
+  padding-left: 12px;
+  line-height:1.5;  
+  font-size:20px;
 }
 
 label {
