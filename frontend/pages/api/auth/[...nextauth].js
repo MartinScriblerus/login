@@ -130,7 +130,7 @@ export const authOptions = {
     },
     async redirect({ url, baseUrl }) {
       console.log("url check ", url);
-      baseUrl = process.env.PUBLIC_URL;
+      baseUrl = process.env.NEXTAUTH_URL;
       //baseUrl="/"
       return baseUrl
       // return true;
