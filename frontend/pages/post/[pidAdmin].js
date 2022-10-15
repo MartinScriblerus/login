@@ -16,7 +16,8 @@ const Post = (props) => {
     const [ username,setUsername] = useState('');
     const subuserNameRef = useRef('');
     const subuserNameDeleteRef = useRef('')
-  
+    let public_url = process.env.PUBLIC_URL;
+
     useEffect(()=>{
         if(!router.isReady) return;
         else {
@@ -62,7 +63,7 @@ const Post = (props) => {
             subuserName:subuserNameRef.current
         }
         console.log("an object with data: ", objectWithData);
-        let public_url = process.env.PUBLIC_URL;
+       
         if(objectWithData.user_name){
             try{
             fetch(public_url + '/api/addSubuser', {
@@ -98,7 +99,7 @@ const Post = (props) => {
             // email: email,
             subuserName:subuserNameDeleteRef.current
         }
-        let public_url = process.env.PUBLIC_URL;
+
         let ok = await fetch(public_url + '/api/deleteSubuser', {
             method: 'POST',
             headers: {
@@ -131,7 +132,7 @@ const Post = (props) => {
                 <link rel="icon" href="/favicon.ico" />
                 </Head>
         <h2 style={{textAlign:"center",position:"relative",marginTop:"12vh",fontSize:"48px", flexFlow: "column", display: "flex", flexDirection: "column"}}>Hello admin <span style={{color:"rgba(225,70,80,.9)"}}>{pidAdmin}</span></h2>
-        <button id="adminBackBtn" style={{position:"absolute",right:"0px",top:"0px",height:"8px",width:"12px",background:"transparent",color:"rgba(255,255,255,.8)"}} onClick={()=> router.push('/')}><span style={{background:"transparent"}}>&#11013;</span>  Back</button>
+        <button id="adminBackBtn" style={{position:"absolute",right:"0px",top:"0px",height:"8px",width:"12px",background:"transparent",color:"rgba(255,255,255,.8)"}} onClick={()=> router.push(`${public_url}/`)}><span style={{background:"transparent"}}>&#11013;</span>  Back</button>
         <div style={{display:"flex", flexDirection:"column", width:"100%",alignItems:"center",justifyContent:"center"}}>
             <input maxLength={32} id="name_NewSubuserRegistration" style={{position: "relative",minWidth:"232px"}} inputref={subuserNameRef} onChange={()=>{handleSubuserNameUpdate()}}/>
             <label style={{color:"rgba(255,255,255,0.78)"}}>Subuser Name</label>

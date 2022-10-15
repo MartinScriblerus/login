@@ -34,7 +34,7 @@ export default function LogInOutButton(user, props) {
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
 
     const { data: session } = useSession();
- 
+    const public_url = proces.env.PUBLIC_URL
     if (session) {
 
         if(!session.expires){
@@ -68,7 +68,7 @@ export default function LogInOutButton(user, props) {
             {/* Signed in.... as {session.user.email} <br /> */}
             <div id="horizontalRow">
                 {/* <button onClick={()=> router.push('/')}>Hub</button> */}
-                <button onClick={()=> router.push(`/post/${editedUsername}`)} >Admin</button>
+                <button onClick={()=> router.push(`${public_url}/post/${editedUsername}`)} >Admin</button>
                 <button onClick={() => signOut()}>Sign out</button>
             </div>
         </div>
