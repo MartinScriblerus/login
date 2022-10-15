@@ -115,7 +115,7 @@ return true;
     async redirect({ url, baseUrl }) {
       console.log("url check ", url);
       console.log("baseUrl check ", baseUrl)
-      baseUrl = "https://login-sand-psi.vercel.app";
+  
       //baseUrl="/"
       return baseUrl;
       // return true;
