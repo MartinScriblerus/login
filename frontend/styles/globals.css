@@ -88,3 +88,7 @@ button:active {
   }
 /* } */
 
+.__next-auth-theme-auto, .__next-auth-theme-dark {
+  --color-background: rgba(20,180,255,.8);
+  --color-text: rgba(255,255,255,.8);
+}

@@ -4,6 +4,8 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from "@prisma/client";
 
+const crypto = require('crypto');
+
 const prisma = new PrismaClient();
 
 const bcrypt = require('bcrypt');
@@ -56,22 +58,22 @@ export const authOptions = {
         // async function getUserByName(user_name){
         //   // try {
 
-            // const result = await prisma.users.findMany({
-            //   where: {
-            //       user_name: req.body.username
-            //     },
-            // })
+            const result = await prisma.users.findMany({
+              where: {
+                  user_name: req.body.username
+                },
+            })
  
-            // console.log("DO WE GET A RESULT? ", result);
+            console.log("DO WE GET A RESULT? ", result);
    
-            // const user = {
-            //   id: result[0].id,
-            //   user_name: result[0].user_name,
-            //   email: result[0].email,
-            //   image: result[0].image,
-            //   created_at: result[0].created_at,
-            //   updated_at: result[0].updated_at
-            // } 
+            return user = {
+              id: result[0].id,
+              user_name: result[0].user_name,
+              email: result[0].email,
+              image: result[0].image,
+              created_at: result[0].created_at,
+              updated_at: result[0].updated_at
+            } 
             // // return result.rows[0];
             // return user;
         // }
@@ -80,7 +82,7 @@ export const authOptions = {
         // // return isUserInDb;
         // // res.status(201).json({ error: false, msg: isUserInDb});
         // res.send(isUserInDb);
-        return req.body.username;
+        //return req.body.username;
       }
     })
     // ...add more providers here
@@ -107,41 +109,28 @@ export const authOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
-      console.log("user check: ", user);
-      const result = await prisma.users.findMany({
-        where: {
-            user_name: req.body.username
-          },
-      })
-
-      console.log("DO WE GET A RESULT? ", result);
-
-      user = {
-        id: result[0].id,
-        user_name: result[0].user_name,
-        email: result[0].email,
-        image: result[0].image,
-        created_at: result[0].created_at,
-        updated_at: result[0].updated_at
-      } 
-      // return result.rows[0];
-      
-      return user;
+//      console.log("user check: ", user);
+return true;
     },
     async redirect({ url, baseUrl }) {
       console.log("url check ", url);
-      baseUrl = process.env.NEXTAUTH_URL;
+      console.log("baseUrl check ", baseUrl)
+      baseUrl = "https://login-sand-psi.vercel.app";
       //baseUrl="/"
-      return baseUrl
+      return baseUrl;
       // return true;
       
     },
     async session({ session, user, token }) {
-      console.log("session check ", session)
-      // if(!session){
-      //   return;
-      // }
-      return session;
+      // console.log("session check ", session)
+      // // if(!session){
+      // //   return;
+      // // }
+      // return session;
+
+        const hex = crypto.randomBytes(32).toString("hex");
+        return hex; 
+
     },
     async jwt({ token, user, account, profile }) {
       console.log("Check this user: ", user);
@@ -159,9 +148,9 @@ export const authOptions = {
     let public_url = process.env.PUBLIC_URL;
     if (url === '/login'){
       console.log("REDIRECTING!!!");
-      return Promise.resolve(public_url);
+      return Promise.resolve(process.env.NEXTAUTH_URL);
     }
-    return Promise.resolve(public_url);
+    return Promise.resolve(process.env.NEXTAUTH_URL);
   },
   secret:process.env.NEXTAUTH_SECRET
 }
