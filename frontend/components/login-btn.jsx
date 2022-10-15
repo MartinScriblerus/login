@@ -34,7 +34,7 @@ export default function LogInOutButton(user, props) {
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
 
     const { data: session } = useSession();
-    const public_url = process.env.PUBLIC_URL
+    const public_url = process.env.PUBLIC_URL;
     if (session) {
 
         if(!session.expires){

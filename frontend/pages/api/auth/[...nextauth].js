@@ -114,17 +114,22 @@ export const authOptions = {
       
     },
     async session({ session, user, token }) {
-      console.log("session check ", session)
-      if(!session){
-        return;
-      }
-      return session
-      // return true;
+      // console.log("session check ", session)
+      // if(!session){
+      //   return;
+      // }
+      // return session
+      // // return true;
+      return true;
     },
     async jwt({ token, user, account, profile }) {
       console.log("Check this user: ", user);
       console.log("Check for token: ", token);
-      return token
+      if(token){
+        return token
+      } else {
+        return null;
+      }
     }
   },
   redirect: async (url, _baseUrl) => {
