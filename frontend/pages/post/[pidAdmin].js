@@ -62,9 +62,10 @@ const Post = (props) => {
             subuserName:subuserNameRef.current
         }
         console.log("an object with data: ", objectWithData);
+        let public_url = process.env.PUBLIC_URL;
         if(objectWithData.user_name){
             try{
-            fetch('http://localhost:3000/api/addSubuser', {
+            fetch(public_url + '/api/addSubuser', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,7 +98,8 @@ const Post = (props) => {
             // email: email,
             subuserName:subuserNameDeleteRef.current
         }
-        let ok = await fetch('http://localhost:3000/api/deleteSubuser', {
+        let public_url = process.env.PUBLIC_URL;
+        let ok = await fetch(public_url + '/api/deleteSubuser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

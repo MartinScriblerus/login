@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 // import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from 'next-auth/providers/credentials';
-import PostgresAdapter from "../../../lib/adapter.js";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -50,7 +49,7 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         console.log("req body username: ", req.body.username);
-        const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
+        //const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
         
         // // Check whether the user_name exists in our database
         // async function getUserByName(user_name){
@@ -103,35 +102,38 @@ export const authOptions = {
     }
   },
   callbacks: {
-    // async signIn({ user, account, profile, email, credentials }) { 
-    //   console.log("user check: ", user);
-    //   return true
-    // },
-    // async redirect({ url, baseUrl }) {
-    //   console.log("url check ", url);
-    //   return baseUrl
-    //   return true;
-    // },
-    // async session({ session, user, token }) {
-    //   console.log("session check ", session)
-    //   if(!session){
-    //     return;
-    //   }
-    //   return session
-    // },
-    // async jwt({ token, user, account, profile, isNewUser }) {
-    //   console.log("Check this user: ", user);
-    //   console.log("Check for token: ", token);
-    //   return token
-    // }
+    async signIn({ user, account, profile, email, credentials }) { 
+      console.log("user check: ", user);
+      return true
+    },
+    async redirect({ url, baseUrl }) {
+      console.log("url check ", url);
+      // return baseUrl
+      // return true;
+      return '/https://login-24d115auh-martinscriblerus.vercel.app/'
+    },
+    async session({ session, user, token }) {
+      console.log("session check ", session)
+      // if(!session){
+      //   return;
+      // }
+      // return session
+      return true;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      console.log("Check this user: ", user);
+      console.log("Check for token: ", token);
+      return token
+    }
   },
-  // redirect: async (url, _baseUrl) => {
-  //   if (url === '/login'){
-  //     console.log("REDIRECTING!!!");
-  //     return Promise.reolve(`/`);
-  //   }
-  //   return Promise.resolve('/');
-  // },
+  redirect: async (url, _baseUrl) => {
+    let public_url = process.env.PUBLIC_URL;
+    if (url === public_url + '/login'){
+      console.log("REDIRECTING!!!");
+      return Promise.reolve(public_url);
+    }
+    return Promise.resolve(public_url);
+  },
   secret:process.env.NEXTAUTH_SECRET
 }
 

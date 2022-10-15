@@ -144,8 +144,8 @@ export default function LogInOutButton(user, props) {
     
         handleSubmit(nameRef.current,passRef2.current);
         // There should be an intermediary function here to encrypt passwords
-
-        router.push("/login");
+        let public_url = process.env.PUBLIC_URL;
+        router.push(public_url + "/login");
     }
 
     async function handleSubmit(user_name, email){
@@ -158,7 +158,9 @@ export default function LogInOutButton(user, props) {
         }
         console.log("an object with data: ", objectWithData);
         // try{
-            fetch('http://localhost:3000/api/register', {
+        let public_url = process.env.PUBLIC_URL;
+
+            fetch(public_url + '/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
