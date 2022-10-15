@@ -85,9 +85,9 @@ export const authOptions = {
     })
     // ...add more providers here
   ],
-  pages: {
-    signIn: "/login",
-  },
+  // pages: {
+  //   signIn: "/login",
+  // },
   jwt: {
     encryption: true
   },
@@ -157,7 +157,7 @@ export const authOptions = {
   },
   redirect: async (url, _baseUrl) => {
     let public_url = process.env.PUBLIC_URL;
-    if (url === public_url + '/login'){
+    if (url === '/login'){
       console.log("REDIRECTING!!!");
       return Promise.resolve(public_url);
     }

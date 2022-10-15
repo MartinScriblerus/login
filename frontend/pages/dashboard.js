@@ -17,14 +17,14 @@ async function RedirectPage() {
     const router = useRouter();
     let public_url = process.env.PUBLIC_URL;
 
-    router.push(public_url + '/login');
+    router.push('/login');
     //setTimeout(()=>{console.log("long resolution...")},5000)
     // Make sure we're in the browser
     if (typeof window !== 'undefined') {
         if(!routing || !user || !session){
             setRouting(true);
         
-            router.push(public_url + '/login');
+            router.push('/login');
             // setTimeout(()=>{setRouting(false)}, 10000);
             // clearTimeout();
     } else {
