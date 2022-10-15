@@ -58,7 +58,7 @@ export const authOptions = {
             //let result = await prisma.$queryRaw`select * FROM users where users.user_name = @selectedName;`
             const result = await prisma.users.findMany({
               where: {
-                  user_name:"99"
+                  user_name: req.body.username
                 },
             })
  
@@ -104,23 +104,24 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
       console.log("user check: ", user);
-      return true
+      return user;
     },
     async redirect({ url, baseUrl }) {
       console.log("url check ", url);
-      // return baseUrl
+      baseUrl = process.env.PUBLIC_URL;
+      return baseUrl
       // return true;
-      return '/https://login-24d115auh-martinscriblerus.vercel.app/'
+      
     },
     async session({ session, user, token }) {
       console.log("session check ", session)
-      // if(!session){
-      //   return;
-      // }
-      // return session
-      return true;
+      if(!session){
+        return;
+      }
+      return session
+      // return true;
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user, account, profile }) {
       console.log("Check this user: ", user);
       console.log("Check for token: ", token);
       return token
