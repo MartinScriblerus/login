@@ -58,22 +58,21 @@ export const authOptions = {
         // async function getUserByName(user_name){
         //   // try {
 
-            const result = await prisma.users.findMany({
-              where: [{
-                  user_name: req.body.username
-                }],
-            })
- 
-            console.log("DO WE GET A RESULT? ", result);
-   
-            return user = [{
-              'id': result[0].id,
-              'user_name': result[0].user_name,
-              'email': result[0].email,
-              'image': result[0].image,
-              'created_at': result[0].created_at,
-              'updated_at': result[0].updated_at
-            }] 
+        const result = await prisma.users.findMany({
+          where: {
+              user_name: req.body.username
+            },
+        })
+
+        const user = [{
+          id: result[0].id,
+          user_name: result[0].user_name,
+          email: result[0].email,
+          image: result[0].image,
+          created_at: result[0].created_at,
+          updated_at: result[0].updated_at
+        }] 
+        return user;
             // // return result.rows[0];
             // return user;
         // }
@@ -110,7 +109,14 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
 //      console.log("user check: ", user);
-return true;
+      const signedInUser = [{
+        user:user,
+        email:email,
+        account:account,
+        profile:profile,
+        credentials:credentials,
+      }];
+      return signedInUser;
     },
     // async redirect({ url, baseUrl }) {
     //   console.log("url check ", url);
@@ -142,7 +148,6 @@ return true;
     }
   },
   redirect: async (url, _baseUrl) => {
-    let public_url = process.env.PUBLIC_URL;
     if (url === '/login'){
       console.log("REDIRECTING!!!");
       return Promise.resolve(process.env.NEXTAUTH_URL);
