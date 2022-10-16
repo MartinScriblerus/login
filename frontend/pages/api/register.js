@@ -43,11 +43,12 @@ export default async function postCreateUser (req, res) {
       email: hash,
       image: ''
     }
-  return userData;
+    console.log("what is userdata: ", userData);
+    return userData;
   // let data = Object.values(input).map(i=>i)[0];
 
   });
-  console.log("what is userdata: ", userData);
+ 
   var createdUser = await prisma.users.create({
     // data: {
     //   user_name: req.body.user_name,
