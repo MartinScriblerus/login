@@ -8,13 +8,13 @@ import {useState} from 'react';
 import { useRouter } from 'next/router';
 import LogInOutButton from '../components/login-btn';
 import LoginWrapper from './login';
-// import { getPool } from '../lib/dbPool';
+import { getPool } from '../lib/dbPool';
 
 export default function Home(props) {
   console.log("ALLGOODS : ", props);
   const { data: session } = useSession();
   console.log("session 1: ", session);
-  console.log("all user names : ", props.allUserNames);
+  // console.log("all user names : ", props.allUserNames);
   // const [username, setUsername] = useState('');
   const router = useRouter()
   if(session){
@@ -74,7 +74,8 @@ export default function Home(props) {
 
 // Fetch all posts (in /pages/index.tsx)
 export async function getStaticProps() {
-
+  const pool = getPool();
+  console.log("Initial pool: ", pool);
   const prisma = new PrismaClient()
   const users = await prisma.users.findMany();
   // console.log("USERZZ ", users[0].user_name);
