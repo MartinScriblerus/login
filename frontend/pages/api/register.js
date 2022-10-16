@@ -40,7 +40,8 @@ export default async function postCreateUser (req, res) {
   return hash
   // let data = Object.values(input).map(i=>i)[0];
 
-  });
+  }).then(res=>{return res});
+  
   var createdUser = await prisma.users.create({
     data: {
       user_name: req.body.user_name,
