@@ -57,7 +57,8 @@ export const authOptions = {
         console.log("CREDS: ", credentials);
 
         console.log("req body username: ", req.body.username);
-       // const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
+        const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`;
+        console.log("RESULT PRISMA: ", resultPrisma);
        // console.log("result prisma: ", resultPrisma);
         // Check whether the user_name exists in our database
     
@@ -140,11 +141,12 @@ export const authOptions = {
     // },
     async session({ session, user, token }) {
       // console.log("session check ", session)
-      // if(!session){
-      //   session = crypto.randomBytes(32).toString("hex");
-      //   return session; 
-      // }
-      // return session;
+      if(!session){
+        //session = crypto.randomBytes(32).toString("hex");
+        session = 'sanitycheck1234';
+        return session; 
+      }
+      return session;
       console.log("session check ", session)
       if(!session){
         return;
@@ -161,13 +163,13 @@ export const authOptions = {
 
     }
   },
-  redirect: async (url, _baseUrl) => {
-    if (url === '/login'){
-      console.log("REDIRECTING!!!");
-      return Promise.resolve(process.env.NEXTAUTH_URL);
-    }
-    return Promise.resolve(process.env.NEXTAUTH_URL);
-  },
+  // redirect: async (url, _baseUrl) => {
+  //   if (url === '/login'){
+  //     console.log("REDIRECTING!!!");
+  //     return Promise.resolve(process.env.NEXTAUTH_URL);
+  //   }
+  //   return Promise.resolve(process.env.NEXTAUTH_URL);
+  // },
   secret:process.env.NEXTAUTH_SECRET
 }
 
