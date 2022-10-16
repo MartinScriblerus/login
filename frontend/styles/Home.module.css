@@ -1,5 +1,8 @@
 .container {
-  padding: 0 2rem;
+  padding: 0 0rem;
+  height: 100vh;
+  background: transparent;
+  overflow-y: hidden;
 }
 
 #__next {

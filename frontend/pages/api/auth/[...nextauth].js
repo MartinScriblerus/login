@@ -13,15 +13,15 @@ const bcrypt = require('bcrypt');
 // import { getPool } from '../../../lib/dbPool';
 // let pool = getPool();
 
-// const confirmPasswordHash = (plainPassword, hashedPassword) => {
-//   console.log(plainPassword)  
-//   // return new Promise(resolve => {
-//     //     bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
-//     //         resolve(res);
-//     //         console.log("WHAT IS RES??? ", res)
-//     //     });
-//     // })
-// }
+const confirmPasswordHash = (plainPassword, hashedPassword) => {
+  console.log(plainPassword)  
+  return new Promise(resolve => {
+        bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
+            resolve(res);
+            console.log("WHAT IS RES??? ", res)
+        });
+    })
+}
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -80,18 +80,28 @@ export const authOptions = {
         console.log("resultttt ", result);
 
         let user = {
-          // id: result[0].id,
           name: result[0].user_name,
           email: result[0].email,
           image: "",
-          // created_at: result[0].created_at,
-          // updated_at: result[0].updated_at
         }
 
         return user;
       }
 
         let isUserInDB = getUserByName(req.body.username);
+        
+        let hashedPass = (await getUserByName(req.body.username)).email;
+
+        confirmPasswordHash(req.body.email, hashedPass);
+
+        if(!confirmPasswordHash){
+          return null;
+        }
+
+        console.log("is user in db? ", isUserInDB);
+
+        
+        
         return isUserInDB;
       }
   })

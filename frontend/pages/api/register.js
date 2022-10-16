@@ -1,20 +1,27 @@
 import { PrismaClient } from "@prisma/client";
-
 const prisma = new PrismaClient();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 
 export default async function postCreateUser (req, res) {
-  console.log("REQ IS!!! ", typeof req.body)
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   let input;
 
-  console.log("req body is: ", req.body);
+  console.log("req body email is: ", req.body.email);
   console.log("req body username in register: ", req.body.user_name);
  
-  // JSON.parse(req.body).user_name
+// bcrypt
+
+    bcrypt.genSalt(saltRounds, function(err, salt) {
+    bcrypt.hash(req.body.email, salt, function(err, hash) {
+        // Store hash in your password DB.
+
+console.log("what is hash? ", hash);
 
   try {
     input = {
@@ -29,6 +36,8 @@ export default async function postCreateUser (req, res) {
   }
   console.log("input in register is: ", input)
 
+});
+});
   
   // let data = Object.values(input).map(i=>i)[0];
   const createdUser = await prisma.users.create({
@@ -40,15 +49,11 @@ export default async function postCreateUser (req, res) {
       // // created_at: DateTime,
       // // updated_at: DateTime,
       // subusers_array: [],
-
     }
   })
-
   console.log("created user: ", createdUser);
   if(!createdUser){
     return null;
   }
-
   res.status(201).json(createdUser);
-  // res.end(JSON.stringify(createdUser));
 } 
