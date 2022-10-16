@@ -55,7 +55,7 @@ export const authOptions = {
       async authorize(credentials, req) {
         console.log("req body username: ", req.body.username);
         console.log("CREDS: ", credentials);
-        let user;
+
         console.log("req body username: ", req.body.username);
        // const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
        // console.log("result prisma: ", resultPrisma);
@@ -69,28 +69,31 @@ export const authOptions = {
         // async function getUserByName(user_name){
         //   // try {
 
-        const result = await prisma.users.findMany({
-          where: {
-              user_name: req.body.username
-            },
-        })
+        async function getUserByName(user_name){
+    
+          const result = await prisma.users.findMany({
+            where: {
+                user_name: username
+              },
+          })
 
-        console.log("resultttt ", result);
+          console.log("resultttt ", result);
 
-        user = {
-          id: result[0].id,
-          user_name: result[0].user_name,
-          email: result[0].email,
-          image: result[0].image,
-          created_at: result[0].created_at,
-          updated_at: result[0].updated_at
-        }
+          let user = {
+            id: result[0].id,
+            user_name: result[0].user_name,
+            email: result[0].email,
+            image: result[0].image,
+            created_at: result[0].created_at,
+            updated_at: result[0].updated_at
+          }
 
           return user;
+        }
 
-        //return req.body.username;
-      } 
-    
+          let isUserInDB = getUserByName(req.body.username);
+          return isUserInDB;
+        }
     })
  
     // ...add more providers here
@@ -118,11 +121,13 @@ export const authOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
-     console.log("user check: ", user);
-      if(!user){
-        user = {user_name:"nameTest",email:"DNA"}
-      }
-      return user;
+    //  console.log("user check: ", user);
+    //   if(!user){
+    //     user = {user_name:"nameTest",email:"DNA"}
+    //   }
+    //   return user;
+    console.log("user check: ", user);
+    return true
     },
     // async redirect({ url, baseUrl }) {
     //   console.log("url check ", url);
@@ -135,11 +140,16 @@ export const authOptions = {
     // },
     async session({ session, user, token }) {
       // console.log("session check ", session)
+      // if(!session){
+      //   session = crypto.randomBytes(32).toString("hex");
+      //   return session; 
+      // }
+      // return session;
+      console.log("session check ", session)
       if(!session){
-        session = crypto.randomBytes(32).toString("hex");
-        return session; 
+        return;
       }
-      return session;
+      return session
     },
     async jwt({ token, user, account, profile }) {
       console.log("Check this user: ", user);
