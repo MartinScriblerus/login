@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -33,39 +34,35 @@ export default async function postCreateUser (req, res) {
 
   var createdUser; 
 
-  bcrypt.hash(input.email, saltRounds, function(err, hash) {
+  let userData; 
+
+
+  
+  let hashedPass = await bcrypt.hash(input.email, saltRounds, function(err, hash) {
     // Store hash in your password DB.
     // return hash
   console.log("HASH PASS: ", hash);
-  // return hash
-    let userData = {
-      user_name : req.body.name,
-      email: hash,
-      image: ''
-    }
-    console.log("what is userdata: ", userData);
-    // return userData;
-    prisma.users.create({
-      // data: {
-      //   user_name: req.body.user_name,
-      //   // email: req.body.email,
-      //   email: hashPass
-      //   // email_verified: null,
-      //   // image: null,
-      //   // // created_at: DateTime,
-      //   // // updated_at: DateTime,
-      //   // subusers_array: [],
-      // }
-      data: userData
-    })
+  return hash
+
   // let data = Object.values(input).map(i=>i)[0];
 
   });
- 
 
-  // console.log("created user: ", createdUser);
-  // if(!createdUser){
-  //   return null;
-  // }
-  // res.status(201).json(createdUser);
+  var createdUser = await prisma.users.create({
+    data: {
+      user_name: req.body.user_name,
+      // email: req.body.email,
+      email: hashedPass
+      // email_verified: null,
+      // image: null,
+      // // created_at: DateTime,
+      // // updated_at: DateTime,
+      // subusers_array: [],
+    }
+  })
+  console.log("created user: ", createdUser);
+  if(!createdUser){
+    return null;
+  }
+  res.status(201).json(createdUser);
 } 
