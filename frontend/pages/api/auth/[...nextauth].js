@@ -71,11 +71,11 @@ export const authOptions = {
 
       async function getUserByName(){
    
-        const result = await prisma.users.findMany({
-          where: {
-              user_name: user_name
-            },
-        })
+        // const result = await prisma.users.findMany({
+        //   where: {
+        //       user_name: user_name
+        //     },
+        // })
 
       //   console.log("resultttt ", result);
 
