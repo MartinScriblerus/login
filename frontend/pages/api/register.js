@@ -26,7 +26,8 @@ console.log("what is hash? ", hash);
   try {
     input = {
       user_name : req.body.user_name,
-      email : req.body.email
+      // email : req.body.email
+      email: hash
     }
   } catch(e){
     console.log("Error while creating user");

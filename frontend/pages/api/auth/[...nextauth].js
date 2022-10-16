@@ -92,10 +92,12 @@ export const authOptions = {
         
         let hashedPass = (await getUserByName(req.body.username)).email;
 
-        confirmPasswordHash(req.body.email, hashedPass);
+        let checkHash = confirmPasswordHash(req.body.email, hashedPass);
 
-        if(!confirmPasswordHash){
+        if(!checkHash){
           return null;
+        } else {
+          console.log("check hash: ", checkHash);
         }
 
         console.log("is user in db? ", isUserInDB);
