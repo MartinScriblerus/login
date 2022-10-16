@@ -100,7 +100,8 @@ export const authOptions = {
         }
         return user;
       }  
-      isUserInDB = getUserByName()
+      isUserInDB = getUserByName();
+      return isUserInDB;
     }
   })
  
