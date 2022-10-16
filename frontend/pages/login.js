@@ -9,7 +9,7 @@ import LogInOutButton from '../components/login-btn';
 
 
 
-export default async function LoginWrapper(props){
+export default function LoginWrapper(props){
         
     //console.log("all users in login wrapper: ", props.allUserNames);
     const { data: session } = useSession()
