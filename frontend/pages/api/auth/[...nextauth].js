@@ -66,14 +66,14 @@ export const authOptions = {
  
             console.log("DO WE GET A RESULT? ", result);
    
-            return user = {
-              id: result[0].id,
-              user_name: result[0].user_name,
-              email: result[0].email,
-              image: result[0].image,
-              created_at: result[0].created_at,
-              updated_at: result[0].updated_at
-            } 
+            return user = [{
+              'id': result[0].id,
+              'user_name': result[0].user_name,
+              'email': result[0].email,
+              'image': result[0].image,
+              'created_at': result[0].created_at,
+              'updated_at': result[0].updated_at
+            }] 
             // // return result.rows[0];
             // return user;
         // }
@@ -128,7 +128,7 @@ return true;
       // // }
       // return session;
 
-        const hex = crypto.randomBytes(32).toString("hex");
+        const hex = 'testtesttest' + crypto.randomBytes(32).toString("hex");
         return hex; 
 
     },
@@ -144,14 +144,14 @@ return true;
 
     }
   },
-  redirect: async (url, _baseUrl) => {
-    let public_url = process.env.PUBLIC_URL;
-    if (url === '/login'){
-      console.log("REDIRECTING!!!");
-      return Promise.resolve(process.env.NEXTAUTH_URL);
-    }
-    return Promise.resolve(process.env.NEXTAUTH_URL);
-  },
+  // redirect: async (url, _baseUrl) => {
+  //   let public_url = process.env.PUBLIC_URL;
+  //   if (url === '/login'){
+  //     console.log("REDIRECTING!!!");
+  //     return Promise.resolve(process.env.NEXTAUTH_URL);
+  //   }
+  //   return Promise.resolve(process.env.NEXTAUTH_URL);
+  // },
   secret:process.env.NEXTAUTH_SECRET
 }
 
