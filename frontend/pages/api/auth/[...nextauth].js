@@ -145,6 +145,7 @@ export const authOptions = {
     synchronize:true,
     ssl: {
       rejectUnauthorized:false,
+     // ca:[fs.readFileSync("/BaltimoreCyberTrustRoot.crt.pem", "utf8")];
     }
   },
   callbacks: {

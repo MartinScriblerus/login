@@ -8,10 +8,10 @@ import Dashboard from './dashboard';
 import { useRouter } from 'next/router';
 // import LogInOutButton from '../components/login-btn';
 import LoginWrapper from './login';
-// import { getPool } from '../lib/dbPool';
+
 
 export default function Home(props) {
-  
+
   const { data: session } = useSession();
   console.log("session 1: ", session);
   
