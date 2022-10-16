@@ -69,7 +69,7 @@ export const authOptions = {
         // async function getUserByName(user_name){
         //   // try {
 
-      async function getUserByName(user_name){
+      async function getUserByName(){
    
         const result = await prisma.users.findMany({
           where: {
@@ -99,7 +99,9 @@ export const authOptions = {
           email: 'test1',
         }
         return user;
-      }
+      }  
+      isUserInDB = getUserByName()
+    }
   })
  
     // ...add more providers here
