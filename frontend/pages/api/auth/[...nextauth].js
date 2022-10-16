@@ -77,22 +77,28 @@ export const authOptions = {
             },
         })
 
-        console.log("resultttt ", result);
+      //   console.log("resultttt ", result);
 
+      //   let user = {
+      //     id: result[0].id,
+      //     user_name: result[0].user_name,
+      //     email: result[0].email,
+      //     image: result[0].image,
+      //     created_at: result[0].created_at,
+      //     updated_at: result[0].updated_at
+      //   }
+
+      //   return user;
+      // }
+
+        // let isUserInDB = getUserByName(req.body.username);
+        // return isUserInDB;
         let user = {
-          id: result[0].id,
-          user_name: result[0].user_name,
-          email: result[0].email,
-          image: result[0].image,
-          created_at: result[0].created_at,
-          updated_at: result[0].updated_at
+          id: 'test1',
+          user_name: 'test1',
+          email: 'test1',
         }
-
         return user;
-      }
-
-        let isUserInDB = getUserByName(req.body.username);
-        return isUserInDB;
       }
   })
  
@@ -152,7 +158,6 @@ export const authOptions = {
       return session
     },
     async jwt({ token, user, account, profile }) {
-      console.log("Check this user: ", user);
       console.log("Check for token: ", token);
       if(token){
         return token
