@@ -57,8 +57,8 @@ export const authOptions = {
         console.log("CREDS: ", credentials);
         
         console.log("req body username: ", req.body.username);
-        const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
-        console.log("result prisma: ", resultPrisma);
+       // const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
+       // console.log("result prisma: ", resultPrisma);
         // Check whether the user_name exists in our database
     
      
@@ -114,17 +114,8 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
 //      console.log("user check: ", user);
-      // try{
-      //   console.log("credentials: ", credentials);
-      // } catch {
-      //   console.log("no credentials");
-      // }
-      // const signedInUser = [{
-      //   user:user,
-      //   email:email,
-      //   // credentials:credentials,
-      // }];
-      return user;
+
+      return true;
     },
     // async redirect({ url, baseUrl }) {
     //   console.log("url check ", url);
