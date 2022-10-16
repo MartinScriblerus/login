@@ -10,6 +10,9 @@ const prisma = new PrismaClient();
 
 const bcrypt = require('bcrypt');
 
+import { getPool } from '../../../lib/dbPool';
+let pool = getPool();
+
 // const confirmPasswordHash = (plainPassword, hashedPassword) => {
 //   console.log(plainPassword)  
 //   // return new Promise(resolve => {
@@ -102,14 +105,14 @@ export const authOptions = {
             },
         })
 
-        const user = [{
-          id: result[0].id,
-          user_name: result[0].user_name,
-          email: result[0].email,
-          image: result[0].image,
-          created_at: result[0].created_at,
-          updated_at: result[0].updated_at
-        }] 
+        // const user = [{
+        //   id: result[0].id,
+        //   user_name: result[0].user_name,
+        //   email: result[0].email,
+        //   image: result[0].image,
+        //   created_at: result[0].created_at,
+        //   updated_at: result[0].updated_at
+        // }] 
         return user;
             // // return result.rows[0];
             // return user;
