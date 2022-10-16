@@ -141,14 +141,14 @@ return true;
 
     }
   },
-  // redirect: async (url, _baseUrl) => {
-  //   let public_url = process.env.PUBLIC_URL;
-  //   if (url === '/login'){
-  //     console.log("REDIRECTING!!!");
-  //     return Promise.resolve(process.env.NEXTAUTH_URL);
-  //   }
-  //   return Promise.resolve(process.env.NEXTAUTH_URL);
-  // },
+  redirect: async (url, _baseUrl) => {
+    let public_url = process.env.PUBLIC_URL;
+    if (url === '/login'){
+      console.log("REDIRECTING!!!");
+      return Promise.resolve(process.env.NEXTAUTH_URL);
+    }
+    return Promise.resolve(process.env.NEXTAUTH_URL);
+  },
   secret:process.env.NEXTAUTH_SECRET
 }
 

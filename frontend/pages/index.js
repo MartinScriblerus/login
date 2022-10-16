@@ -22,7 +22,7 @@ export default function Home(props) {
   } else {
     console.log("no session yet");
   }
-    // let usersOK = await prisma.users.findMany();
+  // let usersOK = await prisma.users.findMany();
   // console.log("this wrked! ", usersOK);
   return (
     <div className={styles.container}>
@@ -58,7 +58,7 @@ export default function Home(props) {
         :
         <>
  
-        {/* <Dashboard session={session} /> */}
+        <Dashboard session={session} />
         </>
         }
         {/* <Dashboard session={session} /> */}
