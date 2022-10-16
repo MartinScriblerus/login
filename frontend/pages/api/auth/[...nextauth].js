@@ -114,17 +114,17 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
 //      console.log("user check: ", user);
-      try{
-        console.log("credentials: ", credentials);
-      } catch {
-        console.log("no credentials");
-      }
-      const signedInUser = [{
-        user:user,
-        email:email,
-        // credentials:credentials,
-      }];
-      return signedInUser;
+      // try{
+      //   console.log("credentials: ", credentials);
+      // } catch {
+      //   console.log("no credentials");
+      // }
+      // const signedInUser = [{
+      //   user:user,
+      //   email:email,
+      //   // credentials:credentials,
+      // }];
+      return user;
     },
     // async redirect({ url, baseUrl }) {
     //   console.log("url check ", url);
