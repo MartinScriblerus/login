@@ -31,17 +31,18 @@ export default async function postCreateUser (req, res) {
   }
   console.log("input in register is: ", input)
 
-  const hashPass = bcrypt.hash(input.email, saltRounds, function(err, hash) {
+  var createdUser; 
+
+  letbcrypt.hash(input.email, saltRounds, function(err, hash) {
     // Store hash in your password DB.
-    return hash
-  });
-  console.log("HASH PASS: ", hashPass);
+    // return hash
+  console.log("HASH PASS: ", hash);
   // let data = Object.values(input).map(i=>i)[0];
-  const createdUser = await prisma.users.create({
+  createdUser = prisma.users.create({
     data: {
       user_name: req.body.user_name,
       // email: req.body.email,
-      email: hashPass
+      email: hash
       // email_verified: null,
       // image: null,
       // // created_at: DateTime,
@@ -49,6 +50,7 @@ export default async function postCreateUser (req, res) {
       // subusers_array: [],
     }
   })
+  });
   console.log("created user: ", createdUser);
   if(!createdUser){
     return null;
