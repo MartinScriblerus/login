@@ -45,7 +45,7 @@ export default async function postCreateUser (req, res) {
     data: {
       user_name: req.body.user_name,
       // email: req.body.email,
-      email: hashPass()
+      email: hashPass
       // email_verified: null,
       // image: null,
       // // created_at: DateTime,
