@@ -150,13 +150,13 @@ export const authOptions = {
 
     }
   },
-  redirect: async (url, _baseUrl) => {
-    if (url === '/login'){
-      console.log("REDIRECTING!!!");
-      return Promise.resolve(process.env.NEXTAUTH_URL);
-    }
-    return Promise.resolve(process.env.NEXTAUTH_URL);
-  },
+  // redirect: async (url, _baseUrl) => {
+  //   if (url === '/login'){
+  //     console.log("REDIRECTING!!!");
+  //     return Promise.resolve(process.env.NEXTAUTH_URL);
+  //   }
+  //   return Promise.resolve(process.env.NEXTAUTH_URL);
+  // },
   secret:process.env.NEXTAUTH_SECRET
 }
 

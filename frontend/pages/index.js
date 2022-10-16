@@ -1,16 +1,16 @@
 import Head from 'next/head';
-import Image from 'next/image';
+// import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { useSession } from "next-auth/react";
 import Dashboard from './dashboard';
-import { PrismaClient } from "@prisma/client";
-import {useState} from 'react';
+// import { PrismaClient } from "@prisma/client";
+// import {useState} from 'react';
 import { useRouter } from 'next/router';
-import LogInOutButton from '../components/login-btn';
+// import LogInOutButton from '../components/login-btn';
 import LoginWrapper from './login';
 // import { getPool } from '../lib/dbPool';
 
-export default async function Home(props) {
+export default function Home(props) {
   
   const { data: session } = useSession();
   console.log("session 1: ", session);
