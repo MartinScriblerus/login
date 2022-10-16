@@ -31,10 +31,8 @@ export default async function postCreateUser (req, res) {
   }
   console.log("input in register is: ", input)
 
-  let hashPass
-
-  try {
-    hashPass = await bcrypt.hash(input.email, saltRounds, function(err, hash) {
+  async function tryHashPass() {
+    return await bcrypt.hash(input.email, saltRounds, function(err, hash) {
       // Store hash in your password DB.
       // return hash
     console.log("HASH PASS: ", hash);
@@ -42,9 +40,11 @@ export default async function postCreateUser (req, res) {
     // let data = Object.values(input).map(i=>i)[0];
 
     })
-  } catch(e){
-    console.log("error encrypting password")
   }
+
+  const hashPass = (async () => {
+    return await tryHashPass()
+  })()
 
   var createdUser = await prisma.users.create({
     data: {
