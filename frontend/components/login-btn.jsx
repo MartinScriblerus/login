@@ -150,7 +150,15 @@ export default function LogInOutButton(user, props) {
                 'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
-          }).then((result)=>{console.log("RESULT", result)})
+          }).then(async response => {
+            try {
+             const data = await response.json()
+             console.log('response data from register api?', data)
+           } catch(error) {
+             console.log('Error happened here!')
+             console.error(error)
+           }
+          })
         //   console.log("trying to create new user");
         // } catch (e){
         //     console.log("what stops the fetch? ", e);
