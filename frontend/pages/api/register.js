@@ -31,7 +31,7 @@ export default async function postCreateUser (req, res) {
   }
   console.log("input in register is: ", input)
 
-  const hashPass = bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+  const hashPass = bcrypt.hash(input.email, saltRounds, function(err, hash) {
     // Store hash in your password DB.
     return hash
   });
