@@ -52,6 +52,44 @@ export const authOptions = {
       async authorize(credentials, req) {
         console.log("req body username: ", req.body.username);
         console.log("CREDS: ", credentials);
+        
+        console.log("req body username: ", req.body.username);
+        const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
+        
+        // Check whether the user_name exists in our database
+        async function getUserByName(user_name){
+          try {
+            const sql = `select * from users where users.user_name = $1`;
+            let result = await pool.query(sql, [user_name]);
+            console.log("found this user in database: ", result);
+            if(!result){
+              // return null to reject entry if no record found
+              return 
+            }
+            // return the user's info
+            const user = {
+              id: result.rows[0].id,
+              name: result.rows[0].user_name,
+              email: result.rows[0].email,
+              image: result.rows[0].image,
+              created_at: result.rows[0].created_at,
+              updated_at: result.rows[0].updated_at
+            } 
+            // return result.rows[0];
+            return user;
+          
+          } catch(err) {
+            console.log(err);
+            return;
+          }
+        }
+        let isUserInDb = getUserByName(req.body.username);
+        if(isUserInDb){
+
+        } else {
+          // Add Google Providers to database
+        }
+        
         //const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
         
         // // Check whether the user_name exists in our database
