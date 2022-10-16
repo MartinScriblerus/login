@@ -31,7 +31,7 @@ export default async function postCreateUser (req, res) {
 
   // let data = Object.values(input).map(i=>i)[0];
   const createdUser = await prisma.users.create({
-    data: {
+    data: [{
       user_name: JSON.parse(req.body).user_name,
       email:JSON.parse(req.body).email,
       // email_verified: null,
@@ -40,14 +40,14 @@ export default async function postCreateUser (req, res) {
       // // updated_at: DateTime,
       // subusers_array: [],
 
-    }
+    }]
   })
 
   console.log("created user: ", createdUser);
   if(!createdUser){
     return null;
   }
-   
+
   res.status(201).json({ error: false, msg: "created user" });
 
 } 

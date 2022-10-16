@@ -59,9 +59,9 @@ export const authOptions = {
         //   // try {
 
             const result = await prisma.users.findMany({
-              where: {
+              where: [{
                   user_name: req.body.username
-                },
+                }],
             })
  
             console.log("DO WE GET A RESULT? ", result);
