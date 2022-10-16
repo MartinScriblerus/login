@@ -94,8 +94,8 @@ export const authOptions = {
 
         console.log("HASHED PASS IN NEXT AUTH: ", hashedPass);
 
-        let checkHash = confirmPasswordHash(req.body.email, hashedPass);
-
+        let checkHash = await confirmPasswordHash(req.body.email, hashedPass).then(res=>{return res});
+        
         if(!checkHash){
           return null;
         } else {
