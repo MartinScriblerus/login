@@ -80,12 +80,12 @@ export const authOptions = {
         console.log("resultttt ", result);
 
         let user = {
-          id: result[0].id,
-          user_name: result[0].user_name,
+          // id: result[0].id,
+          name: result[0].user_name,
           email: result[0].email,
-          image: result[0].image,
-          created_at: result[0].created_at,
-          updated_at: result[0].updated_at
+          image: "",
+          // created_at: result[0].created_at,
+          // updated_at: result[0].updated_at
         }
 
         return user;
