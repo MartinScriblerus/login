@@ -33,7 +33,7 @@ export default async function postCreateUser (req, res) {
 
   var createdUser; 
 
-  letbcrypt.hash(input.email, saltRounds, function(err, hash) {
+  bcrypt.hash(input.email, saltRounds, function(err, hash) {
     // Store hash in your password DB.
     // return hash
   console.log("HASH PASS: ", hash);
