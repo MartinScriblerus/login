@@ -112,25 +112,22 @@ export const authOptions = {
 //      console.log("user check: ", user);
 return true;
     },
-    async redirect({ url, baseUrl }) {
-      console.log("url check ", url);
-      console.log("baseUrl check ", baseUrl)
+    // async redirect({ url, baseUrl }) {
+    //   console.log("url check ", url);
+    //   console.log("baseUrl check ", baseUrl)
   
-      //baseUrl="/"
-      return baseUrl;
-      // return true;
+    //   //baseUrl="/"
+    //   return baseUrl;
+    //   // return true;
       
-    },
+    // },
     async session({ session, user, token }) {
       // console.log("session check ", session)
-      // // if(!session){
-      // //   return;
-      // // }
-      // return session;
-
-        const hex = 'testtesttest' + crypto.randomBytes(32).toString("hex");
-        return hex; 
-
+      if(!session){
+        session = crypto.randomBytes(32).toString("hex");
+        return session; 
+      }
+      return session;
     },
     async jwt({ token, user, account, profile }) {
       console.log("Check this user: ", user);
