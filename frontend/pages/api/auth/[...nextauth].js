@@ -109,12 +109,15 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
 //      console.log("user check: ", user);
+      try{
+        console.log("credentials: ", credentials);
+      } catch {
+        console.log("no credentials");
+      }
       const signedInUser = [{
         user:user,
         email:email,
-        account:account,
-        profile:profile,
-        credentials:credentials,
+        // credentials:credentials,
       }];
       return signedInUser;
     },
