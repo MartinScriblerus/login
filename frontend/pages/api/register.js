@@ -37,15 +37,13 @@ export default async function postCreateUser (req, res) {
   let hashPass = bcrypt.hash(input.email, saltRounds, function(err, hash) {
     // Store hash in your password DB.
     // return hash
-  console.log("HASH PASS: ", hash);
-  return hash;
+    console.log("HASH PASS: ", hash);
+    return hash;
 
   // let data = Object.values(input).map(i=>i)[0];
 
-  }).then((result)=>{
-    return result;
   })
-  console.log("what is hashpass?");
+  console.log("what is hashpass? ", hashPass);
 
 
   var createdUser = await prisma.users.create({
