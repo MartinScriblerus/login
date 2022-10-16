@@ -18,7 +18,7 @@ export default function Home(props) {
   const router = useRouter()
   
   if(session){
-      console.log('$$ SESSION!!@@@@@@@@@@@@@@@@@@ ', session);
+    console.log('SESSION--------------- ', session);
   } else {
     console.log("no session yet");
   }
@@ -67,40 +67,3 @@ export default function Home(props) {
     </div>
   )
 }
-
-// Fetch all posts (in /pages/index.tsx)
-// export async function getStaticProps() {
-//   const pool = getPool();
-
-//   console.log("Initial pool: ", pool);
-//   const prisma = new PrismaClient()
-//   const users = await prisma.users.findMany();
-//   // console.log("USERZZ ", users[0].user_name);
-//   // Creating a new record
-
-//     // this works to create a user 
-//     // (& should also provide basic info needed to enable subusers)
-//     // bring back when wrapping that part up 
-//     const user = await prisma.users.create({
-//       data: {
-//         user_name: 'onlineUser',
-//         email: 'onlineEmail',
-//         image: 'onlineImg',
-//       },
-//     })
-//     console.log("static props user: ", user);
-//     console.log("static props users: ", users);
-//   // const deleteUsers = await prisma.users.deleteMany({
-//   //   where: {
-//   //     email: {
-//   //       contains: 'prisma.io',
-//   //     },
-//   //   },
-//   // })
-//     const allUserNames = await prisma.users.findMany({select:{user_name:true}});
-//     // console.log("ttttttttthis: ", allUserNames);
-
-// return {
-//     props : {allUserNames} 
-//   }
-// }

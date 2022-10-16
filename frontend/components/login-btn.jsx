@@ -34,7 +34,7 @@ export default function LogInOutButton(user, props) {
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
 
     const { data: session } = useSession();
-    const public_url = process.env.PUBLIC_URL;
+    // const public_url = process.env.PUBLIC_URL;
     if (session) {
 
         if(!session.expires){
@@ -88,7 +88,6 @@ export default function LogInOutButton(user, props) {
 
     function handlePassRef1Update(){
         let pass1 = document.getElementById("pass1_NewUserRegistration");
-        console.log("pass 1 ", pass1);
         if(pass1){
             passRef.current = pass1.value;
             console.log("name ref: ", passRef.current);
@@ -127,7 +126,8 @@ export default function LogInOutButton(user, props) {
     
         handleSubmit(nameRef.current,passRef2.current);
         // There should be an intermediary function here to encrypt passwords
-        let public_url = process.env.PUBLIC_URL;
+        // let public_url = process.env.PUBLIC_URL;
+        // console.log("PUBLIC URL: ", public_url);
         router.push("/login");
     }
 
@@ -143,7 +143,7 @@ export default function LogInOutButton(user, props) {
         // try{
   
 
-            fetch(public_url + '/api/register', {
+            fetch('/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

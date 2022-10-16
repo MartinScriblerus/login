@@ -41,13 +41,6 @@ const Post = (props) => {
         }
     }, [pidAdmin, router, router.isReady, router.query.pidAdmin, setPidAdmin, username, session]);
 
-    // fetch('http://localhost:3000/api/getAllSubusers', {
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    // }).then(response=>console.log("RESPONSEEEEE ", response));
-
 
     function handleAddSubuser(){
         let subuserName = document.getElementById("name_NewSubuserRegistration");
@@ -66,7 +59,7 @@ const Post = (props) => {
        
         if(objectWithData.user_name){
             try{
-                fetch(public_url + '/api/addSubuser', {
+                fetch('/api/addSubuser', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -108,7 +101,7 @@ const Post = (props) => {
             subuserName:subuserNameDeleteRef.current
         }
 
-        let ok = await fetch(public_url + '/api/deleteSubuser', {
+        let ok = await fetch('/api/deleteSubuser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
