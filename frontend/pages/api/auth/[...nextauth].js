@@ -143,9 +143,7 @@ export const authOptions = {
       console.log("Check for token: ", token);
       if(token){
         return token
-      } else {
-        return null;
-      }
+      } 
 
 
     }

@@ -152,8 +152,8 @@ export default function LogInOutButton(user, props) {
             body: JSON.stringify(objectWithData),
           }).then(async response => {
             try {
-                console.log("what is response? ", response);
-             const data = await response.json()
+            console.log("what is response? ", response);
+             const data = await response
              console.log('response data from register api?', data)
            } catch(error) {
              console.log('Error happened here!')

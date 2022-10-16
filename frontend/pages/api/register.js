@@ -9,16 +9,16 @@ export default async function postCreateUser (req, res) {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  if(!req.body || JSON.parse(req.body).length < 1){
-    console.log("returning null in register");
+  if(!req.body || req.body.length < 1){
+    return res.status(405).json({ message: "returning null request in reegister" });
     return null;
   }
   let input;
-  console.log("REQ BODY in register: ", JSON.parse(req.body))
+  console.log("REQ BODY in register: ", req.body)
   try {
     input = {
-      user_name : JSON.parse(req.body).user_name,
-      email : JSON.parse(req.body).email
+      user_name : req.body.user_name,
+      email : req.body.email
     }
   } catch(e){
     console.log("Error while creating user");
