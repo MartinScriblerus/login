@@ -24,7 +24,7 @@ export default function Home(props) {
   }
 
   return (
-    <div className={styles.container}>
+    <div id="pageWrapper" className={styles.container}>
       <Head>
         {
         !session
