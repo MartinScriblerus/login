@@ -75,16 +75,25 @@ export const authOptions = {
             },
         })
 
-        const user = [{
+        console.log("resultttt ", result);
+
+        const user = {
           id: result[0].id,
           user_name: result[0].user_name,
           email: result[0].email,
           image: result[0].image,
           created_at: result[0].created_at,
           updated_at: result[0].updated_at
-        }] 
-        return user;
-
+        }
+        if(user === {}){
+          user = {
+            id: '1',
+            user_name: 'test',
+            email: 'testemail',
+          }
+        } else {
+          return user;
+        }
         //return req.body.username;
       }
     })
@@ -113,7 +122,7 @@ export const authOptions = {
   },
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
-//      console.log("user check: ", user);
+     console.log("user check: ", user);
 
       return true;
     },
