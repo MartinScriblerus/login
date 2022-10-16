@@ -10,8 +10,8 @@ const prisma = new PrismaClient();
 
 const bcrypt = require('bcrypt');
 
-import { getPool } from '../../../lib/dbPool';
-let pool = getPool();
+// import { getPool } from '../../../lib/dbPool';
+// let pool = getPool();
 
 // const confirmPasswordHash = (plainPassword, hashedPassword) => {
 //   console.log(plainPassword)  
