@@ -32,7 +32,7 @@ export default async function postCreateUser (req, res) {
   console.log("input in register is: ", input)
 
 
-  passObj = {
+  let passObj = {
     passHash: ""
   }
   // try {
