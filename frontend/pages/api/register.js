@@ -42,7 +42,7 @@ export default async function postCreateUser (req, res) {
     console.log("HASH PASS: ", hash);
     // return hash
       hashPassObj.pass = hash;
-      return hashPassObj;
+  
     // let data = Object.values(input).map(i=>i)[0];
 
     })
