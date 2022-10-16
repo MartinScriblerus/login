@@ -11,22 +11,18 @@ import LoginWrapper from './login';
 import { getPool } from '../lib/dbPool';
 
 export default async function Home(props) {
-  const prisma = new PrismaClient()
-  const users = await prisma.users.findMany();
-  console.log("UZERS: ", users);
-  console.log("ALLGOODS : ", props);
+  
   const { data: session } = useSession();
   console.log("session 1: ", session);
-  // console.log("all user names : ", props.allUserNames);
-  // const [username, setUsername] = useState('');
+  
   const router = useRouter()
+  
   if(session){
       console.log('$$ SESSION!!@@@@@@@@@@@@@@@@@@ ', session);
   } else {
     console.log("no session yet");
   }
-  // let usersOK = await prisma.users.findMany();
-  // console.log("this wrked! ", usersOK);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -46,31 +42,28 @@ export default async function Home(props) {
           !session
           ?
           <>
-        <h1 className={styles.title}>
-          Status:  
-          {
-            session
-            ?
-            <span style={{color:"rgba(225,70,80,.9)"}}> logged in</span>
-            :
-            <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
-          }
-        </h1>
-        <LoginWrapper ></LoginWrapper>
-        </>
+            <h1 className={styles.title}>
+              Status:  
+              {
+                session
+              ?
+                <span style={{color:"rgba(225,70,80,.9)"}}> logged in</span>
+              :
+                <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
+              }
+            </h1>
+            <LoginWrapper ></LoginWrapper>
+          </>
         :
-        <>
- 
-        <Dashboard session={session} />
-        </>
+          <>
+            <Dashboard session={session} />
+          </>
         }
-        {/* <Dashboard session={session} /> */}
-
       </main>
 
-      {/* <footer className={styles.footer}>
+      <footer className={styles.footer}>
 
-      </footer> */}
+      </footer>
     </div>
   )
 }
