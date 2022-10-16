@@ -61,5 +61,5 @@ export default async function deleteSubuser (req, res) {
         }).catch(()=>{}).finally(()=>{}); 
 
 
-    res.status(200).json({ message: "hello" });
+    res.status(200).json({ message: "delete subuser finished" });
   } 

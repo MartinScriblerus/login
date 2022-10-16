@@ -1,7 +1,5 @@
 import {createContext} from 'react';
 
-
-
 export const themes = {
   new: false
 };
