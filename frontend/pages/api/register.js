@@ -18,14 +18,14 @@ export default async function postCreateUser (req, res) {
 // bcrypt
 
 
-  try {
+  // try {
     input = {
       user_name : req.body.user_name,
       email : req.body.email
     }
-  } catch(e){
-    console.log("Error while creating user");
-  }
+  // } catch(e){
+  //   console.log("Error while creating user");
+  // }
   if(!input){
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -33,16 +33,19 @@ export default async function postCreateUser (req, res) {
 
   var createdUser; 
 
-  bcrypt.hash(input.email, saltRounds, function(err, hash) {
+  const hashPass = bcrypt.hash(input.email, saltRounds, function(err, hash) {
     // Store hash in your password DB.
     // return hash
   console.log("HASH PASS: ", hash);
+  return hash
   // let data = Object.values(input).map(i=>i)[0];
-  createdUser = prisma.users.create({
+
+  });
+  var createdUser = await prisma.users.create({
     data: {
       user_name: req.body.user_name,
       // email: req.body.email,
-      email: hash
+      email: hashPass
       // email_verified: null,
       // image: null,
       // // created_at: DateTime,
@@ -50,7 +53,6 @@ export default async function postCreateUser (req, res) {
       // subusers_array: [],
     }
   })
-  });
   console.log("created user: ", createdUser);
   if(!createdUser){
     return null;
