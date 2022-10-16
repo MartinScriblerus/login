@@ -73,8 +73,9 @@ export default function Home(props) {
 }
 
 // Fetch all posts (in /pages/index.tsx)
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const pool = getPool();
+
   console.log("Initial pool: ", pool);
   const prisma = new PrismaClient()
   const users = await prisma.users.findMany();
@@ -86,9 +87,9 @@ export async function getStaticProps() {
     // bring back when wrapping that part up 
     const user = await prisma.users.create({
       data: {
-        user_name: 'defaultUser',
-        email: 'defaultEmail',
-        image: 'defaultImg',
+        user_name: 'onlineUser',
+        email: 'onlineEmail',
+        image: 'onlineImg',
       },
     })
     console.log("static props user: ", user);
