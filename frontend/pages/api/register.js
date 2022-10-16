@@ -49,6 +49,6 @@ export default async function postCreateUser (req, res) {
     return null;
   }
 
-  res.status(201).json({ error: false, msg: "created user" });
+  res.status(201).json(createdUser);
   // res.end(JSON.stringify(createdUser));
 } 

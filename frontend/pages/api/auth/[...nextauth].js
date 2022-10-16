@@ -49,13 +49,13 @@ export const authOptions = {
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        username: { label: "Username", type: "text", placeholder: "Name" },
         password: {  label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
         console.log("req body username: ", req.body.username);
         console.log("CREDS: ", credentials);
-        
+        let user;
         console.log("req body username: ", req.body.username);
        // const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
        // console.log("result prisma: ", resultPrisma);
@@ -77,7 +77,7 @@ export const authOptions = {
 
         console.log("resultttt ", result);
 
-        const user = {
+        user = {
           id: result[0].id,
           user_name: result[0].user_name,
           email: result[0].email,
@@ -85,18 +85,14 @@ export const authOptions = {
           created_at: result[0].created_at,
           updated_at: result[0].updated_at
         }
-        if(user === {}){
-          user = {
-            id: '1',
-            user_name: 'test',
-            email: 'testemail',
-          }
-        } else {
+
           return user;
-        }
+
         //return req.body.username;
-      }
+      } 
+    
     })
+ 
     // ...add more providers here
   ],
   // pages: {
@@ -124,7 +120,7 @@ export const authOptions = {
     async signIn({ user, account, profile, email, credentials }) { 
      console.log("user check: ", user);
 
-      return true;
+      return user;
     },
     // async redirect({ url, baseUrl }) {
     //   console.log("url check ", url);
