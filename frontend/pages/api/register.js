@@ -11,10 +11,15 @@ export default async function postCreateUser (req, res) {
 
   if(!req.body || req.body.length < 1){
     return res.status(405).json({ message: "returning null request in reegister" });
-    return null;
+
   }
   let input;
-  console.log("REQ BODY in register: ", req.body)
+
+  res.status(200).json({ message: req.body});
+  res.status(200).json({ message: JSON.parse(req.body).user_name});
+  // JSON.parse(req.body).user_name
+  // console.log("REQ BODY in register: ", req.body)
+
   try {
     input = {
       user_name : req.body.user_name,
@@ -31,7 +36,7 @@ export default async function postCreateUser (req, res) {
 
   // let data = Object.values(input).map(i=>i)[0];
   const createdUser = await prisma.users.create({
-    data: [{
+    data: {
       user_name: JSON.parse(req.body).user_name,
       email:JSON.parse(req.body).email,
       // email_verified: null,
@@ -40,7 +45,7 @@ export default async function postCreateUser (req, res) {
       // // updated_at: DateTime,
       // subusers_array: [],
 
-    }]
+    }
   })
 
   console.log("created user: ", createdUser);
