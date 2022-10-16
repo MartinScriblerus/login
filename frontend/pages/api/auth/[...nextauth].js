@@ -119,7 +119,9 @@ export const authOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) { 
      console.log("user check: ", user);
-
+      if(!user){
+        user = {user_name:"nameTest",email:"DNA"}
+      }
       return user;
     },
     // async redirect({ url, baseUrl }) {
@@ -149,13 +151,13 @@ export const authOptions = {
 
     }
   },
-  // redirect: async (url, _baseUrl) => {
-  //   if (url === '/login'){
-  //     console.log("REDIRECTING!!!");
-  //     return Promise.resolve(process.env.NEXTAUTH_URL);
-  //   }
-  //   return Promise.resolve(process.env.NEXTAUTH_URL);
-  // },
+  redirect: async (url, _baseUrl) => {
+    if (url === '/login'){
+      console.log("REDIRECTING!!!");
+      return Promise.resolve(process.env.NEXTAUTH_URL);
+    }
+    return Promise.resolve(process.env.NEXTAUTH_URL);
+  },
   secret:process.env.NEXTAUTH_SECRET
 }
 
