@@ -16,7 +16,7 @@ export default async function postCreateUser (req, res) {
   let input;
 
   res.status(200).json({ message: req.body});
-  res.status(200).json({ message: JSON.parse(req.body).user_name});
+  res.status(200).json({ message: req.body.user_name});
   // JSON.parse(req.body).user_name
   // console.log("REQ BODY in register: ", req.body)
 
@@ -37,8 +37,8 @@ export default async function postCreateUser (req, res) {
   // let data = Object.values(input).map(i=>i)[0];
   const createdUser = await prisma.users.create({
     data: {
-      user_name: JSON.parse(req.body).user_name,
-      email:JSON.parse(req.body).email,
+      user_name: req.body.user_name,
+      email: req.body.email,
       // email_verified: null,
       // image: null,
       // // created_at: DateTime,
