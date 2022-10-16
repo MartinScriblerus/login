@@ -9,16 +9,12 @@ export default async function postCreateUser (req, res) {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  if(!req.body || req.body.length < 1){
-    return res.status(405).json({ message: "returning null request in reegister" });
-
-  }
   let input;
 
-  res.status(200).json({ message: req.body});
-  res.status(200).json({ message: req.body.user_name});
+  console.log("req body is: ", req.body);
+  console.log("req body username in register: ", req.body.user_name);
+ 
   // JSON.parse(req.body).user_name
-  // console.log("REQ BODY in register: ", req.body)
 
   try {
     input = {
@@ -29,10 +25,9 @@ export default async function postCreateUser (req, res) {
     console.log("Error while creating user");
   }
   if(!input){
-    console.log("no input.... returning null from regisster");
-    return null;
+    return res.status(405).json({ message: "Method not allowed" });
   }
-  console.log("WTF inpuit ", input)
+  console.log("input in register is: ", input)
 
   // let data = Object.values(input).map(i=>i)[0];
   const createdUser = await prisma.users.create({
@@ -53,6 +48,6 @@ export default async function postCreateUser (req, res) {
     return null;
   }
 
-  res.status(201).json({ error: false, msg: "created user" });
-
+  // res.status(201).json({ error: false, msg: "created user" });
+  res.end(createdUser);
 } 
