@@ -90,7 +90,9 @@ export const authOptions = {
 
         let isUserInDB = getUserByName(req.body.username);
         
-        let hashedPass = (await getUserByName(req.body.username)).email;
+        let hashedPass = isUserInDB.email;
+
+        console.log("HASHED PASS IN NEXT AUTH: ", hashedPass);
 
         let checkHash = confirmPasswordHash(req.body.email, hashedPass);
 
