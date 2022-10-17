@@ -94,8 +94,8 @@ export default function LogInOutButton(props, user) {
         if(name){
             nameRef.current = name.value;
         }
-        let matchingNames = props.allUsers.map(i => i.user_name === nameRef.current);
-        if(matchingNames){
+        let matchingNames = props.allUsers.filter(i => i.user_name === nameRef.current);
+        if(matchingNames.length > 0){
             console.log("ALREADY IN DB! ", matchingNames);
             setHasMatchingNameCantSubmit(true);
         } else {
