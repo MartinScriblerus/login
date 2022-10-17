@@ -48,9 +48,9 @@ export default async function postAddSubuser (req, res) {
         return null;
     }
     // console.log("this? ", Object.values(userToUpdate)[0].subusers_array);
-    if(Object.values(userToUpdate)[0] && Object.values(userToUpdate)[0].subusers_array && Object.values(userToUpdate)[0].subusers_array.indexOf(req.body.subuserName) === -1){
+    if(userToUpdate && userToUpdate.subusers_array && userToUpdate.subusers_array.indexOf(req.body.subuserName) === -1){
         console.log("pushing subuser name: ", req.body.subuserName);
-        Object.values(userToUpdate)[0].subusers_array.push(req.body.subuserName)  
+        userToUpdate.subusers_array.push(req.body.subuserName)  
     } 
 
         // res = prisma.users.findMany({
@@ -64,10 +64,10 @@ export default async function postAddSubuser (req, res) {
     prisma.users.update({
         data: {
             subusers_array: {
-                set: Object.values(userToUpdate)[0].subusers_array
+                set: userToUpdate.subusers_array
             },
         },
-        where: { id : Object.values(userToUpdate)[0].id},
+        where: { id : userToUpdate.id},
     }).then(result => {
         console.log("RES in ADD ", result)
         // return result;
