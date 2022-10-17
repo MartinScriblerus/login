@@ -28,7 +28,7 @@ export default function Home(props) {
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
     console.log("SUBUSER ARRAY: ", fullUserData.current[0].subusers_array);
-    if(fullUserData.current[0].subusers_array){
+    if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
       setSubusers(fullUserData.current[0].subusers_array);
     }
   } else {
@@ -76,7 +76,7 @@ export default function Home(props) {
         }
         <div id="dashboardSubUsersWrapper" class="grid">
         {
-            subusers
+            subusers && subusers.length > 0
             ?
             
             subusers.map((subuser)=>{
