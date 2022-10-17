@@ -36,7 +36,9 @@ export default function Home(props) {
   }
 
   useEffect(()=>{
-    setSubusers(fullUserData.current[0].subusers_array);
+    if(fullUserData.current){
+      setSubusers(fullUserData.current[0].subusers_array);
+    }
   },[fullUserData])
 
 
