@@ -46,13 +46,9 @@ export default async function postAddSubuser (req, res) {
         // if(typeof result !== String){
         //     result = result.toString();
         // }
-
-        return JSON.stringify(result); 
-    }).catch(()=>{
-        return null; 
-    }).finally(()=>{
-        
-    }); 
+        res.end(result);
+        // return result; 
+    })
 
     
 } 

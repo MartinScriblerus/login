@@ -21,12 +21,16 @@ export default function Home(props) {
   console.log("session in index: ", session);
   console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
-
+  const listSubusers = useRef([])
  let subusers = []
   if(session && session.user && props && props.allUsers){
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
+    listSubusers.current = fullUserData[0].subusers_array.map((i, subuser) =>
+    <li key={i.toString()} class="card">{subuser}</li>
+ 
+  );
     if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
       subusers.push(fullUserData.current[0].subusers_array);
     }
@@ -74,21 +78,12 @@ export default function Home(props) {
         :
           <>
             <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
+         
+          <ul style={{display:"flex", flexDirection:"row"}}>{listSubusers}</ul>
+    
           </>
         }
-        <div id="dashboardSubUsersWrapper" class="grid">
-        {
-            subusers
-            ?
-            
-            subusers.map((subuser)=>{
-                <span id="dashboardSubuser" class="card">{subuser}</span>
-            })
-           
-            :
-            <span>No Subusers</span>
-        }
-        </div>
+
       </main>
 
       <footer className={styles.footer}>
