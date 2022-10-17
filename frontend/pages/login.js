@@ -10,8 +10,8 @@ import LogInOutButton from '../components/login-btn';
 
 
 export default function LoginWrapper(props){
-        
-    //console.log("all users in login wrapper: ", props.allUserNames);
+    
+    console.log("props in login wrapper: ", props);
     const { data: session } = useSession();
     // console.log("session ", session);
     // if(session){
@@ -36,7 +36,7 @@ export default function LoginWrapper(props){
                     :
                         <span style={{fontSize:"32px"}}>You will need to log in!</span>
                     }
-                    <LogInOutButton />
+                    <LogInOutButton allUsers={props.allUsers} />
                     {/* <RegisterNewUser /> */}
             </h1>
         </main>

@@ -25,8 +25,9 @@ const Post = (props) => {
         else {
             if(session.length > 0 && session.data && session.data.user && Object.values(session.data.user).length){
                 setUsername(session.data.user.name);
-                console.log("subuser name: ", username);
-                
+                console.log("user name: ", username);
+                let user = prisma.users.findMany({select:{subusers_array:true}});
+                console.log("USER DATA FOR SUBUSER DISPLAY");
             }
             console.log("LOOK HERE ", router)
             // console.log("THIS IS GOOD ", router.query.pidAdmin)
@@ -164,6 +165,7 @@ const Post = (props) => {
     )
 }
 export default Post;
+
 
 
 

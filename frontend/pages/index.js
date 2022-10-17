@@ -55,7 +55,7 @@ export default function Home(props) {
                 <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
               }
             </h1>
-            <LoginWrapper ></LoginWrapper>
+            <LoginWrapper users={props.allUsers}></LoginWrapper>
           </>
         :
           <>

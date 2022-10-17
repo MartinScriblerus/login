@@ -5,7 +5,7 @@ const saltRounds = 10;
 
 
 export default async function postCreateUser (req, res) {
-
+  //console.log("PROPS IN REGISTER! ", props);
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }
@@ -47,3 +47,13 @@ export default async function postCreateUser (req, res) {
   });
 
 } 
+
+// export async function getStaticProps(){
+//   let allUsers = await getAllUsers();
+//   return {
+//     props: 
+//     {
+//       allUsers: JSON.parse(JSON.stringify(allUsers))
+//     }
+//   }
+// }

@@ -22,6 +22,8 @@ import {useRef, useState} from 'react';
 
 export default function LogInOutButton(user, props) {
 
+    console.log("Props in login-btn: ", props);
+
     const [theme,setTheme] = useState(false);
     const [passMismatch,setPassMisMatch]=useState(false);
     const [nameVerified,setNameVerified]=useState(true);
@@ -30,6 +32,8 @@ export default function LogInOutButton(user, props) {
     const nameRef = useRef('');
     const passRef = useRef('');
     const passRef2 = useRef('');
+
+
 
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
 
