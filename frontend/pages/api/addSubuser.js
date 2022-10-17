@@ -47,6 +47,9 @@ export default async function postAddSubuser (req, res) {
         console.log("no user to update");
         return null;
     }
+    if(!Object.values(userToUpdate)[0]){
+        return;
+    }
     // console.log("this? ", Object.values(userToUpdate)[0].subusers_array);
     if(Object.values(userToUpdate)[0].subusers_array.indexOf(req.body.subuserName) === -1){
         console.log("pushing subuser name: ", req.body.subuserName);
@@ -59,7 +62,7 @@ export default async function postAddSubuser (req, res) {
         //         data:{subusers_array: true}},
         //     })
 
-        console.log("about to update with: ", Object.values(userToUpdate)[0].subusers_array);
+       // console.log("about to update with: ", Object.values(userToUpdate)[0].subusers_array);
     
     prisma.users.update({
         data: {
