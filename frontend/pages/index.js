@@ -17,8 +17,8 @@ export default function Home(props) {
   const { data: session } = useSession();
 
   const fullUserData = useRef({});
-  console.log("PROPSS IN HOME: ", props);
-  console.log("session in index: ", session);
+  //console.log("PROPSS IN HOME: ", props);
+  //console.log("session in index: ", session);
   // console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
   let listSubusers = []
@@ -27,7 +27,7 @@ export default function Home(props) {
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
-    console.log("full user data: ", fullUserData.current);
+    //console.log("full user data: ", fullUserData.current);
     if(fullUserData.current.length > 0){
       listSubusers = fullUserData.current[0].subusers_array.map((subuser, i) =>
       <option label={subuser} value={subuser} key={i}>{subuser}</option>
