@@ -95,7 +95,7 @@ export default function Dashboard({session,props}){
                         <LogInOutButton allUsers={allUsers.current}/>
                     </h1>
                     {
-                        props.fullUserData
+                        props && props.fullUserData.length
                         ?
                         <div id="dashboardSubUsersWrapper" class="grid">
                         {props.fullUserData.map((subuser, i)=>{
