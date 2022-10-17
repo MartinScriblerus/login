@@ -169,11 +169,11 @@ export default Post;
 
 
 export async function getStaticProps(){
-    let allUsers = await getAllUsers();
+    let allUsers = await getAllSubusers();
     return {
       props: 
       {
-        subusers: JSON.parse(JSON.stringify(allUsers))
+        subusers: allUsers
       }
     }
   }
