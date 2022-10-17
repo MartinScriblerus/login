@@ -156,7 +156,7 @@ export default function LogInOutButton(props, user) {
     }
 
     async function handleSubmit(user_name, email){
-        console.log("in handle submit: ", user_name);
+        //console.log("in handle submit: ", user_name);
         let objectWithData = {
        
                 user_name: user_name,

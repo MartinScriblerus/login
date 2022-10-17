@@ -54,15 +54,15 @@ const Post = (props) => {
         if(subuserName){
             subuserNameRef.current = subuserName.value;
             subuserName.value = '';
-            console.log("subuser name ref: ", subuserNameRef.current);
+            //console.log("subuser name ref: ", subuserNameRef.current);
         }
-        console.log("in handle add subuser: ", username);
+        //console.log("in handle add subuser: ", username);
         let objectWithData = {
             user_name: username,
             // email: email,
             subuserName:subuserNameRef.current
         }
-        console.log("an object with data: ", objectWithData);
+        //console.log("an object with data: ", objectWithData);
        
         if(objectWithData.user_name){
             try{
@@ -90,7 +90,7 @@ const Post = (props) => {
          }
 
             
-            console.log("trying to add new subuser");
+            //console.log("trying to add new subuser");
         }
         // return subuserName;
     }
