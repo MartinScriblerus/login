@@ -7,6 +7,7 @@ import { prisma, PrismaClient } from "@prisma/client";
 // import {useState} from 'react';
 import { useRouter } from 'next/router';
 // import LogInOutButton from '../components/login-btn';
+import {useState} from 'react';
 import LoginWrapper from './login';
 import getAllUsers from './api/getAllUsers';
 
@@ -14,15 +15,20 @@ import getAllUsers from './api/getAllUsers';
 export default function Home(props) {
 
   const { data: session } = useSession();
+  
+  const [fullUserData, setFullUserData] = useState([]);
+
   console.log("session in index: ", session);
   console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
   
-  // if(session){
-  //   console.log('SESSION--------------- ', session);
-  // } else {
-  //   console.log("no session yet");
-  // }
+  if(session && session.user){
+    // console.log('SESSION--------------- ', session);
+    let fullUserData=props.allUsers.map(i=>i.user_name === session.user.name);
+    console.log("FULL USER DATA: ", fullUserData);
+  } else {
+    // console.log("no session yet");
+  }
 
 
 
@@ -55,7 +61,7 @@ export default function Home(props) {
                 <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
               }
             </h1>
-            <LoginWrapper users={props.allUsers}></LoginWrapper>
+            <LoginWrapper allUsers={props.allUsers}></LoginWrapper>
           </>
         :
           <>

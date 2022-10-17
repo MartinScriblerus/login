@@ -36,7 +36,7 @@ export default function LoginWrapper(props){
                     :
                         <span style={{fontSize:"32px"}}>You will need to log in!</span>
                     }
-                    <LogInOutButton allUsers={props.users} />
+                    <LogInOutButton allUsers={props.allUsers} />
                     {/* <RegisterNewUser /> */}
             </h1>
         </main>

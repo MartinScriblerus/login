@@ -20,13 +20,14 @@ import {useRef, useState} from 'react';
 // )}
 
 
-export default function LogInOutButton(user, props) {
+export default function LogInOutButton(props, user) {
 
     console.log("Props in login-btn: ", props);
 
     const [theme,setTheme] = useState(false);
     const [passMismatch,setPassMisMatch]=useState(false);
     const [nameVerified,setNameVerified]=useState(true);
+    const [hasMatchingNameCantSubmit,setHasMatchingNameCantSubmit]=useState(false);
 
     const router = useRouter();
     const nameRef = useRef('');
@@ -96,6 +97,9 @@ export default function LogInOutButton(user, props) {
         let matchingNames = props.allUsers.map(i => i.user_name === nameRef.current);
         if(matchingNames){
             console.log("ALREADY IN DB! ", matchingNames);
+            setHasMatchingNameCantSubmit(true);
+        } else {
+            setHasMatchingNameCantSubmit(false);
         }
         return;
     }
@@ -209,9 +213,17 @@ export default function LogInOutButton(user, props) {
                 {
                 nameVerified
                 ?
+                    hasMatchingNameCantSubmit
+                    ?
+                    <label style={{color:"rgba(255,255,255,0.78)"}}>Name Taken</label>
+                    :
                     <label style={{color:"rgba(255,255,255,0.78)"}}>Name</label>
                 :
-                    <label style={{color:"red"}}>Name</label>
+                    hasMatchingNameCantSubmit
+                    ?
+                    <label style={{color:"red"}}>Name Take</label>
+                    :
+                    <label style={{color:"red"}}>Name Selection Errors</label>
                 }
                 <input maxLength={32} id="pass1_NewUserRegistration" type="password" placeholder="**********" inputref={passRef} onChange={()=>handlePassRef1Update()}></input>
                 {
@@ -229,7 +241,13 @@ export default function LogInOutButton(user, props) {
                 :
                     <label style={{color:"green"}}>Passwords Match</label>
                 }
-                <button style={{width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>SUBMIT</button>
+                {
+                    hasMatchingNameCantSubmit
+                    ?
+                        <button style={{pointerEvents:"none",opacity:"0.5",color:"red",width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>ERROR</button>
+                    :
+                        <button style={{pointerEvents:"all",opacity:"1",width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>SUBMIT</button>
+                }
             </div>
         :
             null
