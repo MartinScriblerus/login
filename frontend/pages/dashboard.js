@@ -43,14 +43,14 @@ async function RedirectPage() {
 //   return { };
 // }
 
-export default function Dashboard({session},props){
-    console.log("PROPS IN DASHBOARD: ", props);
+export default function Dashboard({session}){
+    // console.log("PROPS IN DASHBOARD: ", props);
     
-    const allUsers = useRef();
-    if(props && props.allUsers){
-        allUsers.current = props.allUsers;
-        console.log("All Users in Dashboard: ", allUsers.current);
-    }
+    // const allUsers = useRef();
+    // if(props && props.allUsers){
+    //     allUsers.current = props.allUsers;
+    //     console.log("All Users in Dashboard: ", allUsers.current);
+    // }
     
     // console.log("WHAT IS SESSION? ", session);
     const user = session?.user;
@@ -94,7 +94,7 @@ export default function Dashboard({session},props){
                         <span id="loggedInDashboardMsg">This is a dashboard for logged in users only</span> <br/>
                         <LogInOutButton allUsers={allUsers.current}/>
                     </h1>
-                    {
+                    {/* {
                         props && props.fullUserData
                         ?
                         <div id="dashboardSubUsersWrapper" class="grid">
@@ -104,7 +104,7 @@ export default function Dashboard({session},props){
                         </div>
                         :
                         <></>
-                    }
+                    } */}
                 </main>
             </div>
         )

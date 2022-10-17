@@ -69,6 +69,17 @@ export default function Home(props) {
             <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
           </>
         }
+        {
+            fullUserData.current.length > 0
+            ?
+            <div id="dashboardSubUsersWrapper" class="grid">
+            {fullUserData.current.map((subuser, i)=>{
+                <div key={i.toString()} id="dashboardSubuser" class="card">{subuser}</div>
+            })}
+            </div>
+            :
+            <></>
+        }
       </main>
 
       <footer className={styles.footer}>
