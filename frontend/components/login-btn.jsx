@@ -103,7 +103,7 @@ export default function LogInOutButton(props, user) {
         } catch(e){
             console.log("err in filter: ", e);
         }
-        if(matchingNames){
+        if(matchingNames.length > 0){
             console.log("ALREADY IN DB! ", matchingNames);
             setHasMatchingNameCantSubmit(true);
         } else {
