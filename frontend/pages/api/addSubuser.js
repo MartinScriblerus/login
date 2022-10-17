@@ -82,12 +82,12 @@ export default async function postAddSubuser (req, res) {
     //     // res.end(result);
     //     return result; 
     // })
-
+    console.log("username debug: ", req.body.user_name);
     // return;
     let userToUpdate = await prisma.users.findMany({
         where: {
             user_name: {
-                contains: req.body.user_name,
+                equals: req.body.user_name,
             }, 
         }
     })
@@ -114,7 +114,7 @@ export default async function postAddSubuser (req, res) {
         where: { id : Object.values(userToUpdate)[0].id},
     }).then(result => {
         console.log("RES in ADD ", result)
-        // return res
+        return result
     }).catch(()=>{}).finally(()=>{return res}); 
 
 } 

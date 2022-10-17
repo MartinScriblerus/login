@@ -11,7 +11,7 @@ export default async function getAllUsers(req,res){
           }
         }
     })
-
+    console.log("users ", users);
     return users;
 }
 
