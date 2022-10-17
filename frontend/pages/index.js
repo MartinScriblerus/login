@@ -23,7 +23,7 @@ export default function Home(props) {
   const router = useRouter()
 
 
-  if(session && session.user && props && props.allUsers.length){
+  if(session && session.user && props && props.allUsers){
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);

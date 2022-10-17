@@ -95,7 +95,7 @@ const Post = (props) => {
                     alert(`added subuser: ${subusersData.current[-1].subusersData}`)
                 }
                 console.log("subusers data: ", subusersData.current);
-                return;
+                // return;
             }
 
         }
