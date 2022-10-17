@@ -17,7 +17,7 @@ export default function Home(props) {
   const { data: session } = useSession();
 
   const fullUserData = useRef({});
-
+  console.log("PROPSS IN HOME: ", props);
   // console.log("session in index: ", session);
   // console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
