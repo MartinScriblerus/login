@@ -28,8 +28,8 @@ export default function Home(props) {
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
     if(fullUserData.current.length > 0){
-      listSubusers = fullUserData.current[0].subusers_array.map((i, subuser) =>
-      <li key={i.toString()} class="card">{subuser}</li>
+      listSubusers = fullUserData.current[0].subusers_array.map((subuser, i) =>
+      <option label={subuser} value={subuser} key={i}>{subuser}</option>
       );
     }
   } else {
@@ -77,7 +77,7 @@ export default function Home(props) {
           <>
             <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
          
-          <ul style={{display:"flex", flexDirection:"row"}}>{listSubusers}</ul>
+          <select style={{display:"flex", flexDirection:"row"}}>{listSubusers}</select>
     
           </>
         }
