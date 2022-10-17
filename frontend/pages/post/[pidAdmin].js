@@ -77,14 +77,14 @@ const Post = (props) => {
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
-                            subusersData.current = data;
+                            subusersData.current = data.toString();
                             //console.log("curr subusers: ", subusersData.current);
                         }
                         //console.log('response data after addd user: ', data);
                         if(data){
                             alert(`added subuser: ${subusersData.current.toString()}`)
                         }
-                        return data;
+                        // return data;
                     // } catch(error) {
                     //     console.log('Error fetching from subusers api!')
                     //     console.error(error)
