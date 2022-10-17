@@ -27,6 +27,8 @@ export default function Home(props) {
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
+    console.log("SUBUSER ARRAY: ", fullUserData.current[0].subusers_array);
+
   } else {
     // console.log("no session yet");
   }

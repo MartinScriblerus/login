@@ -73,7 +73,7 @@ const Post = (props) => {
                     body: JSON.stringify(objectWithData),
                 }).then(async response => {
                     try {
-                        const data = await response
+                        const data = await response.json()
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
@@ -82,7 +82,7 @@ const Post = (props) => {
                         }
                         console.log('response data after addd user: ', data);
                         if(data){
-                            alert(`added subuser: ${(subusersData.current.body)}`)
+                            alert(`added subuser: ${(subusersData.current)}`)
                         }
                         return data;
                     } catch(error) {
