@@ -248,7 +248,11 @@ export async function getStaticProps() {
     //       image: '',
     //     },
     //   })
-    let users = await prisma.$queryRaw`SELECT * FROM Users`;
+    async function getUsers(){
+        let allUsers = await prisma.$queryRaw`SELECT * FROM Users`;
+        return allUsers;
+    }
+    let users = getUsers()
     return {
       props: { // This will be sent to the component as props
         users, 
