@@ -16,16 +16,18 @@ export default function Home(props) {
 
   const { data: session } = useSession();
 
+  const [allUsers,setAllUsers] = useState([])
+
   const fullUserData = useRef({});
   console.log("PROPSS IN HOME: ", props);
-  // console.log("session in index: ", session);
+  console.log("session in index: ", session);
   // console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
   let listSubusers = []
  let subusers = []
   if(session && session.user && props){
     // console.log('SESSION--------------- ', session);
-    fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
+    fullUserData.current = allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
     console.log("full user data: ", fullUserData.current);
     if(fullUserData.current.length > 0){
@@ -37,9 +39,10 @@ export default function Home(props) {
     // console.log("no session yet");
   }
 
-  // useEffect(()=>{
-
-  // },[fullUserData,props])
+  useEffect(()=>{
+    let allUsersUpdate = getAllUsers().then(response=>{return response})
+    setAllUsers(allUsersUpdate);
+  },[])
 
 
 
@@ -72,11 +75,11 @@ export default function Home(props) {
                 <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
               }
             </h1>
-            <LoginWrapper allUsers={props.allUsers}></LoginWrapper>
+            <LoginWrapper allUsers={allUsers}></LoginWrapper>
           </>
         :
           <>
-            <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
+            <Dashboard session={session} fullUserData={fullUserData} allUsers={allUsers}/>
 
           <select style={{
             display:"flex", 
@@ -105,12 +108,12 @@ export default function Home(props) {
   )
 }
 
-export async function getStaticProps(){
-  let allUsers = await getAllUsers();
-  return {
-    props: 
-    {
-      allUsers: JSON.parse(JSON.stringify(allUsers))
-    }
-  }
-}
+// export async function getStaticProps(){
+//   let allUsers = await getAllUsers();
+//   return {
+//     props: 
+//     {
+//       allUsers: JSON.parse(JSON.stringify(allUsers))
+//     }
+//   }
+// }
