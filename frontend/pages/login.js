@@ -11,9 +11,10 @@ import LogInOutButton from '../components/login-btn';
 export default function LoginWrapper(props){
     
     const [allUsers,setAllUsers] = useState();
-    if(props.allUsers.length > allUsers.length){
-        setAllUsers(props.allUsers.length)
+    if(props && props.allUsers && props.allUsers.length > allUsers.length){
+        setAllUsers(props.allUsers)
     }
+    console.log("All Users in Login: ", allUsers);
     console.log("props in login wrapper: ", props);
     const { data: session } = useSession();
     // console.log("session ", session);

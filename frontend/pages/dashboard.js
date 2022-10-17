@@ -44,7 +44,12 @@ async function RedirectPage() {
 // }
 
 export default function Dashboard({session},props){
-    console.log("PROPS IN DASHBOARD: ", props)
+    console.log("PROPS IN DASHBOARD: ", props);
+    const [allUsers,setAllUsers] = useState();
+    if(props && props.allUsers && props.allUsers.length > allUsers.length){
+        setAllUsers(props.allUsers)
+    }
+    console.log("All Users in Dashboard: ", allUsers);
     // console.log("WHAT IS SESSION? ", session);
     const user = session?.user;
 
