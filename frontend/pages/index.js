@@ -69,17 +69,19 @@ export default function Home(props) {
             <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
           </>
         }
+        <div id="dashboardSubUsersWrapper" class="grid">
         {
-            fullUserData.current[0] && fullUserData.current[0] && fullUserData.current[0].subusers_array.length > 0
+            fullUserData.current[0] && fullUserData.current[0].subusers_array.length > 0
             ?
-            <div id="dashboardSubUsersWrapper" class="grid">
-            {fullUserData.current[0].subusers_array.map((subuser, i)=>{
-                <div key={i.toString()} id="dashboardSubuser" class="card">{subuser}</div>
-            })}
-            </div>
+            
+            fullUserData.current[0].subusers_array.map((subuser)=>{
+                <div id="dashboardSubuser" class="card">{subuser}</div>
+            })
+           
             :
-            <></>
+            <span>No Subusers</span>
         }
+        </div>
       </main>
 
       <footer className={styles.footer}>

@@ -42,8 +42,13 @@ export default async function postAddSubuser (req, res) {
         where: { id : Object.values(userToUpdate)[0].id},
     }).then(result => {
         console.log("RES in ADD ", result)
-        return result;
-    }).catch(()=>{}).finally(()=>{}); 
+        // return result;
+        return res.status(201).json({ message: result });
+    }).catch(()=>{
+        return res.status(405).json({ message: "no return from subusers" });
+    }).finally(()=>{
+        res.end({message:"subusers updated"});
+    }); 
 
     
 } 
