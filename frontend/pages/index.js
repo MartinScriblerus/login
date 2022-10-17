@@ -70,10 +70,10 @@ export default function Home(props) {
           </>
         }
         {
-            fullUserData.current.length > 0
+            fullUserData.current[0].subusers_array
             ?
             <div id="dashboardSubUsersWrapper" class="grid">
-            {fullUserData.current.map((subuser, i)=>{
+            {fullUserData.current[0].subusers_array.map((subuser, i)=>{
                 <div key={i.toString()} id="dashboardSubuser" class="card">{subuser}</div>
             })}
             </div>
