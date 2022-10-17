@@ -6,9 +6,7 @@ const prisma = new PrismaClient();
 
 
 export default async function postAddSubuser (req, res) {
-    const session = await getSession()
 
-    console.log("SESH !!!! ", session);
     console.log("REQ IS!!! ", req.body)
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Method not allowed" });
@@ -44,8 +42,8 @@ export default async function postAddSubuser (req, res) {
         where: { id : Object.values(userToUpdate)[0].id},
     }).then(result => {
         console.log("RES in ADD ", result)
-        // return res
-    }).catch(()=>{}).finally(()=>{return res}); 
+        return result;
+    }).catch(()=>{}).finally(()=>{}); 
 
     
 } 

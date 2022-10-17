@@ -65,7 +65,7 @@ export default function Home(props) {
           </>
         :
           <>
-            <Dashboard session={session} />
+            <Dashboard session={session} allUsers={props.allUsers}/>
           </>
         }
       </main>
