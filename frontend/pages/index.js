@@ -3,18 +3,19 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import { useSession } from "next-auth/react";
 import Dashboard from './dashboard';
-// import { PrismaClient } from "@prisma/client";
+import { prisma, PrismaClient } from "@prisma/client";
 // import {useState} from 'react';
 import { useRouter } from 'next/router';
 // import LogInOutButton from '../components/login-btn';
 import LoginWrapper from './login';
+import getAllUsers from './api/getAllUsers';
 
 
 export default function Home(props) {
 
   const { data: session } = useSession();
   console.log("session in index: ", session);
-  
+  console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
   
   // if(session){
@@ -23,16 +24,7 @@ export default function Home(props) {
   //   console.log("no session yet");
   // }
 
-  fetch('/api/getAllUsers').then(async response => {
-    try {
-    console.log("what is response? ", response);
-     const data = await response
-     console.log('response data from register api?', data.body)
-   } catch(error) {
-     console.log('Error happened here!')
-     console.error(error)
-   }
-  })
+
 
   return (
     <div id="pageWrapper" className={styles.container}>
@@ -77,4 +69,24 @@ export default function Home(props) {
       </footer>
     </div>
   )
+}
+
+export async function getStaticProps(){
+  // fetch('/api/getAllUsers').then(async response => {
+  //   try {
+  //   console.log("what is response? ", response);
+  //    const data = await response
+  //    console.log('response data from register api?', data.body)
+  //  } catch(error) {
+  //    console.log('Error happened here!')
+  //    console.error(error)
+  //  }
+  // })
+  let allUsers = await getAllUsers();
+  return {
+    props: 
+    {
+      allUsers: allUsers
+    }
+  }
 }
