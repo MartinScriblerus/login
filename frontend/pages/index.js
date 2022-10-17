@@ -41,7 +41,9 @@ export default function Home(props) {
 
   useEffect(()=>{
     let allUsersUpdate = getAllUsers().then(response=>{return response})
-    setAllUsers(allUsersUpdate);
+    if(allUsersUpdate){
+      setAllUsers(allUsersUpdate);
+    }
   },[])
 
 
