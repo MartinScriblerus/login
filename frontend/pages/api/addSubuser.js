@@ -11,7 +11,7 @@ export default async function postAddSubuser (req, res) {
     if (req.method !== "POST") {
         return res.status(405).json({ message: "Method not allowed" });
     }
-
+    console.log("what is body of request: ", req.body);
     let userToUpdate = await prisma.users.findMany({
         where: {
             user_name: {
@@ -22,7 +22,7 @@ export default async function postAddSubuser (req, res) {
     console.log("user to update: ", userToUpdate);
     if(!userToUpdate){
         console.log("no user to update");
-        return;
+        return null;
     }
     console.log("this? ", Object.values(userToUpdate)[0].subusers_array);
     if(Object.values(userToUpdate)[0].subusers_array.indexOf(req.body.subuserName) === -1){
@@ -55,5 +55,5 @@ export default async function postAddSubuser (req, res) {
         return result; 
     })
 
-    
+    return;
 } 
