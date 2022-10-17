@@ -142,7 +142,7 @@ export default function LogInOutButton(props, user) {
     }
 
     async function userDataSubmitted(){
-        console.log("hit data submitted");
+        //console.log("hit data submitted");
         // This is a function for checking the input
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
