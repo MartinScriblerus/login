@@ -72,9 +72,9 @@ const Post = (props) => {
                     try {
                      const data = await response.json();
                      // try to add subuser data 
-                     if(data){
-                        setSubusersData(data);
-                     }
+                    //  if(data){
+                    //     setSubusersData(data);
+                    //  }
                      console.log('response data after addd user: ', data)
                    } catch(error) {
                      console.log('Error fetching from subusers api!')
@@ -117,9 +117,9 @@ const Post = (props) => {
         }).then(data=>{
             console.log("deeleted subuser: ", data);
             // try to set subuser data
-            if(data){
-                setSubusersData(data);
-            }
+            // if(data){
+            //     setSubusersData(data);
+            // }
         })
         console.log("trying to delete a subuser ", ok);
     
@@ -133,9 +133,9 @@ const Post = (props) => {
         console.log(subuserNameRef.current)
     }; 
 
-    useEffect(()=>{
-        console.log("SUBUSERS!!! ", subusersData);
-    })[subusersData]
+    // useEffect(()=>{
+    //     console.log("SUBUSERS!!! ", subusersData);
+    // })[subusersData]
         
 
     return (
