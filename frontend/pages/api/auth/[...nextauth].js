@@ -13,15 +13,7 @@ const bcrypt = require('bcrypt');
 // import { getPool } from '../../../lib/dbPool';
 // let pool = getPool();
 
-const confirmPasswordHash = (plainPassword, hashedPassword) => {
-  console.log(plainPassword)  
-  return new Promise(resolve => {
-        bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
-            resolve(res);
-            console.log("WHAT IS RES??? ", res)
-        });
-    })
-}
+
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -61,16 +53,10 @@ export const authOptions = {
        // console.log("result prisma: ", resultPrisma);
         // Check whether the user_name exists in our database
     
-     
-        
-        //const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
-        
-        // // Check whether the user_name exists in our database
-        // async function getUserByName(user_name){
-        //   // try {
-
-      async function getUserByName(user_name){
-   
+      
+          
+        async function getUserByName(user_name){
+    
         const result = await prisma.users.findMany({
           where: {
               user_name: user_name
@@ -94,19 +80,27 @@ export const authOptions = {
 
         console.log("HASHED PASS IN NEXT AUTH: ", hashedPass);
 
-        let checkHash = await confirmPasswordHash(req.body.email, hashedPass).then(res=>{return res});
-        
-        if(!checkHash){
-          return null;
-        } else {
-          console.log("check hash: ", checkHash);
+        const confirmPasswordHash = (plainPassword, hashedPassword) => {
+          console.log(plainPassword)  
+          return new Promise(resolve => {
+                bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
+                    resolve(res);
+                    console.log("WHAT IS RES??? ", res)
+                });
+            })
         }
-
-        console.log("is user in db? ", isUserInDB);
-
         
-        
-        return isUserInDB;
+        let passCheck = await confirmPasswordHash(req.body.email, hashedPass)
+        if(!passCheck){
+          return null
+        } else {
+          console.log("is user in db? ", isUserInDB);
+  
+          return isUserInDB;
+        }
+        // console.log("is user in db? ", isUserInDB);
+  
+        // return isUserInDB;
       }
   })
  
