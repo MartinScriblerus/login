@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
 
-export async function handler(){
+export default function handler(){
     const prisma = new PrismaClient();
     // const user = await prisma.user.create({
     //     data: {
@@ -13,9 +13,11 @@ export async function handler(){
     async function getUsers(){
         let allUsers = await prisma.$queryRaw`SELECT * FROM Users`;
         if(!allUsers){
-        return null;
+            return null;
+        } else {
+            return res.status(201).json(allUsers);
         }
-        res.status(201).json(allUsers);
     }
-    getUsers()
+    let users = getUsers();
+    return users;
 };
