@@ -76,7 +76,8 @@ export default function Home(props) {
         :
           <>
             <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
-          <span style={{
+
+          <select style={{
             display:"flex", 
             flexDirection:"row",
             zIndex: 7,
@@ -86,9 +87,11 @@ export default function Home(props) {
             left: "30"
           
             }}>
-          <select >{listSubusers}</select>
-            <label>Subusers</label>
-          </span>
+              <option selected disabled>--Subusers--</option>
+              {listSubusers}
+          </select>
+      
+     
           </>
         }
 
