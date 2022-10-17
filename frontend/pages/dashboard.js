@@ -43,7 +43,7 @@ async function RedirectPage() {
 //   return { };
 // }
 
-export default function Dashboard({session,props}){
+export default function Dashboard({session},props){
     console.log("PROPS IN DASHBOARD: ", props);
     
     const allUsers = useRef();

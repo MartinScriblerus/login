@@ -92,9 +92,9 @@ const Post = (props) => {
             } finally{
                 console.log("trying to add new subuser");
                 if(subusersData){
-                    alert(`added subuser: ${subusersData}`)
+                    alert(`added subuser: ${subusersData.current[-1].subusersData}`)
                 }
-                console.log("subusers data: ", subusersData);
+                console.log("subusers data: ", subusersData.current);
                 return;
             }
 
@@ -130,7 +130,7 @@ const Post = (props) => {
             // if(data){
             //     setSubusersData(data);
             // }
-            
+
         })
         console.log("trying to delete a subuser ", ok);
     
