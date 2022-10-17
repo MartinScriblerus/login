@@ -15,8 +15,7 @@ const Post = (props) => {
 
     //console.log("WHAT is session?????? ", session);
 
-    console.log("PROPSS IN PID ADMIN: ", props);
-
+   
    // const [ subusersData, setSubusersData ] = useState([]); 
     const [ pidAdmin, setPidAdmin ] = useState('');
     const [ username,setUsername] = useState('');
@@ -33,7 +32,7 @@ const Post = (props) => {
                 setUsername(session.data.user.name);
                // console.log("user name: ", username);
                 let user = prisma.users.findMany({select:{subusers_array:true}});
-                // console.log("USER DATA FOR SUBUSER DISPLAY");
+                console.log("USER DATA FOR SUBUSER DISPLAY ", user);
             }
             //console.log("LOOK HERE ", router)
             // console.log("THIS IS GOOD ", router.query.pidAdmin)
@@ -168,15 +167,6 @@ return data
 export default Post;
 
 
-export async function getStaticProps(){
-    // let allUsers = await getAllSubusers();
-    let allUsers = (fetch('/api/getAllSSubusers').then(results=>{return results}))
-    return {
-      props: 
-      {
-        subusers: allUsers
-      }
-    }
-  }
+
   
 
