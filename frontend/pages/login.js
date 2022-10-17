@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import RegisterNewUser from '../components/registerNewUser';
 import styles from '../styles/Home.module.css'
-import {createRef, useContext,useState,useEffect} from 'react';
+import {useRef} from 'react';
 import { useSession } from "next-auth/react";
 import LogInOutButton from '../components/login-btn';
 
