@@ -73,7 +73,7 @@ const Post = (props) => {
                     body: JSON.stringify(objectWithData),
                 }).then(async response => {
                     try {
-                     const data = await response.json()
+                     const data = await response
                      console.log('response data?', data)
                    } catch(error) {
                      console.log('Error fetching from subusers api!')
