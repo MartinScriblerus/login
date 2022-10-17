@@ -18,6 +18,6 @@ export default function handler(){
             return res.status(201).json(allUsers);
         }
     }
-    let users = getUsers();
-    return users;
+    getUsers();
+   
 };

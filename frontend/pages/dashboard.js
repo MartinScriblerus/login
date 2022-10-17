@@ -54,7 +54,8 @@ export default function Dashboard({session}){
     if(session && user){
         // console.log("IDENTIFY USER: ", user);
         let src = "https://www.icegif.com/wp-content/uploads/icegif-5590.gif";
-    console.log("------------------------------------------------")
+        //console.log("------------------------------------------------")
+        console.log("USER: ", user);
         return (
             <div className={styles.container}>
                 <Head>
@@ -100,11 +101,3 @@ export default function Dashboard({session}){
 
 
 }
-
-// export async function getServerSideProps(context){
-//     const session = await getSession(context);
-//     console.log("%% DO WE HAVE A SSESSION?!?!?!? ", session)
-//     return {
-//         props: { session }
-//     }
-// }
