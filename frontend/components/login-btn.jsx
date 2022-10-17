@@ -22,7 +22,7 @@ import {useRef, useState} from 'react';
 
 export default function LogInOutButton(props, user) {
 
-    console.log("Props in login-btn: ", props);
+    //console.log("Props in login-btn: ", props);
 
     const [theme,setTheme] = useState(false);
     const [passMismatch,setPassMisMatch]=useState(false);

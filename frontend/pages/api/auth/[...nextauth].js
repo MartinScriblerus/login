@@ -139,6 +139,24 @@ if(!passCheck){
     //     user = {user_name:"nameTest",email:"DNA"}
     //   }
     //   return user;
+
+      if(account.provider === "google"){
+          // TODO check whether user is in DB
+            var createdUser = await prisma.users.create({
+              data: {
+                user_name: user,
+                // email: req.body.email,
+                email: hash
+                // email_verified: null,
+                // image: null,
+                // // created_at: DateTime,
+                // // updated_at: DateTime,
+                // subusers_array: [],
+              }
+            })
+            console.log(createdUser)
+      }
+
     console.log("user check: ", user);
     return true
     },

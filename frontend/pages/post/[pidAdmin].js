@@ -9,9 +9,7 @@ const Post = (props) => {
     const session = useSession();
     const router = useRouter();
 
-    console.log("pr")
-
-    //console.log("WHAT is session?????? ", session);
+    //console.log("what is session?????? ", session);
 
    // const [ subusersData, setSubusersData ] = useState([]); 
     const [ pidAdmin, setPidAdmin ] = useState('');
@@ -31,7 +29,7 @@ const Post = (props) => {
                 let user = prisma.users.findMany({select:{subusers_array:true}});
                 console.log("USER DATA FOR SUBUSER DISPLAY");
             }
-            console.log("LOOK HERE ", router)
+           // console.log("LOOK HERE ", router)
             // console.log("THIS IS GOOD ", router.query.pidAdmin)
             if(router.query.pidAdmin && pidAdmin !== router.query.pidAdmin){
                 if(router.query.pidAdmin.indexOf("_") !== -1){
@@ -60,7 +58,7 @@ const Post = (props) => {
             // email: email,
             subuserName:subuserNameRef.current
         }
-        console.log("an object with data: ", objectWithData);
+        //console.log("an object with data: ", objectWithData);
        
         if(objectWithData.user_name){
             try{
@@ -70,7 +68,7 @@ const Post = (props) => {
                         'Content-Type': 'application/json',
                         'User-Agent': '*',
                     },
-                    body: objectWithData.toSString(),
+                    body: objectWithData.toString(),
                 }).then(async response => {
                
                         const data = await response;
