@@ -46,6 +46,10 @@ export default function LogInOutButton(user, props) {
 
         //console.log('in login-btn session', session);
         // TODO => ERROR CHECK HERE to stop break...
+        if(!session || session.length < 1){
+            console.error("returning due to error [no session].")
+            return;
+        }
         const { pidAdmin } = session.user.email;
 
         let hasSpaces = false;
@@ -75,6 +79,8 @@ export default function LogInOutButton(user, props) {
         </div>
         )
     } 
+
+    console.log("STATIC PROPS IN LOGIN BTN: ", props);
 
     function handleNameUpdate(){
         console.log("ping");
@@ -177,78 +183,79 @@ export default function LogInOutButton(user, props) {
         {/* Not signed in <br /> */}
         <ThemeContext.Provider value={theme}>
    
-        
-    <ThemedButton onClick={()=>{setTheme(!theme)}}>
-        {theme
-        ?
-        <>
-        <span onClick={()=>handleSubmit()}>Back</span>
-        </>
-        :
-        <span >New Users</span>
-        }
-    </ThemedButton>
-    {/* </ThemeContext.Provider> */}
-        {
-            theme
-            ?
-                null    
-            //<button style={{backgroundColor:"rgba(100,100,100,0.3)",pointerEvents:"none"}} disabled onClick={() => signIn()}>Awaiting Account</button>
-            :
-                <button style={{pointerEvents:"auto"}} onClick={() => signIn()}>Sign in</button>
-        }
+            <ThemedButton onClick={()=>{setTheme(!theme)}}>
+                {theme
+                ?
+                    <span onClick={()=>handleSubmit()}>Back</span>
+                :
+                    <span >New Users</span>
+                }
+            </ThemedButton>
+            {/* </ThemeContext.Provider> */}
+            {
+                theme
+                ?
+                    null    
+                //<button style={{backgroundColor:"rgba(100,100,100,0.3)",pointerEvents:"none"}} disabled onClick={() => signIn()}>Awaiting Account</button>
+                :
+                    <button style={{pointerEvents:"auto"}} onClick={() => signIn()}>Sign in</button>
+            }
         </ThemeContext.Provider>
         {
-
         theme
         ?
-        <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
-            <input maxLength={32} id="name_NewUserRegistration" placeholder="Choose a username..." inputref={nameRef} onChange={()=>{handleNameUpdate()}}></input>
-            {
+            <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
+                <input maxLength={32} id="name_NewUserRegistration" placeholder="Choose a username..." inputref={nameRef} onChange={()=>{handleNameUpdate()}}></input>
+                {
                 nameVerified
-            ?
-            <label style={{color:"rgba(255,255,255,0.78)"}}>Name</label>
-            :
-            <label style={{color:"red"}}>Name</label>
-            }
-            <input maxLength={32} id="pass1_NewUserRegistration" type="password" placeholder="**********" inputref={passRef} onChange={()=>handlePassRef1Update()}></input>
-            {
+                ?
+                    <label style={{color:"rgba(255,255,255,0.78)"}}>Name</label>
+                :
+                    <label style={{color:"red"}}>Name</label>
+                }
+                <input maxLength={32} id="pass1_NewUserRegistration" type="password" placeholder="**********" inputref={passRef} onChange={()=>handlePassRef1Update()}></input>
+                {
                 passMismatch
                 ?
-                <label style={{color:"red"}}>Password Mismatch</label>
+                    <label style={{color:"red"}}>Password Mismatch</label>
                 :
-                <label style={{color:"green"}}>Passwords Match</label>
-            }
-            <input maxLength={32}type="password" id="pass2_NewUserRegistration" placeholder="Confirm" inputref={passRef2} onChange={()=>handlePassRef2Update()}></input>
-            {
+                    <label style={{color:"green"}}>Passwords Match</label>
+                }
+                <input maxLength={32}type="password" id="pass2_NewUserRegistration" placeholder="Confirm" inputref={passRef2} onChange={()=>handlePassRef2Update()}></input>
+                {
                 passMismatch
                 ?
-                <label style={{color:"red"}}>Password Mismatch</label>
+                    <label style={{color:"red"}}>Password Mismatch</label>
                 :
-                <label style={{color:"green"}}>Passwords Match</label>
-            }
-            <button style={{width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>SUBMIT</button>
-        </div>
+                    <label style={{color:"green"}}>Passwords Match</label>
+                }
+                <button style={{width:"100%", margin:"0%", marginTop:"24px", paddingLeft:"20%",paddingRight:"20%", position:"relative",justifyContent:"center"}} onClick={()=>{userDataSubmitted()}}>SUBMIT</button>
+            </div>
         :
-        null
+            null
         }
         </div>
         
     )
 }
 
-// export async function getStaticProps() {
-//     const prisma = new PrismaClient();
-//     const user = await prisma.user.create({
-//         data: {
-//           username: '',
-//           email: '',
-//           image: '',
-//         },
-//       })
-//     return {
-//       props: { // This will be sent to the component as props
-//         user, 
-//       },
-//     };
-//   }
+export async function getStaticProps() {
+    const prisma = new PrismaClient();
+    // const user = await prisma.user.create({
+    //     data: {
+    //       username: '',
+    //       email: '',
+    //       image: '',
+    //     },
+    //   })
+    let users = await prisma.users.findMany({
+        select: {
+            user_name:true
+        }
+    })
+    return {
+      props: { // This will be sent to the component as props
+        users, 
+      },
+    };
+  }
