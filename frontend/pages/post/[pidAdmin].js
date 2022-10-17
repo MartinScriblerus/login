@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/Admin.module.css'
 import { useSession } from "next-auth/react";
-import {getAllSubusers} from '../api/getAllSubusers';
 
 const Post = (props) => {
     
