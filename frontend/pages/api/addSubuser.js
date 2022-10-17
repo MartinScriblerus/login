@@ -43,11 +43,14 @@ export default async function postAddSubuser (req, res) {
     }).then(result => {
         console.log("RES in ADD ", result)
         // return result;
-        return res.status(201).json({ message: result });
+        if(typeof result !== String){
+            result = result.toString();
+        }
+        return result; 
     }).catch(()=>{
-        return res.status(405).json({ message: "no return from subusers" });
+        return null; 
     }).finally(()=>{
-        res.end({message:"subusers updated"});
+        
     }); 
 
     

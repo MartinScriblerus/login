@@ -72,8 +72,8 @@ const Post = (props) => {
                     },
                     body: JSON.stringify(objectWithData),
                 }).then(async response => {
-                    try {
-                        const data = await response.json()
+               
+                        const data = await response;
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
@@ -85,15 +85,16 @@ const Post = (props) => {
                             alert(`added subuser: ${(subusersData.current)}`)
                         }
                         return data;
-                    } catch(error) {
-                        console.log('Error fetching from subusers api!')
-                        console.error(error)
-                    }
+                    // } catch(error) {
+                    //     console.log('Error fetching from subusers api!')
+                    //     console.error(error)
+                    // }
                 })
             } catch(e){
                 console.log("e: ", e)
+                return null;
             } finally{
-                console.log("trying to add new subuser");
+                // console.log("trying to add new subuser");
 
                // console.log("subusers data: ", subusersData.current);
                 // return;
