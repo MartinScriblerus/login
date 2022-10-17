@@ -40,12 +40,15 @@ export default async function postAddSubuser (req, res) {
 
         let userToUpdate= getUserByName(req.body.user_name);
         
-
+console.log("what is user to updatee? ", userToUpdate);
 
     ///////////
     if(!userToUpdate){
         console.log("no user to update");
         return null;
+    }
+    if(userToUpdate.length < 1){
+        return;
     }
     // console.log("this? ", Object.values(userToUpdate)[0].subusers_array);
     if(userToUpdate && userToUpdate.subusers_array && userToUpdate.subusers_array.indexOf(req.body.subuserName) === -1){
