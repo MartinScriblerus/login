@@ -142,15 +142,15 @@ if(!passCheck){
     console.log("user check: ", user);
     return true
     },
-    // async redirect({ url, baseUrl }) {
-    //   console.log("url check ", url);
-    //   console.log("baseUrl check ", baseUrl)
+    async redirect({ url, baseUrl }) {
+      console.log("url check ", url);
+      console.log("baseUrl check ", baseUrl)
   
-    //   //baseUrl="/"
-    //   return baseUrl;
-    //   // return true;
+      //baseUrl="/"
+      return baseUrl;
+      // return true;
       
-    // },
+    },
     async session({ session, user, token }) {
       // console.log("session check ", session)
       // if(!session){
