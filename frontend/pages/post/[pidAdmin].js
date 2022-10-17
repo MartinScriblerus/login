@@ -77,6 +77,7 @@ const Post = (props) => {
                     try {
                      const data = await response
                      console.log('response data?', data)
+                     return data;
                    } catch(error) {
                      console.log('Error fetching from subusers api!')
                      console.error(error)
@@ -117,7 +118,7 @@ const Post = (props) => {
             body: JSON.stringify(objectWithData),
         }).then(data=>{
            // console.log("deeleted subuser: ", data);
-return data
+            return data
             // try to set subuser data
             // if(data){
             //     setSubusersData(data);

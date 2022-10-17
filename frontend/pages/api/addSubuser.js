@@ -91,12 +91,13 @@ export default async function postAddSubuser (req, res) {
             }, 
         }
     })
-    if(!userToUpdate){
-        console.log("no user to update");
-        return;
-    }
-
-    if(Object.values(userToUpdate)[0].subusers_array.indexOf(req.body.subuserName) === -1){
+    // if(!userToUpdate){
+    //     console.log("no user to update");
+    //     return;
+    // }
+    console.log("user to update: ", userToUpdate);
+    if(userToUpdate && Object.values(userToUpdate)[0].subusers_array.indexOf(req.body.subuserName) === -1){
+        console.log("ABOUT TO PUSH NEW VAL ", req.body.subuserName);
         Object.values(userToUpdate)[0].subusers_array.push(req.body.subuserName)  
     } 
 
@@ -105,7 +106,7 @@ export default async function postAddSubuser (req, res) {
     //     select: {
     //         data:{subusers_array: true}},
     //     })
-    prisma.users.update({
+    let update = prisma.users.update({
         data: {
             subusers_array: {
                 set: Object.values(userToUpdate)[0].subusers_array
@@ -116,5 +117,5 @@ export default async function postAddSubuser (req, res) {
         console.log("RES in ADD ", result)
         return result
     }).catch(()=>{}).finally(()=>{return res}); 
-
+    return update;
 } 
