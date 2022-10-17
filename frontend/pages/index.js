@@ -15,20 +15,20 @@ import getAllUsers from './api/getAllUsers';
 export default function Home(props) {
 
   const { data: session } = useSession();
-  const [subusers,setSubusers] = useState([])
+
   const fullUserData = useRef({});
 
   console.log("session in index: ", session);
   console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
 
-
+ let subusers = []
   if(session && session.user && props && props.allUsers){
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
     if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
-      setSubusers(fullUserData.current[0].subusers_array);
+      subusers.push(fullUserData.current[0].subusers_array);
     }
   } else {
     // console.log("no session yet");
