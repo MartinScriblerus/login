@@ -15,7 +15,7 @@ import getAllUsers from './api/getAllUsers';
 export default function Home(props) {
 
   const { data: session } = useSession();
-  
+  const [subusers,setSubusers] = useState([])
   const fullUserData = useRef({});
 
   console.log("session in index: ", session);
@@ -28,12 +28,16 @@ export default function Home(props) {
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
     console.log("SUBUSER ARRAY: ", fullUserData.current[0].subusers_array);
-
+    if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
+      
+    }
   } else {
     // console.log("no session yet");
   }
 
-
+  useEffect(()=>{
+    setSubusers(fullUserData.current[0].subusers_array);
+  },[fullUserData])
 
 
 
@@ -75,10 +79,10 @@ export default function Home(props) {
         }
         <div id="dashboardSubUsersWrapper" class="grid">
         {
-            fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array.length > 1
+            subusers && subusers.length > 0
             ?
             
-            fullUserData.current[0].subusers_array.map((subuser)=>{
+            subusers.map((subuser)=>{
                 <div id="dashboardSubuser" class="card">{subuser}</div>
             })
            
