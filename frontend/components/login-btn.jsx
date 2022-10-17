@@ -80,7 +80,7 @@ export default function LogInOutButton(user, props) {
         )
     } 
 
-    console.log("STATIC PROPS IN LOGIN BTN: ", props);
+
 
     function handleNameUpdate(){
         console.log("ping");
@@ -150,7 +150,7 @@ export default function LogInOutButton(user, props) {
         // try{
   
 
-            fetch('/api/register', {
+        fetch('/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -167,11 +167,6 @@ export default function LogInOutButton(user, props) {
              console.error(error)
            }
           })
-        //   console.log("trying to create new user");
-        // } catch (e){
-        //     console.log("what stops the fetch? ", e);
-        // } finally {
-        // }
        // console.log("register", register);
         }
 
@@ -239,23 +234,23 @@ export default function LogInOutButton(user, props) {
     )
 }
 
-export async function getStaticProps() {
-    const prisma = new PrismaClient();
-    // const user = await prisma.user.create({
-    //     data: {
-    //       username: '',
-    //       email: '',
-    //       image: '',
-    //     },
-    //   })
-    async function getUsers(){
-        let allUsers = await prisma.$queryRaw`SELECT * FROM Users`;
-        return allUsers;
-    }
-    let users = getUsers()
-    return {
-      props: { // This will be sent to the component as props
-        users, 
-      },
-    };
-  }
+// export async function getStaticProps() {
+//     const prisma = new PrismaClient();
+//     // const user = await prisma.user.create({
+//     //     data: {
+//     //       username: '',
+//     //       email: '',
+//     //       image: '',
+//     //     },
+//     //   })
+//     async function getUsers(){
+//         let allUsers = await prisma.$queryRaw`SELECT * FROM Users`;
+//         return allUsers;
+//     }
+//     let users = getUsers()
+//     return {
+//       props: { // This will be sent to the component as props
+//         users, 
+//       },
+//     };
+//   }

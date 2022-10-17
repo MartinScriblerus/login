@@ -23,6 +23,23 @@ export default function Home(props) {
   //   console.log("no session yet");
   // }
 
+  fetch('/api/getAllUsers', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': '*',
+    },
+  }).then(async response => {
+    try {
+    console.log("what is response? ", response);
+     const data = await response
+     console.log('response data from register api?', data)
+   } catch(error) {
+     console.log('Error happened here!')
+     console.error(error)
+   }
+  })
+
   return (
     <div id="pageWrapper" className={styles.container}>
       <Head>
