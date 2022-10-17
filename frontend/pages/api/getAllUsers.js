@@ -11,13 +11,18 @@ export default function handler(){
     //     },
     //   })
     async function getUsers(){
-        let allUsers = await prisma.$queryRaw`SELECT * FROM Users`;
-        if(!allUsers){
-            return null;
-        } else {
-            return res.status(201).json(allUsers);
+        try {
+            let allUsers = await prisma.users.findMany();
+            if(!allUsers){
+                return null;
+            } else {
+                return res.status(201).json(allUsers);
+            } 
+        } catch(e){
+            console.log("error is ", e);
+        } finally{
+            return; 
         }
     }
     getUsers();
-   
 };
