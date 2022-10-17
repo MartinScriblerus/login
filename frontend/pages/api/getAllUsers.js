@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
 
-export default function handler(){
+export default function handler(req,res){
     const prisma = new PrismaClient();
     // const user = await prisma.user.create({
     //     data: {
