@@ -21,28 +21,24 @@ export default function Home(props) {
   // console.log("session in index: ", session);
   // console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
-  const listSubusers = useRef([])
-//  let subusers = []
-  if(session && session.user && props && props.allUsers){
+  let listSubusers = []
+ let subusers = []
+  if(session && session.user && props){
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
-    // if(fullUserData.current.length > 0){
-    //   listSubusers = fullUserData.current[0].subusers_array.map((subuser, i) =>
-    //   <option label={subuser} value={subuser} key={i}>{subuser}</option>
-    //   );
-    // }
+    if(fullUserData.current.length > 0){
+      listSubusers = fullUserData.current[0].subusers_array.map((subuser, i) =>
+      <option label={subuser} value={subuser} key={i}>{subuser}</option>
+      );
+    }
   } else {
     // console.log("no session yet");
   }
 
-  useEffect(()=>{
-    if(fullUserData.current.length > 0){
-      listSubusers.current = fullUserData.current[0].subusers_array.map((subuser, i) =>
-      <option label={subuser} value={subuser} key={i}>{subuser}</option>
-      );
-    }
-  },[fullUserData,listSubusers])
+  // useEffect(()=>{
+
+  // },[fullUserData,props])
 
 
 
@@ -92,7 +88,7 @@ export default function Home(props) {
           
             }}>
               <option selected disabled>--Subusers--</option>
-              {listSubusers.current}
+              {listSubusers}
           </select>
       
      
