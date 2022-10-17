@@ -86,7 +86,7 @@ export async function getStaticProps(){
   return {
     props: 
     {
-      allUsers: allUsers
+      allUsers: JSON.parse(JSON.stringify(allUsers))
     }
   }
 }
