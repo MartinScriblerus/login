@@ -52,7 +52,7 @@ const Post = (props) => {
             subuserName.value = '';
             //console.log("subuser name ref: ", subuserNameRef.current);
         }
-        console.log("in handle add subuser: ", username);
+        //console.log("in handle add subuser: ", username);
         let objectWithData = {
             user_name: username,
             // email: email,
@@ -68,10 +68,11 @@ const Post = (props) => {
                         'Content-Type': 'application/json',
                         'User-Agent': '*',
                     },
-                    body: objectWithData.toString(),
+                    body: JSON.stringify(objectWithData),
                 }).then(async response => {
                
                         const data = await response;
+                        console.log("DATA IS: ", data);
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
@@ -80,7 +81,7 @@ const Post = (props) => {
                         }
                         console.log('response data after addd user: ', data);
                         if(data){
-                            alert(`added subuser: ${subusersData.current.toString()}`)
+                            alert(`added subuser: ${Object.values(subusersData.current)}`)
                         }
                         return data;
                     // } catch(error) {
