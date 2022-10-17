@@ -3,15 +3,19 @@ import Head from 'next/head';
 import { useEffect, useState, useRef } from 'react';
 import styles from '../../styles/Admin.module.css'
 import { useSession } from "next-auth/react";
+import {getAllSubusers} from '../api/getAllSubusers';
 
 const Post = (props) => {
     
+
     const session = useSession();
     const router = useRouter();
 
    // console.log("pr")
 
     //console.log("WHAT is session?????? ", session);
+
+    console.log("PROPSS IN PID ADMIN: ", props);
 
    // const [ subusersData, setSubusersData ] = useState([]); 
     const [ pidAdmin, setPidAdmin ] = useState('');
@@ -164,5 +168,14 @@ return data
 export default Post;
 
 
-
+export async function getStaticProps(){
+    let allUsers = await getAllUsers();
+    return {
+      props: 
+      {
+        subusers: JSON.parse(JSON.stringify(allUsers))
+      }
+    }
+  }
+  
 
