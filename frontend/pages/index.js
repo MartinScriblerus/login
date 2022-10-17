@@ -71,7 +71,7 @@ export default function Home(props) {
         }
         <div id="dashboardSubUsersWrapper" class="grid">
         {
-            fullUserData.current[0] && fullUserData.current[0].subusers_array.length > 0
+            fullUserData.current[0] && fullUserData.current[0].subusers_array
             ?
             
             fullUserData.current[0].subusers_array.map((subuser)=>{
