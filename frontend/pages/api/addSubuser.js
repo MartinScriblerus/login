@@ -28,7 +28,9 @@ export default async function postAddSubuser (req, res) {
     
         return prisma.users.findMany({
           where: {
-              user_name: user_name
+              user_name: {
+              equals:user_name
+              }
             },
         })
 
@@ -40,7 +42,7 @@ export default async function postAddSubuser (req, res) {
 
         let userToUpdate= getUserByName(req.body.user_name).then(response=>{return response});
         
-
+        console.log("USER TO UPDATE: ", userToUpdate);
 
     ///////////
     if(!userToUpdate){

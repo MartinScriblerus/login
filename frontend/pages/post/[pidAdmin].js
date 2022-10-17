@@ -83,7 +83,7 @@ const Post = (props) => {
                         }
                         //console.log('response data after addd user: ', data);
                         if(data){
-                            alert(`added subuser: ${subusersData.current.toString()}`)
+                            alert(`added subuser: ${subusersData.current}`)
                         }
                         // return data;
                     // } catch(error) {
