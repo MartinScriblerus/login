@@ -16,7 +16,7 @@ export default function Home(props) {
 
   const { data: session } = useSession();
   
-  let fullUserData;
+  const fullUserData = useRef({});
 
   console.log("session in index: ", session);
   console.log("PROPS ARE USERS HERE? ", props);
@@ -25,8 +25,8 @@ export default function Home(props) {
 
   if(session && session.user && props && props.allUsers.length){
     // console.log('SESSION--------------- ', session);
-    fullUserData = props.allUsers.filter(i=>i.user_name === session.user.name);
-    console.log("FULL USER DATA: ", fullUserData);
+    fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
+    console.log("FULL USER DATA: ", fullUserData.current);
   } else {
     // console.log("no session yet");
   }

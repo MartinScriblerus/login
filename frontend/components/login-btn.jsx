@@ -179,10 +179,9 @@ export default function LogInOutButton(props, user) {
                     console.log("what is response? ", response);
                     const data = await response
                     console.log('response data from register api?', data);
-                    alert("Subuser Submitted");
                 } catch(error) {
                     console.log('Error happened here!')
-                    console.error(error)
+                    console.error(error);
                 }
           })
        // console.log("register", register);

@@ -13,12 +13,14 @@ const Post = (props) => {
 
     //console.log("WHAT is session?????? ", session);
 
-    const [ subusersData, setSubusersData ] = useState([]); 
+   // const [ subusersData, setSubusersData ] = useState([]); 
     const [ pidAdmin, setPidAdmin ] = useState('');
     const [ username,setUsername] = useState('');
     const subuserNameRef = useRef('');
     const subuserNameDeleteRef = useRef('')
     let public_url = process.env.PUBLIC_URL;
+
+    const subusersData = useRef([])
 
     useEffect(()=>{
         if(!router.isReady) return;
@@ -74,7 +76,9 @@ const Post = (props) => {
                         const data = await response
                         // try to add subuser data 
                         if(data){
-                        setSubusersData(data);
+                        // setSubusersData(data);
+                            subusersData.current = data;
+                            console.log(subusersData.current);
                         }
                         console.log('response data after addd user: ', data);
                         return data;
@@ -87,6 +91,9 @@ const Post = (props) => {
                 console.log("e: ", e)
             } finally{
                 console.log("trying to add new subuser");
+                if(subusersData){
+                    alert(`added subuser: ${subusersData}`)
+                }
                 console.log("subusers data: ", subusersData);
                 return;
             }
@@ -118,10 +125,12 @@ const Post = (props) => {
             body: JSON.stringify(objectWithData),
         }).then(data=>{
             console.log("deeleted subuser: ", data);
+
             // try to set subuser data
             // if(data){
             //     setSubusersData(data);
             // }
+            
         })
         console.log("trying to delete a subuser ", ok);
     
