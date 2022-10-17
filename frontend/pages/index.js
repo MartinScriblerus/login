@@ -21,10 +21,11 @@ export default function Home(props) {
   console.log("session in index: ", session);
   console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
-  
+
+
   if(session && session.user){
     // console.log('SESSION--------------- ', session);
-    let fullUserData=props.allUsers.filter(i=>i.user_name === session.user.name);
+    setFullUserData(props.allUsers.filter(i=>i.user_name === session.user.name));
     console.log("FULL USER DATA: ", fullUserData);
   } else {
     // console.log("no session yet");
@@ -65,7 +66,7 @@ export default function Home(props) {
           </>
         :
           <>
-            <Dashboard session={session} allUsers={props.allUsers}/>
+            <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
           </>
         }
       </main>

@@ -64,6 +64,7 @@ export default function Dashboard({session,props}){
         let src = "https://www.icegif.com/wp-content/uploads/icegif-5590.gif";
         //console.log("------------------------------------------------")
         console.log("USER: ", user);
+
         return (
             <div className={styles.container}>
                 <Head>
@@ -90,9 +91,20 @@ export default function Dashboard({session,props}){
                             unoptimized
                             src={src}
                         />
-                        This is a dashboard for logged in users only <br/>
+                        <span id="loggedInDashboardMsg">This is a dashboard for logged in users only</span> <br/>
                         <LogInOutButton allUsers={allUsers.current}/>
                     </h1>
+                    {
+                        props.fullUserData
+                        ?
+                        <div id="dashboardSubUsersWrapper" class="grid">
+                        {props.fullUserData.map((subuser, i)=>{
+                            <div key={i.toString()} id="dashboardSubuser" class="card">{subuser}</div>
+                        })}
+                        </div>
+                        :
+                        <></>
+                    }
                 </main>
             </div>
         )

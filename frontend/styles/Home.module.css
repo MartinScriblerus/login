@@ -145,6 +145,15 @@ element.style {
   padding-right: 24%;
 }
 
+#dashboardSubUsersWrapper {
+  width:100%;
+}
+
+#dashboardSubuser {
+  width: 33%;
+  height: auto;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

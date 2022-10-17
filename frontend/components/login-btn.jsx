@@ -174,15 +174,16 @@ export default function LogInOutButton(props, user) {
                 'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
-          }).then(async response => {
-            try {
-            console.log("what is response? ", response);
-             const data = await response
-             console.log('response data from register api?', data)
-           } catch(error) {
-             console.log('Error happened here!')
-             console.error(error)
-           }
+            }).then(async response => {
+                try {
+                    console.log("what is response? ", response);
+                    const data = await response
+                    console.log('response data from register api?', data);
+                    alert("Subuser Submitted");
+                } catch(error) {
+                    console.log('Error happened here!')
+                    console.error(error)
+                }
           })
        // console.log("register", register);
         }
