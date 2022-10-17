@@ -70,7 +70,7 @@ const Post = (props) => {
                         'Content-Type': 'application/json',
                         'User-Agent': '*',
                     },
-                    body: JSON.stringify(objectWithData),
+                    body: objectWithData.toSString(),
                 }).then(async response => {
                
                         const data = await response;

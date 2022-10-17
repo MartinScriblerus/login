@@ -46,8 +46,8 @@ export default async function postAddSubuser (req, res) {
         // if(typeof result !== String){
         //     result = result.toString();
         // }
-        res.end(result);
-        // return result; 
+        // res.end(result);
+        return result; 
     })
 
     

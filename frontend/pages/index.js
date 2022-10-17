@@ -84,7 +84,7 @@ export default function Home(props) {
             position: "absolute",
             bottom: "60px",
             width: "40%",
-            left: "30"
+            left: "30%"
           
             }}>
               <option selected disabled>--Subusers--</option>
