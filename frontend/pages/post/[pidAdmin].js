@@ -9,7 +9,9 @@ const Post = (props) => {
     const session = useSession();
     const router = useRouter();
 
-    //console.log("what is session?????? ", session);
+   // console.log("pr")
+
+    //console.log("WHAT is session?????? ", session);
 
    // const [ subusersData, setSubusersData ] = useState([]); 
     const [ pidAdmin, setPidAdmin ] = useState('');
@@ -25,11 +27,11 @@ const Post = (props) => {
         else {
             if(session.length > 0 && session.data && session.data.user && Object.values(session.data.user).length){
                 setUsername(session.data.user.name);
-                console.log("user name: ", username);
+               // console.log("user name: ", username);
                 let user = prisma.users.findMany({select:{subusers_array:true}});
-                console.log("USER DATA FOR SUBUSER DISPLAY");
+                // console.log("USER DATA FOR SUBUSER DISPLAY");
             }
-           // console.log("LOOK HERE ", router)
+            //console.log("LOOK HERE ", router)
             // console.log("THIS IS GOOD ", router.query.pidAdmin)
             if(router.query.pidAdmin && pidAdmin !== router.query.pidAdmin){
                 if(router.query.pidAdmin.indexOf("_") !== -1){
@@ -61,7 +63,7 @@ const Post = (props) => {
         //console.log("an object with data: ", objectWithData);
        
         if(objectWithData.user_name){
-            try{
+            // try{
                 fetch('/api/addSubuser', {
                     method: 'POST',
                     headers: {
@@ -72,16 +74,15 @@ const Post = (props) => {
                 }).then(async response => {
                
                         const data = await response;
-                        console.log("DATA IS: ", data);
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
                             subusersData.current = data;
-                            console.log("curr subusers: ", subusersData.current);
+                            //console.log("curr subusers: ", subusersData.current);
                         }
-                        console.log('response data after addd user: ', data);
+                        //console.log('response data after addd user: ', data);
                         if(data){
-                            alert(`added subuser: ${Object.values(subusersData.current)}`)
+                            alert(`added subuser: ${subusersData.current.toString()}`)
                         }
                         return data;
                     // } catch(error) {
@@ -89,15 +90,15 @@ const Post = (props) => {
                     //     console.error(error)
                     // }
                 })
-            } catch(e){
-                console.log("e: ", e)
-                return null;
-            } finally{
-                // console.log("trying to add new subuser");
+            // } catch(e){
+            //    // console.log("e: ", e)
+            //     return null;
+            // } finally{
+            //     // console.log("trying to add new subuser");
 
-               // console.log("subusers data: ", subusersData.current);
-                // return;
-            }
+            //    // console.log("subusers data: ", subusersData.current);
+            //     // return;
+            // }
 
         }
         // return subuserName;
@@ -125,8 +126,8 @@ const Post = (props) => {
             },
             body: JSON.stringify(objectWithData),
         }).then(data=>{
-            console.log("deeleted subuser: ", data);
-
+           // console.log("deeleted subuser: ", data);
+return data
             // try to set subuser data
             // if(data){
             //     setSubusersData(data);
