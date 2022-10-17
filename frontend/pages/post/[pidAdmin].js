@@ -63,7 +63,7 @@ const Post = (props) => {
         //console.log("an object with data: ", objectWithData);
        
         if(objectWithData.user_name){
-            // try{
+            try{
                 fetch('/api/addSubuser', {
                     method: 'POST',
                     headers: {
@@ -77,7 +77,7 @@ const Post = (props) => {
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
-                            subusersData.current = data.toString();
+                            subusersData.current = data;
                             //console.log("curr subusers: ", subusersData.current);
                         }
                         //console.log('response data after addd user: ', data);
@@ -90,15 +90,15 @@ const Post = (props) => {
                     //     console.error(error)
                     // }
                 })
-            // } catch(e){
-            //    // console.log("e: ", e)
-            //     return null;
-            // } finally{
-            //     // console.log("trying to add new subuser");
+            } catch(e){
+               // console.log("e: ", e)
+                return null;
+            } finally{
+                // console.log("trying to add new subuser");
 
-            //    // console.log("subusers data: ", subusersData.current);
-            //     // return;
-            // }
+               // console.log("subusers data: ", subusersData.current);
+                // return;
+            }
 
         }
         // return subuserName;
