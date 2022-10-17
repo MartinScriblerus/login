@@ -9,6 +9,8 @@ const Post = (props) => {
     const session = useSession();
     const router = useRouter();
 
+    console.log("pr")
+
     //console.log("WHAT is session?????? ", session);
 
     const [ subusersData, setSubusersData ] = useState([]); 
@@ -68,7 +70,9 @@ const Post = (props) => {
                     body: JSON.stringify(objectWithData),
                 }).then(async response => {
                     try {
-                     const data = await response.json()
+                     const data = await response.json();
+                     // try to add subuser data 
+                     setSubusersData(data);
                      console.log('response data after addd user: ', data)
                    } catch(error) {
                      console.log('Error fetching from subusers api!')
@@ -108,7 +112,11 @@ const Post = (props) => {
                 'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
-        }).then(data=>{console.log("deeleted subuser: ", data)})
+        }).then(data=>{
+            console.log("deeleted subuser: ", data);
+            // try to set subuser data
+            setSubusersData(data);
+        })
         console.log("trying to delete a subuser ", ok);
     
 
@@ -121,9 +129,10 @@ const Post = (props) => {
         console.log(subuserNameRef.current)
     }; 
 
-    function handleSelect(){
+    useEffect(()=>{
         console.log("SUBUSERS!!! ", subusersData);
-    }
+    })[subusersData]
+        
 
     return (
         <>
@@ -147,5 +156,7 @@ const Post = (props) => {
         </>
     )
 }
+export default Post;
 
-export default Post
+
+

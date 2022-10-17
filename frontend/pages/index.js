@@ -72,16 +72,6 @@ export default function Home(props) {
 }
 
 export async function getStaticProps(){
-  // fetch('/api/getAllUsers').then(async response => {
-  //   try {
-  //   console.log("what is response? ", response);
-  //    const data = await response
-  //    console.log('response data from register api?', data.body)
-  //  } catch(error) {
-  //    console.log('Error happened here!')
-  //    console.error(error)
-  //  }
-  // })
   let allUsers = await getAllUsers();
   return {
     props: 
