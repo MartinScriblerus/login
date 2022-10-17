@@ -27,6 +27,7 @@ export default function Home(props) {
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
+    console.log("full user data: ", fullUserData.current);
     if(fullUserData.current.length > 0){
       listSubusers = fullUserData.current[0].subusers_array.map((subuser, i) =>
       <option label={subuser} value={subuser} key={i}>{subuser}</option>
