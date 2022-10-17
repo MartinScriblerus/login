@@ -71,14 +71,14 @@ const Post = (props) => {
                         'User-Agent': '*',
                     },
                     body: JSON.stringify(objectWithData),
-                }).then((response) => {
+                }).then(async (response) => {
                
-                        const data = response;
+                        const data = await response;
                         // try to add subuser data 
                         console.log("DATA resp is ", data);
                         if(data){
                         // setSubusersData(data);
-                            subusersData.current = data.toString();
+                            subusersData.current = data;
                             //console.log("curr subusers: ", subusersData.current);
                         }
                         //console.log('response data after addd user: ', data);
