@@ -26,34 +26,31 @@ export default async function postAddSubuser (req, res) {
     ///////////
     async function getUserByName(user_name){
     
-        const result = await prisma.users.findMany({
+        return prisma.users.findMany({
           where: {
               user_name: user_name
             },
         })
 
-        console.log("resultttt ", result);
+        // console.log("resultttt ", result);
 
 
-        return result;
+        // return result;
         }
 
-        let userToUpdate= getUserByName(req.body.user_name);
+        let userToUpdate= getUserByName(req.body.user_name).then(response=>{return response});
         
-console.log("what is user to updatee? ", userToUpdate);
+
 
     ///////////
     if(!userToUpdate){
         console.log("no user to update");
         return null;
     }
-    if(userToUpdate.length < 1){
-        return;
-    }
     // console.log("this? ", Object.values(userToUpdate)[0].subusers_array);
-    if(userToUpdate && userToUpdate.subusers_array && userToUpdate.subusers_array.indexOf(req.body.subuserName) === -1){
+    if(Object.values(userToUpdate)[0].subusers_array.indexOf(req.body.subuserName) === -1){
         console.log("pushing subuser name: ", req.body.subuserName);
-        userToUpdate.subusers_array.push(req.body.subuserName)  
+        Object.values(userToUpdate)[0].subusers_array.push(req.body.subuserName)  
     } 
 
         // res = prisma.users.findMany({
@@ -67,10 +64,10 @@ console.log("what is user to updatee? ", userToUpdate);
     prisma.users.update({
         data: {
             subusers_array: {
-                set: userToUpdate.subusers_array
+                set: Object.values(userToUpdate)[0].subusers_array
             },
         },
-        where: { id : userToUpdate.id},
+        where: { id : Object.values(userToUpdate)[0].id},
     }).then(result => {
         console.log("RES in ADD ", result)
         // return result;
