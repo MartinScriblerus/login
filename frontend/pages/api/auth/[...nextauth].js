@@ -45,10 +45,10 @@ export const authOptions = {
         password: {  label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
-        console.log("req body username: ", req.body.username);
-        console.log("CREDS: ", credentials);
+        //console.log("req body username: ", req.body.username);
+        //console.log("CREDS: ", credentials);
 
-        console.log("req body username: ", req.body.username);
+        //console.log("req body username: ", req.body.username);
        // const resultPrisma = await prisma.$queryRaw`SELECT * FROM Users`
        // console.log("result prisma: ", resultPrisma);
         // Check whether the user_name exists in our database
@@ -63,7 +63,7 @@ export const authOptions = {
             },
         })
 
-        console.log("resultttt ", result);
+        //console.log("resultttt ", result);
 
         let user = {
           name: result[0].user_name,
@@ -98,7 +98,7 @@ if(!passCheck){
 
 
         return user;
-      }
+        }
 
         let isUserInDB = getUserByName(req.body.username);
         
