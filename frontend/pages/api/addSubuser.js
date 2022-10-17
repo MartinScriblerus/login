@@ -43,10 +43,11 @@ export default async function postAddSubuser (req, res) {
     }).then(result => {
         console.log("RES in ADD ", result)
         // return result;
-        if(typeof result !== String){
-            result = result.toString();
-        }
-        return result; 
+        // if(typeof result !== String){
+        //     result = result.toString();
+        // }
+
+        return JSON.stringify(result); 
     }).catch(()=>{
         return null; 
     }).finally(()=>{

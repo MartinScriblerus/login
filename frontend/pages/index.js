@@ -78,11 +78,11 @@ export default function Home(props) {
         }
         <div id="dashboardSubUsersWrapper" class="grid">
         {
-            subusers && subusers.length > 0
+            subusers
             ?
             
             subusers.map((subuser)=>{
-                <div id="dashboardSubuser" class="card">{subuser}</div>
+                <span id="dashboardSubuser" class="card">{subuser}</span>
             })
            
             :
