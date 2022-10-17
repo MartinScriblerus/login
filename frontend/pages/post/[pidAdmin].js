@@ -52,15 +52,15 @@ const Post = (props) => {
         if(subuserName){
             subuserNameRef.current = subuserName.value;
             subuserName.value = '';
-            //console.log("subuser name ref: ", subuserNameRef.current);
+            console.log("subuser name ref: ", subuserNameRef.current);
         }
-        //console.log("in handle add subuser: ", username);
+        console.log("in handle add subuser: ", username);
         let objectWithData = {
             user_name: username,
             // email: email,
             subuserName:subuserNameRef.current
         }
-        //console.log("an object with data: ", objectWithData);
+        console.log("an object with data: ", objectWithData);
        
         if(objectWithData.user_name){
             try{
@@ -71,36 +71,23 @@ const Post = (props) => {
                         'User-Agent': '*',
                     },
                     body: JSON.stringify(objectWithData),
-                }).then(async (response) => {
-               
-                        const data = await response;
-                        // try to add subuser data 
-                        console.log("DATA resp is ", data);
-                        if(data){
-                        // setSubusersData(data);
-                            subusersData.current = data;
-                            //console.log("curr subusers: ", subusersData.current);
-                        }
-                        //console.log('response data after addd user: ', data);
-                        if(data){
-                            alert(`added subuser: ${subusersData.current}`)
-                        }
-                        // return data;
-                    // } catch(error) {
-                    //     console.log('Error fetching from subusers api!')
-                    //     console.error(error)
-                    // }
-                })
-            } catch(e){
-               // console.log("e: ", e)
-                return null;
-            } finally{
-                // console.log("trying to add new subuser");
+                }).then(async response => {
+                    try {
+                     const data = await response.json()
+                     console.log('response data?', data)
+                   } catch(error) {
+                     console.log('Error fetching from subusers api!')
+                     console.error(error)
+                   }
+                  })
+         } catch(e){
+            console.log("e: ", e)
+         } finally{
+        
+         }
 
-               // console.log("subusers data: ", subusersData.current);
-                // return;
-            }
-
+            
+            console.log("trying to add new subuser");
         }
         // return subuserName;
     }
