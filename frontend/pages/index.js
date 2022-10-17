@@ -105,12 +105,16 @@ export default function Home(props) {
   )
 }
 
+
+
+
 export async function getStaticProps(){
   let allUsers = await getAllUsers();
   return {
     props: 
     {
       allUsers: JSON.parse(JSON.stringify(allUsers))
-    }
+    },
+    revalidate: 10 // 10 seconds 
   }
 }
