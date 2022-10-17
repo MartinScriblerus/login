@@ -77,12 +77,12 @@ const Post = (props) => {
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
-                            subusersData.current = data;
+                            subusersData.current = JSON.parse(data);
                             console.log("curr subusers: ", subusersData.current);
                         }
                         console.log('response data after addd user: ', data);
                         if(data){
-                            alert(`added subuser: ${(subusersData.current)}`)
+                            alert(`added subuser: ${subusersData.current.toString()}`)
                         }
                         return data;
                     // } catch(error) {

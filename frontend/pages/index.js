@@ -36,7 +36,7 @@ export default function Home(props) {
     if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
       setSubusers(fullUserData.current[0].subusers_array);
     }
-  },[fullUserData])
+  },[fullUserData,props])
 
 
 
