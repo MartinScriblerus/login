@@ -169,7 +169,8 @@ export default Post;
 
 
 export async function getStaticProps(){
-    let allUsers = await getAllSubusers();
+    // let allUsers = await getAllSubusers();
+    let allUsers = (fetch('/api/getAllSSubusers').then(results=>{return results}))
     return {
       props: 
       {
