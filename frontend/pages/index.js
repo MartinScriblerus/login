@@ -24,7 +24,7 @@ export default function Home(props) {
   
   if(session && session.user){
     // console.log('SESSION--------------- ', session);
-    let fullUserData=props.allUsers.map(i=>i.user_name === session.user.name);
+    let fullUserData=props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData);
   } else {
     // console.log("no session yet");

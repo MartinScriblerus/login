@@ -2,15 +2,18 @@ import Head from 'next/head';
 import Image from 'next/image';
 import RegisterNewUser from '../components/registerNewUser';
 import styles from '../styles/Home.module.css'
-import {createRef, useContext} from 'react';
+import {createRef, useContext,useState} from 'react';
 import { useSession } from "next-auth/react";
 import LogInOutButton from '../components/login-btn';
 
 
 
-
 export default function LoginWrapper(props){
     
+    const [allUsers,setAllUsers] = useState();
+    if(props.allUsers.length > allUsers.length){
+        setAllUsers(props.allUsers.length)
+    }
     console.log("props in login wrapper: ", props);
     const { data: session } = useSession();
     // console.log("session ", session);
@@ -36,7 +39,7 @@ export default function LoginWrapper(props){
                     :
                         <span style={{fontSize:"32px"}}>You will need to log in!</span>
                     }
-                    <LogInOutButton allUsers={props.allUsers} />
+                    <LogInOutButton allUsers={allUsers} />
                     {/* <RegisterNewUser /> */}
             </h1>
         </main>

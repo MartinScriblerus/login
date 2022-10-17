@@ -43,7 +43,8 @@ async function RedirectPage() {
 //   return { };
 // }
 
-export default function Dashboard({session}){
+export default function Dashboard({session},props){
+    console.log("PROPS IN DASHBOARD: ", props)
     // console.log("WHAT IS SESSION? ", session);
     const user = session?.user;
 
