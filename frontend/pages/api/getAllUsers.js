@@ -12,7 +12,7 @@ export default function handler(req,res){
     //   })
     async function getUsers(){
         try {
-            let allUsers = await prisma.users.findMany();
+            const allUsers = await prisma.users.findMany()
             if(!allUsers){
                 return null;
             } else {

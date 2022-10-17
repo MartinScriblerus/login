@@ -88,7 +88,6 @@ export default function LogInOutButton(user, props) {
         let name = document.getElementById("name_NewUserRegistration");
         if(name){
             nameRef.current = name.value;
-            console.log("name ref: ", nameRef.current);
         }
         return;
     }
@@ -97,7 +96,6 @@ export default function LogInOutButton(user, props) {
         let pass1 = document.getElementById("pass1_NewUserRegistration");
         if(pass1){
             passRef.current = pass1.value;
-            console.log("name ref: ", passRef.current);
         }
         if(passRef2.current !== passRef.current){
             setPassMisMatch(true);
@@ -111,7 +109,6 @@ export default function LogInOutButton(user, props) {
         let pass2 = document.getElementById("pass2_NewUserRegistration");
         if(pass2){
             passRef2.current = pass2.value;
-            console.log("name ref: ", passRef2.current);
             if(passRef2.current !== passRef.current){
                 setPassMisMatch(true);
             }
@@ -146,7 +143,7 @@ export default function LogInOutButton(user, props) {
                 email: email,
     
         }
-        console.log("an object with data: ", objectWithData);
+        //console.log("an object with data: ", objectWithData);
         // try{
   
 

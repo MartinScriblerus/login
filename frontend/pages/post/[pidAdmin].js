@@ -47,7 +47,7 @@ const Post = (props) => {
         if(subuserName){
             subuserNameRef.current = subuserName.value;
             subuserName.value = '';
-            console.log("subuser name ref: ", subuserNameRef.current);
+            //console.log("subuser name ref: ", subuserNameRef.current);
         }
         console.log("in handle add subuser: ", username);
         let objectWithData = {
@@ -69,7 +69,7 @@ const Post = (props) => {
                 }).then(async response => {
                     try {
                      const data = await response.json()
-                     console.log('response data?', data)
+                     console.log('response data after addd user: ', data)
                    } catch(error) {
                      console.log('Error fetching from subusers api!')
                      console.error(error)
@@ -92,9 +92,9 @@ const Post = (props) => {
         if(subuserName){
             subuserNameDeleteRef.current = subuserName.value;
             subuserName.value = '';
-            console.log("subuser name ref: ", subuserNameDeleteRef.current);
+            //console.log("subuser name ref: ", subuserNameDeleteRef.current);
         }
-        console.log("in handle add subuser: ", username);
+        //console.log("in handle add subuser: ", username);
         let objectWithData = {
             user_name: username,
             // email: email,
@@ -108,7 +108,7 @@ const Post = (props) => {
                 'User-Agent': '*',
             },
             body: JSON.stringify(objectWithData),
-        }).then(data=>{console.log(data)})
+        }).then(data=>{console.log("deeleted subuser: ", data)})
         console.log("trying to delete a subuser ", ok);
     
 

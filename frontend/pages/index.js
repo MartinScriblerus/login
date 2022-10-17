@@ -13,7 +13,7 @@ import LoginWrapper from './login';
 export default function Home(props) {
 
   const { data: session } = useSession();
-  // console.log("session 1: ", session);
+  console.log("session in index: ", session);
   
   const router = useRouter()
   
@@ -23,17 +23,11 @@ export default function Home(props) {
   //   console.log("no session yet");
   // }
 
-  fetch('/api/getAllUsers', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': '*',
-    },
-  }).then(async response => {
+  fetch('/api/getAllUsers').then(async response => {
     try {
     console.log("what is response? ", response);
      const data = await response
-     console.log('response data from register api?', data)
+     console.log('response data from register api?', data.body)
    } catch(error) {
      console.log('Error happened here!')
      console.error(error)
