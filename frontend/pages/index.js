@@ -21,18 +21,16 @@ export default function Home(props) {
   console.log("session in index: ", session);
   console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
-  const listSubusers = useRef([])
+  let listSubusers = []
  let subusers = []
   if(session && session.user && props && props.allUsers){
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
-    listSubusers.current = fullUserData[0].subusers_array.map((i, subuser) =>
-    <li key={i.toString()} class="card">{subuser}</li>
- 
-  );
-    if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
-      subusers.push(fullUserData.current[0].subusers_array);
+    if(fullUserData.current.length > 0){
+      listSubusers = fullUserData.current[0].subusers_array.map((i, subuser) =>
+      <li key={i.toString()} class="card">{subuser}</li>
+      );
     }
   } else {
     // console.log("no session yet");
