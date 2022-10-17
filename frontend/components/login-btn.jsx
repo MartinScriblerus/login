@@ -28,7 +28,7 @@ export default function LogInOutButton(props, user) {
     const [passMismatch,setPassMisMatch]=useState(false);
     const [nameVerified,setNameVerified]=useState(true);
     const [hasMatchingNameCantSubmit,setHasMatchingNameCantSubmit]=useState(false);
-    const [allUsers,setAllUsers] = useState({});
+    const allUsers = useRef({});
 
     const router = useRouter();
     const nameRef = useRef('');
@@ -36,7 +36,7 @@ export default function LogInOutButton(props, user) {
     const passRef2 = useRef('');
 
     if(props.allUsers){
-        setAllUsers(props.allUsers);
+        allUsers.current = props.allUsers;
     }
 
     // TO-DO => Create new variable checking whether client is whitelisted as a sub-user  
@@ -97,8 +97,13 @@ export default function LogInOutButton(props, user) {
         if(name){
             nameRef.current = name.value;
         }
-        let matchingNames = allUsers.filter(i => i.user_name === nameRef.current);
-        if(matchingNames.length > 0){
+        let matchingNames;
+        try{
+        matchingNames = allUsers.current.filter(i => i.user_name === nameRef.current);
+        } catch(e){
+            console.log("err in filter: ", e);
+        }
+        if(matchingNames){
             console.log("ALREADY IN DB! ", matchingNames);
             setHasMatchingNameCantSubmit(true);
         } else {

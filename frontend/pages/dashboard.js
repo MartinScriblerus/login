@@ -5,7 +5,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css'
 import LogInOutButton from '../components/login-btn';
 // import LoginWrapper from './login'
-import {useState, useEffect} from 'react';
+import {useState, useRef} from 'react';
 import { getSession } from "next-auth/react";
 
 import { useRouter } from 'next/router';
@@ -45,11 +45,12 @@ async function RedirectPage() {
 
 export default function Dashboard({session},props){
     console.log("PROPS IN DASHBOARD: ", props);
-    const [allUsers,setAllUsers] = useState();
+    const allUsers = useRef();
     if(props && props.allUsers){
-        setAllUsers(props.allUsers)
+        allUsers.current = props.allUsers;
+        console.log("All Users in Dashboard: ", allUsers.current);
     }
-    console.log("All Users in Dashboard: ", allUsers);
+    
     // console.log("WHAT IS SESSION? ", session);
     const user = session?.user;
 
@@ -89,7 +90,7 @@ export default function Dashboard({session},props){
                             src={src}
                         />
                         This is a dashboard for logged in users only <br/>
-                        <LogInOutButton />
+                        <LogInOutButton allUsers={allUsers.current}/>
                     </h1>
                 </main>
             </div>
