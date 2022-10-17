@@ -13,15 +13,15 @@ import LoginWrapper from './login';
 export default function Home(props) {
 
   const { data: session } = useSession();
-  console.log("session 1: ", session);
+  // console.log("session 1: ", session);
   
   const router = useRouter()
   
-  if(session){
-    console.log('SESSION--------------- ', session);
-  } else {
-    console.log("no session yet");
-  }
+  // if(session){
+  //   console.log('SESSION--------------- ', session);
+  // } else {
+  //   console.log("no session yet");
+  // }
 
   return (
     <div id="pageWrapper" className={styles.container}>

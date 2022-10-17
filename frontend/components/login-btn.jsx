@@ -44,7 +44,8 @@ export default function LogInOutButton(user, props) {
             //session.user.name = 'default test'
         } 
 
-        console.log('in login-btn session', session);
+        //console.log('in login-btn session', session);
+        // TODO => ERROR CHECK HERE to stop break...
         const { pidAdmin } = session.user.email;
 
         let hasSpaces = false;

@@ -13,12 +13,12 @@ export default function LoginWrapper(props){
         
     //console.log("all users in login wrapper: ", props.allUserNames);
     const { data: session } = useSession();
-    console.log("session ", session);
-    if(session){
-        console.log('we have a session in /login: ', session);
-    } else {
-        console.log('no session yet it login');
-    }
+    // console.log("session ", session);
+    // if(session){
+    //     console.log('we have a session in /login: ', session);
+    // } else {
+    //     console.log('no session yet it login');
+    // }
 
     return(        
         <div className={styles.container}>

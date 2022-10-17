@@ -158,7 +158,7 @@ if(!passCheck){
       //   return session; 
       // }
       // return session;
-      console.log("session check ", session)
+      // console.log("session check ", session)
       if(!session){
         return;
       }

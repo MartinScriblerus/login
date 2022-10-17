@@ -48,11 +48,11 @@ export default function Dashboard({session}){
     const user = session?.user;
 
     console.log("------------------------------------------------")
-    console.log("user in dashboard: ", user);
-    console.log("session in dashboard : ", session);
+    // console.log("user in dashboard: ", user);
+    // console.log("session in dashboard : ", session);
 
     if(session && user){
-        console.log("IDENTIFY USER: ", user);
+        // console.log("IDENTIFY USER: ", user);
         let src = "https://www.icegif.com/wp-content/uploads/icegif-5590.gif";
     console.log("------------------------------------------------")
         return (
