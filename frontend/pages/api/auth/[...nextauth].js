@@ -71,36 +71,41 @@ export const authOptions = {
           image: "",
         }
 
+
+//==========
+let hashedPass = user.email;
+
+console.log("HASHED PASS IN NEXT AUTH: ", hashedPass);
+
+const confirmPasswordHash = (plainPassword, hashedPassword) => {
+  console.log(plainPassword)  
+  return new Promise(resolve => {
+        bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
+            resolve(res);
+            console.log("WHAT IS RES??? ", res)
+        });
+    })
+}
+
+let passCheck = confirmPasswordHash(req.body.email, hashedPass)
+
+if(!passCheck){
+  return null
+} else {
+  // console.log("is user in db? ", isUserInDB);
+}
+//==========
+
+
         return user;
       }
 
         let isUserInDB = getUserByName(req.body.username);
         
-        let hashedPass = isUserInDB.email;
-
-        console.log("HASHED PASS IN NEXT AUTH: ", hashedPass);
-
-        const confirmPasswordHash = (plainPassword, hashedPassword) => {
-          console.log(plainPassword)  
-          return new Promise(resolve => {
-                bcrypt.compare(plainPassword, hashedPassword, function(err, res) {
-                    resolve(res);
-                    console.log("WHAT IS RES??? ", res)
-                });
-            })
-        }
-        
-        let passCheck = await confirmPasswordHash(req.body.email, hashedPass)
-        if(!passCheck){
-          return null
-        } else {
-          console.log("is user in db? ", isUserInDB);
+      
+        console.log("is user in db? ", isUserInDB);
   
-          return isUserInDB;
-        }
-        // console.log("is user in db? ", isUserInDB);
-  
-        // return isUserInDB;
+        return isUserInDB;
       }
   })
  
