@@ -63,7 +63,7 @@ export default function Dashboard({session}){
         // console.log("IDENTIFY USER: ", user);
         let src = "https://www.icegif.com/wp-content/uploads/icegif-5590.gif";
         //console.log("------------------------------------------------")
-        console.log("USER: ", user);
+        //console.log("USER: ", user);
 
         return (
             <div className={styles.container}>

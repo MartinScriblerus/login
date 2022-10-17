@@ -28,7 +28,7 @@ export default function LoginWrapper(props){
   
 
    
-    console.log("props in login wrapper: ", props);
+    //console.log("props in login wrapper: ", props);
 
     return(        
         <div className={styles.container}>

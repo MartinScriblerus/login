@@ -77,7 +77,7 @@ const Post = (props) => {
                         // try to add subuser data 
                         if(data){
                         // setSubusersData(data);
-                            subusersData.current = JSON.parse(data);
+                            subusersData.current = data;
                             console.log("curr subusers: ", subusersData.current);
                         }
                         console.log('response data after addd user: ', data);
