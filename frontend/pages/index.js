@@ -27,16 +27,16 @@ export default function Home(props) {
     // console.log('SESSION--------------- ', session);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     console.log("FULL USER DATA: ", fullUserData.current);
-
+    if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
+      setSubusers(fullUserData.current[0].subusers_array);
+    }
   } else {
     // console.log("no session yet");
   }
 
-  useEffect(()=>{
-    if(fullUserData.current && fullUserData.current[0] && fullUserData.current[0].subusers_array){
-      setSubusers(fullUserData.current[0].subusers_array);
-    }
-  },[fullUserData,props])
+  // useEffect(()=>{
+
+  // },[fullUserData,props])
 
 
 
