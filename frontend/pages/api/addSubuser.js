@@ -34,13 +34,8 @@ export default async function postAddSubuser (req, res) {
 
         console.log("resultttt ", result);
 
-        let user = {
-          name: result[0].user_name,
-          email: result[0].email,
-          image: "",
-        }
 
-        return user;
+        return result;
         }
 
         let userToUpdate= getUserByName(req.body.user_name);
