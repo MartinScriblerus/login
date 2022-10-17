@@ -92,7 +92,7 @@ export default function Dashboard({session}){
                             src={src}
                         />
                         <span id="loggedInDashboardMsg">This is a dashboard for logged in users only</span> <br/>
-                        <LogInOutButton allUsers={allUsers.current}/>
+                        <LogInOutButton />
                     </h1>
                     {/* {
                         props && props.fullUserData
