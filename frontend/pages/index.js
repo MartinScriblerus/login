@@ -83,9 +83,10 @@ export default function Home(props) {
             flexDirection:"row",
             zIndex: 7,
             position: "absolute",
-            bottom: "60px",
+            bottom: "16%",
             width: "40%",
-            left: "30%"
+            left: "30%",
+            textAlign: "center"
           
             }}>
               <option selected disabled>--Subusers--</option>
