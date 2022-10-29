@@ -72,9 +72,16 @@ export default function LogInOutButton(props, user) {
         //router.push(`/post/${editedUsername}`)
         return (
         <div id="main">
-            <span style={{fontSize:"32px"}}>
+            <span style={{
+                fontSize: "52px",
+                width: "60%",
+                left: "22%",
+                textAlign: "center",
+                position: "absolute",
+                bottom: "60%"
+            }}>
                 Logged in as 
-                <span style={{color:"rgba(225,70,80,.9)"}}>
+                <span style={{color:"rgba(50,220,300,1)"}}>
                      {" " + session.user.name} <br/>
                 </span>
             </span>

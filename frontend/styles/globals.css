@@ -45,10 +45,11 @@ label {
 }
 
 button {
-  min-height: 52px;
-  min-width: 180px;
-  background-color: rgba(225,70,80,.9);
-  border: solid 1px transparent;
+  min-height: 44px;
+  min-width: 160px;
+  border:solid 1px rgba(50,220,300,1);
+  /* border: solid 1px transparent; */
+  background-color: transparent;
   border-radius: 32px;
   margin: 2%;
   color: rgba(255,255,255,0.9);
@@ -71,9 +72,27 @@ button:active {
 }
 
 #horizontalRow {
-  width: 100%;
-  /* display:flex; */
-  flex-direction: row;
+  width: 4rem;
+  display: flex;
+  flex-direction: column;
+  bottom: 12%;
+  position: absolute;
+  left: calc(50% - 4rem);
+}
+
+#unityStartBtn {
+  border: solid 1px rgba(50,220,300,1);
+  /* background-color: rgba(50,220,300,1); */
+  width: 4rem;
+  position: absolute;
+  left: calc(48% - 4rem);
+  bottom: 42%;
+  text-align: center;
+  justify-content: center;
+}
+
+#loginDashboardImg {
+  min-width:600px;
 }
 
 /* @media (prefers-color-scheme: dark) { */
@@ -84,7 +103,8 @@ button:active {
     /* color: white;
     background: black; */
     color:rgba(255,255,255,.8);
-    background: rgba(20,180,255,.8);
+    background: rgba(0,0,0,.9);
+ 
     overflow-y: hidden;
   }
 /* } */

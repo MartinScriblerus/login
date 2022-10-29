@@ -15,7 +15,7 @@ import getAllUsers from './api/getAllUsers';
 export default function Home(props) {
 
   const { data: session } = useSession();
-
+  const [inUnity,setInUnity] = useState(false);
   const fullUserData = useRef({});
   //console.log("PROPSS IN HOME: ", props);
   //console.log("session in index: ", session);
@@ -23,12 +23,20 @@ export default function Home(props) {
   const router = useRouter()
   let listSubusers = []
  let subusers = []
-  if(session && session.user && props){
+ console.log("sesh check: ", session);
+ //console.log("sesh user check: ", session.user);
+ console.log("props check: ", props);
+
+  if(session && props){
     // console.log('SESSION--------------- ', session);
+    console.log('full user data: ', fullUserData.current[0]);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
     //console.log("full user data: ", fullUserData.current);
-    if(fullUserData.current.length > 0){
+    if(fullUserData.current){
+      listSubusers = fullUserData.current[0].subusers_array.map(i=>i);
+    }
+    if(fullUserData.current){
       listSubusers = fullUserData.current[0].subusers_array.map((subuser, i) =>
       <option label={subuser} value={subuser} key={i}>{subuser}</option>
       );
@@ -36,11 +44,6 @@ export default function Home(props) {
   } else {
     // console.log("no session yet");
   }
-
-  // useEffect(()=>{
-
-  // },[fullUserData,props])
-
 
 
   return (
@@ -67,40 +70,43 @@ export default function Home(props) {
               {
                 session
               ?
-                <span style={{color:"rgba(225,70,80,.9)"}}> logged in</span>
+                <span style={{color:"rgba(50,220,300,1)"}}> logged in</span>
               :
-                <span style={{color:"rgba(225,70,80,.9)"}}> logged out</span>
+                <span style={{color:"rgba(50,220,300,1)"}}> logged out</span>
               }
             </h1>
             <LoginWrapper allUsers={props.allUsers}></LoginWrapper>
           </>
         :
           <>
-            <Dashboard session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>
-
-          <select style={{
-            display:"flex", 
-            flexDirection:"row",
-            zIndex: 7,
-            position: "absolute",
-            bottom: "16%",
-            width: "40%",
-            left: "30%",
-            textAlign: "center"
-          
-            }}>
-              <option selected disabled>--Subusers--</option>
-              {listSubusers}
-          </select>
       
-     
+            {/* <select style={{
+                display:"flex", 
+                id:"subusersSelect",
+                class:"select",
+                flexDirection:"row",
+                zIndex: 7,
+                position: "absolute",
+                top: "4%",
+                width: "8rem",
+                maxWidth: "8rem",
+                right: "2rem",
+                textAlign: "center",
+                borderRadius:"24px",
+                border: "solid 1px rgba(50,220,300,1)"
+                }}    
+            >
+                    <option  disabled>--Subusers--</option>
+                    {listSubusers}
+                </select> */}
+            <Dashboard inUnity={setInUnity} listSubusers={listSubusers} session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>     
           </>
         }
 
       </main>
 
       <footer className={styles.footer}>
-
+{/* Hello */}
       </footer>
     </div>
   )
