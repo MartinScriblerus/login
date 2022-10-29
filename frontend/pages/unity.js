@@ -5,7 +5,14 @@ import { Unity, UnityEvent } from "react-unity-webgl";
 import React, { useEffect, useState, useRef } from "react";
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 import LoadingBar from "../components/loadingBar";
-
+import LocalDataUI from '../components/LocalDataUI';
+import LocalViewUI from '../components/LocalViewUI';
+import GlocalDataUI from '../components/GlocalDataUI';
+import GlocalViewUI from '../components/GlocalViewUI';
+import LobalDataUI from '../components/LobalDataUI';
+import LobalViewUI from '../components/LobalViewUI';
+import GlobalDataUI from '../components/GlobalDataUI';
+import GlobalViewUI from '../components/GlobalViewUI';
 
 
 
@@ -16,6 +23,8 @@ export default function UnityWebGLBuild(props){
 
     const [unity,setUnity] = useState([]);
     const [cameraHeightInput,setCameraHeightInput]=useState(225);
+    const [cameraProjectionLevel,setCameraProjectionLevel]=useState(3);
+
     const [isRecording,setIsRecording] = useState(false);
     const [audioTrack,setAudioTrack] = useState({});
     
@@ -53,12 +62,24 @@ export default function UnityWebGLBuild(props){
     function handleAddPress(){
         console.log("cam height input: ", cameraHeightInput);
         setCameraHeightInput(cameraHeightInput + 25);
+        if(cameraProjectionLevel === 7){
+            console.log("toggle disable up button here!");
+            return;
+        }
+        setCameraProjectionLevel(cameraProjectionLevel + 1);
+        props.sendMessage("MainCamera","CameraProjection",cameraProjectionLevel);
         props.sendMessage("MainCamera", "CameraHeight", cameraHeightInput);
     };
 
     function handleDeletePress(){
         console.log("cam height input in delete: ", cameraHeightInput);
         setCameraHeightInput(cameraHeightInput - 25);
+        if(cameraProjectionLevel === 0){
+            console.log("toggle disable down button here!");
+            return;
+        }
+        setCameraProjectionLevel(cameraProjectionLevel - 1);
+        props.sendMessage("MainCamera","CameraProjection",cameraProjectionLevel);
         props.sendMessage("MainCamera", "CameraHeight", cameraHeightInput);
     };
 
@@ -181,7 +202,7 @@ export default function UnityWebGLBuild(props){
         }
     }
         
-        
+        console.log("PROJ LEVEL: ", cameraProjectionLevel);
 
     return (
         <>
@@ -215,13 +236,101 @@ export default function UnityWebGLBuild(props){
             {/* <button style={{position:"absolute",bottom:"0rem",left:"0rem",height:"4rem",width:"4rem", minWidth:"4rem"}} onClick={handleAddPress}>up</button>
             <button style={{position:"absolute",bottom:"0rem",left:"5rem",height:"4rem",width:"4rem", minWidth:"4rem"}} onClick={handleDeletePress}>down</button> */}
 
-  {
-    props.loadingProgression < 1
-        ?
-            <LoadingBar style={{position:"absolute"}} loadingProgression={props.loadingProgression} />
-        :
-        null
-  }
+        {
+            props.loadingProgression < 1
+                ?
+                    <LoadingBar style={{position:"absolute"}} loadingProgression={props.loadingProgression} />
+                :
+                null
+        }
+        <span style={{position:"absolute",right:"4rem"}}>{cameraProjectionLevel}</span>
+        {
+            cameraProjectionLevel === 0
+            ?
+            <LocalDataUI/>
+            :
+            cameraProjectionLevel === 1
+            ?
+            <LocalViewUI/>
+            :
+            cameraProjectionLevel === 2
+            ?
+            <GlocalDataUI/>
+            :
+            cameraProjectionLevel === 3
+            ?
+            <GlocalViewUI/>
+            :
+            cameraProjectionLevel === 4
+            ?
+            <LobalDataUI/>
+            :            
+            cameraProjectionLevel === 5
+            ?
+            <LobalViewUI/>
+            :
+            cameraProjectionLevel === 6
+            ?
+            <>
+            <span>HEYA</span>
+            <GlobalDataUI/>
+            </>
+            :
+            cameraProjectionLevel === 7
+            ?
+            <GlobalViewUI/>
+            :
+            null
+        }
+        {/* {
+            cameraProjectionLevel === 1
+            ?
+            <LocalViewUI/>
+            :
+            null
+        }
+        {
+            cameraProjectionLevel === 2
+            ?
+            <GlocalDataUI/>
+            :
+            null
+        }
+        {
+            cameraProjectionLevel === 3
+            ?
+            <GlocalViewUI/>
+            :
+            null
+        }
+        {
+            cameraProjectionLevel === 4
+            ?
+            <LobalDataUI/>
+            :
+            null
+        }
+        {
+            cameraProjectionLevel === 5
+            ?
+            <LobalViewUI/>
+            :
+            null
+        }
+        {
+            cameraProjectionLevel === 6
+            ?
+            <GlobalDataUI/>
+            :
+            null
+        }
+        {
+            cameraProjectionLevel === 7
+            ?
+            <GlobalViewUI/>
+            :
+            null
+        } */}
         {
         unity
         ?
