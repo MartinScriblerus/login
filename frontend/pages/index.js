@@ -23,9 +23,9 @@ export default function Home(props) {
   const router = useRouter()
   let listSubusers = []
  let subusers = []
- console.log("sesh check: ", session);
+ //console.log("sesh check: ", session);
  //console.log("sesh user check: ", session.user);
- console.log("props check: ", props);
+ //console.log("props check: ", props);
 
   if(session && props){
     // console.log('SESSION--------------- ', session);

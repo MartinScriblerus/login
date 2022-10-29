@@ -95,69 +95,6 @@ export default function UnityWebGLBuild(props){
         navigator.mozGetUserMedia ||
         navigator.msGetUserMedia;
     }
-    async function tryGetRecorder(aCtx,analyser,microphone,stream){
-        console.log("uuuuu stream? ", stream);
-        // creates the audio context
-        if (typeof window !== 'undefined') {
-            window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        }
-        let context = new AudioContext();
-
-        // creates an audio node from the microphone incoming stream
-        let mediaStream = context.createMediaStreamSource(stream);
-       
-        console.log("HERE IS MEDIASTREAM: ", mediaStream);
-        // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/createScriptProcessor
-        var bufferSize = 2048;
-        var numberOfInputChannels = 2;
-        var numberOfOutputChannels = 2;
-        console.log("here is context ", context);
-        if (context.createScriptProcessor) {
-            recorder = context.createScriptProcessor(bufferSize, numberOfInputChannels, numberOfOutputChannels);
-        } else {
-            recorder = context.createJavaScriptNode(bufferSize, numberOfInputChannels, numberOfOutputChannels);
-        }
-        var leftchannel = [];
-        var rightchannel = [];
-        var recordingLength = 0;
-        console.log("uuuum recorder: ", recorder);
-        recorder.onaudioprocess = function (e) {
-            leftchannel.push(new Float32Array(e.inputBuffer.getChannelData(0)));
-            rightchannel.push(new Float32Array(e.inputBuffer.getChannelData(1)));
-            recordingLength += bufferSize;
-            // we connect the recorder with the input stream
-            mediaStream.connect(recorder);
-            recorder.connect(context.destination);
-            console.log("HAVE WEE GOT A RECORDER? ", recorder);
-        }
-
-        
-
-        var leftBuffer = flattenArray(leftchannel, recordingLength); // flattenArray is on GitHub (see below)
-        var rightBuffer = flattenArray(rightchannel, recordingLength);
-
-        // we interleave both channels together
-        // [left[0],right[0],left[1],right[1],...]
-        var interleaved = interleave(leftBuffer, rightBuffer); // interleave is on GitHub (see below)
-
-        // we create our wav file
-        var buffer = new ArrayBuffer(44 + interleaved.length * 2);
-        console.log("BUFFER IS: ", buffer);   
-        // if(!isRecording){
-        //     console.log("BUFFER!!! ", buffer);
-        //     // if(audioContext == null)
-        //     //     return;
-            
-        //     recorder.disconnect(audioContext.destination);
-        //     microphone.disconnect(recorder);
-            
-        //     audioContext = null;
-        //     recorder = null;
-        //     microphone = null;
-        // }   
-    }
-
-    const aCtx = new AudioContext();
 
     function toggleRecording(){
         if(isRecording){
@@ -244,32 +181,7 @@ export default function UnityWebGLBuild(props){
         }
     }
         
-          
-
-
-
-            //     function(stream) {
-            //     // setAudioTrack(stream.getTracks());
-            //     console.log("?@?@?@? ", stream.getTracks()[0]);
-            //     stream.getTracks()[0].enabled = false;
-           
-            //     const analyser = aCtx.createAnalyser();
-            //     const microphone = aCtx.createMediaStreamSource(stream);
-            //     microphone.connect(analyser);
-            //     analyser.connect(aCtx.destination);
-            //     props.sendMessage("Managers", "TryGetMic");
-            //     tryGetRecorder(aCtx,analyser,microphone,stream);
-            // }, 
-            // function (){console.warn("Error getting audio stream from getUserMedia")},
-            // function (e) {
-            //     // should tryGetRecorder go here?                             
-            // })
-        // } else {
-        //     console.log('loooook here: ', aCtx);
-        // }
-    
-
-
+        
 
     return (
         <>
