@@ -46,6 +46,7 @@ export default function Dashboard({session, listSubusers}, props){
     const [latitude,setLatitude] = useState(0);
     const [longitude,setLongitude] = useState(0);
     const [startedUnity,setStartedUnity] = useState(false);
+    const [parsedProg,setParsedProg]=useState(0);
     const [awake,setAwake] = useState(true)
 
     if (typeof window !== 'undefined' && awake === true) {
