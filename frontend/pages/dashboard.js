@@ -41,13 +41,18 @@ export default function Dashboard({session, listSubusers}, props){
         codeUrl: "ResearchBuild/Build/ResearchBuild.wasm",
     });
     
-    const [width, setWidth] = useState(window.innerWidth);
-    const [height, setHeight] = useState(window.innerHeight);
+    const [width, setWidth] = useState(800);
+    const [height, setHeight] = useState(800);
     const [latitude,setLatitude] = useState(0);
     const [longitude,setLongitude] = useState(0);
     const [startedUnity,setStartedUnity] = useState(false);
+    const [awake,setAwake] = useState(true)
 
-
+    if (typeof window !== 'undefined' && awake === true) {
+        setWidth(window.innerWidth);
+        setHeight(window.innerHeight);
+        setAwake(false);
+    }
 
     console.log("LOADING PROG: ", loadingProgression);
 
@@ -59,18 +64,21 @@ export default function Dashboard({session, listSubusers}, props){
     
       // UI MAIN TICK
       useEffect(() => {
-
+        
         const updateWindowDimensions = () => {
-          const newWidth = window.innerWidth;
-          const newHeight = window.innerHeight;
-          setWidth(newWidth);
-          setHeight(newHeight);
-          console.log("updating width");
+            if (typeof window !== 'undefined') {  
+                const newWidth = window.innerWidth;
+                const newHeight = window.innerHeight;
+                setWidth(newWidth);
+                setHeight(newHeight);
+                console.log("updating width");
+            }
         };
     
-        window.addEventListener("resize", updateWindowDimensions);
+            window.addEventListener("resize", updateWindowDimensions);
     
-        return () => window.removeEventListener("resize", updateWindowDimensions) 
+            return () => window.removeEventListener("resize", updateWindowDimensions) 
+   
     }, []);
 
     async function getUserPosition(){
@@ -81,7 +89,7 @@ export default function Dashboard({session, listSubusers}, props){
         };
         function success(pos) {
             const crd = pos.coords;
-        
+            
             setLongitude(crd.longitude);
             setLatitude(crd.latitude);
             console.log('Your current position is:');

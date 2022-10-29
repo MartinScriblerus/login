@@ -89,15 +89,18 @@ export default function UnityWebGLBuild(props){
     
   
     let recorder;
-    navigator.getUserMedia = navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia;
-
+    if (typeof window !== 'undefined') {
+        navigator.getUserMedia = navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
+    }
     async function tryGetRecorder(aCtx,analyser,microphone,stream){
         console.log("uuuuu stream? ", stream);
         // creates the audio context
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (typeof window !== 'undefined') {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        }
         let context = new AudioContext();
 
         // creates an audio node from the microphone incoming stream
@@ -166,78 +169,79 @@ export default function UnityWebGLBuild(props){
         const aCtx = new AudioContext();
         console.log("in isRecording");
 
-
-        navigator.mediaDevices.getUserMedia({audio: true}
-            
-            
-            ).then((stream) => {
-            const mediaRecorder = new MediaRecorder(stream);
-            console.log("STREAM: ", stream);
-            console.log("?@?@?@? ", stream.getTracks()[0]);
-            stream.getTracks()[0].enabled = false;
-
-            if(isRecording && mediaRecorder.state === active){
-                mediaRecorder.stop();
-                console.log("recorder stopped");
-                isRecordingRef.current.innerText = "hey " + isRecording; 
+        if (typeof navigator !== 'undefined') {
+            navigator.mediaDevices.getUserMedia({audio: true}
                 
-            } else if (isRecording && mediaRecorder.state === inactive){
-                console.log("media recorder should be inactive: ", mediaRecorder.state);
-            } 
-            else {
-                mediaRecorder.start();
-                console.log("recorder started");
-                isRecordingRef.current.innerText = "look " + isRecording;
-            }
+                
+                ).then((stream) => {
+                const mediaRecorder = new MediaRecorder(stream);
+                console.log("STREAM: ", stream);
+                console.log("?@?@?@? ", stream.getTracks()[0]);
+                stream.getTracks()[0].enabled = false;
 
-            mediaRecorder.onstop = (e) => {
-                console.log("data available after MediaRecorder.stop() called.");
+                if(isRecording && mediaRecorder.state === active){
+                    mediaRecorder.stop();
+                    console.log("recorder stopped");
+                    isRecordingRef.current.innerText = "hey " + isRecording; 
+                    
+                } else if (isRecording && mediaRecorder.state === inactive){
+                    console.log("media recorder should be inactive: ", mediaRecorder.state);
+                } 
+                else {
+                    mediaRecorder.start();
+                    console.log("recorder started");
+                    isRecordingRef.current.innerText = "look " + isRecording;
+                }
 
-                const clipName = prompt("Enter a name for your sound clip");
-        
-                const clipContainer = document.createElement("article");
-                const clipLabel = document.createElement("p");
-                const audio = document.createElement("audio");
-                const deleteButton = document.createElement("button");
-        
-                clipContainer.classList.add("clip");
-                audio.setAttribute("controls", "");
-                deleteButton.textContent = "Delete";
-                clipLabel.textContent = clipName;
-        
-                clipContainer.appendChild(audio);
-                clipContainer.appendChild(clipLabel);
-                clipContainer.appendChild(deleteButton);
-                soundClips.appendChild(clipContainer);
-        
-                audio.controls = true;
-                const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-                chunks = [];
-                const audioURL = URL.createObjectURL(blob);
-                audio.src = audioURL;
-                console.log("recorder stopped");
-        
-                deleteButton.onclick = (e) => {
-                  const evtTgt = e.target;
-                  evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-                };
-            };   
+                mediaRecorder.onstop = (e) => {
+                    console.log("data available after MediaRecorder.stop() called.");
+
+                    const clipName = prompt("Enter a name for your sound clip");
             
-            const analyser = aCtx.createAnalyser();
-            const microphone = aCtx.createMediaStreamSource(stream);
-            microphone.connect(analyser);
-            analyser.connect(aCtx.destination);
-            props.sendMessage("Managers", "TryGetMic");
-            mediaRecorder.ondataavailable = (e) => {
-                chunks.push(e.data);
-                console.log("chunks: ", chunks);
-            };
-            console.log("mediaRecorder: ", mediaRecorder);
+                    const clipContainer = document.createElement("article");
+                    const clipLabel = document.createElement("p");
+                    const audio = document.createElement("audio");
+                    const deleteButton = document.createElement("button");
+            
+                    clipContainer.classList.add("clip");
+                    audio.setAttribute("controls", "");
+                    deleteButton.textContent = "Delete";
+                    clipLabel.textContent = clipName;
+            
+                    clipContainer.appendChild(audio);
+                    clipContainer.appendChild(clipLabel);
+                    clipContainer.appendChild(deleteButton);
+                    soundClips.appendChild(clipContainer);
+            
+                    audio.controls = true;
+                    const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+                    chunks = [];
+                    const audioURL = URL.createObjectURL(blob);
+                    audio.src = audioURL;
+                    console.log("recorder stopped");
+            
+                    deleteButton.onclick = (e) => {
+                    const evtTgt = e.target;
+                    evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+                    };
+                };   
+                
+                const analyser = aCtx.createAnalyser();
+                const microphone = aCtx.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+                analyser.connect(aCtx.destination);
+                props.sendMessage("Managers", "TryGetMic");
+                mediaRecorder.ondataavailable = (e) => {
+                    chunks.push(e.data);
+                    console.log("chunks: ", chunks);
+                };
+                console.log("mediaRecorder: ", mediaRecorder);
 
-        })
-        .catch((err) => {
-            console.error(`The following error occurred: ${err}`);
-        });
+            })
+            .catch((err) => {
+                console.error(`The following error occurred: ${err}`);
+            });
+        }
     }
         
           
@@ -314,7 +318,13 @@ export default function UnityWebGLBuild(props){
             null
         }
         {/* <div id="map" style={{ position:"absolute",top:"0rem",left:"0rem", height: 100, width: 100 }}></div> */}
-        <button style={{position:"absolute",bottom:"2rem"}} onClick={handleClickSpawnEnemies}>Spawn Enemies</button>
+        {
+            unity
+            ?
+                <button style={{position:"absolute",bottom:"2rem",right:"2rem"}} onClick={handleClickSpawnEnemies}>Get GeoJSON</button>
+            :
+                null
+        }
         </>
     )
 }
