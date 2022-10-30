@@ -13,6 +13,7 @@ import LobalDataUI from '../components/LobalDataUI';
 import LobalViewUI from '../components/LobalViewUI';
 import GlobalDataUI from '../components/GlobalDataUI';
 import GlobalViewUI from '../components/GlobalViewUI';
+import { fetchData } from 'next-auth/client/_utils';
 
 
 
@@ -39,7 +40,7 @@ export default function UnityWebGLBuild(props){
         }
         console.log("update cam height to ",Math.round(cameraHeightInput));
         
-        props.sendMessage("MainCamera", "CameraHeight",Math.round(cameraHeightInput));
+        //props.sendMessage("MainCamera", "CameraHeight",Math.round(cameraHeightInput));
 
         let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
         .then((response) => response.json())
@@ -53,6 +54,37 @@ export default function UnityWebGLBuild(props){
         setUnity(<Unity style={{width:props.width, height:props.height, minHeight:"100vh"}} key={1} id="unityWindow" unityProvider={props.unityProvider} />)
        
     },[props.unityProvider, props.width, props.height])
+
+
+    function handleKeyDown(event) {
+        console.log(event.keyCode);
+        switch( event.keyCode ) {
+          case 87:
+              props.sendMessage("CameraParentObject","RotateUp");
+              break;
+          case 65:
+              props.sendMessage("CameraParentObject","RotateLeft");
+              break;
+          case 83:
+              props.sendMessage("CameraParentObject","RotateDown");
+              break;
+          case 68:
+              props.sendMessage("CameraParentObject","RotateRight");
+              break;
+          default: 
+              break;
+      }
+      }
+
+    useEffect(() => {
+    
+        document.addEventListener('keydown', handleKeyDown);
+    
+        // Don't forget to clean up
+        return function cleanup() {
+          document.removeEventListener('keydown', handleKeyDown);
+        }
+      });
 
     useEffect(()=>{
         props.sendMessage("MainCamera", "UserLongitude", props.longitude);
@@ -68,7 +100,7 @@ export default function UnityWebGLBuild(props){
         }
         setCameraProjectionLevel(cameraProjectionLevel + 1);
         props.sendMessage("MainCamera","CameraProjection",cameraProjectionLevel);
-        props.sendMessage("MainCamera", "CameraHeight", cameraHeightInput);
+        //props.sendMessage("MainCamera", "CameraHeight", cameraHeightInput);
     };
 
     function handleDeletePress(){
@@ -80,7 +112,7 @@ export default function UnityWebGLBuild(props){
         }
         setCameraProjectionLevel(cameraProjectionLevel - 1);
         props.sendMessage("MainCamera","CameraProjection",cameraProjectionLevel);
-        props.sendMessage("MainCamera", "CameraHeight", cameraHeightInput);
+        //props.sendMessage("MainCamera", "CameraHeight", cameraHeightInput);
     };
 
     function flattenArray(channelBuffer, recordingLength) {
@@ -108,7 +140,6 @@ export default function UnityWebGLBuild(props){
         return result;
     }
     
-  
     let recorder;
     if (typeof window !== 'undefined') {
         navigator.getUserMedia = navigator.getUserMedia ||
@@ -116,6 +147,40 @@ export default function UnityWebGLBuild(props){
         navigator.mozGetUserMedia ||
         navigator.msGetUserMedia;
     }
+
+    useEffect(()=>{
+        async function sendData(){
+            if(cameraProjectionLevel === 0){
+                let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
+                .then((response) => response.json())
+                .then((data) => {
+                    props.sendMessage("InteropController","GetMap", JSON.stringify(data));
+                });  
+            }
+            if(cameraProjectionLevel === 2){
+                let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
+                .then((response) => response.json())
+                .then((data) => {
+                    props.sendMessage("InteropController","GetMap", JSON.stringify(data));
+                });  
+            }
+            if(cameraProjectionLevel === 4){
+                let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
+                .then((response) => response.json())
+                .then((data) => {
+                    props.sendMessage("InteropController","GetMap", JSON.stringify(data));
+                });  
+            }
+            if(cameraProjectionLevel === 6){
+                let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
+                .then((response) => response.json())
+                .then((data) => {
+                    props.sendMessage("InteropController","GetMap", JSON.stringify(data));
+                });  
+            }
+        }
+        sendData();
+    },[cameraProjectionLevel,props])
 
     function toggleRecording(){
         if(isRecording){
@@ -204,6 +269,22 @@ export default function UnityWebGLBuild(props){
         
         console.log("PROJ LEVEL: ", cameraProjectionLevel);
 
+    // function handleRotUpPress(){
+    //     props.sendMessage("CameraParentObject","RotateUp");
+    // }
+
+    // function handleRotLeftPress(){
+    //     props.sendMessage("CameraParentObject","RotateLeft");
+    // }
+
+    // function handleRotRightPress(){
+    //     props.sendMessage("CameraParentObject","RotateRight");
+    // }
+
+    // function handleRotDownPress(){
+    //     props.sendMessage("CameraParentObject","RotateDown");
+    // }
+
     return (
         <>
         <Head>
@@ -227,6 +308,13 @@ export default function UnityWebGLBuild(props){
                             <span>Start Recording</span>
                         }
                     </button>
+                    {/* <div style={{width:"4rem",pointerEvents:"none"}}>
+                        <button style={{position:"absolute",pointerEvents:"all",bottom:"12rem",left:"3rem",height:"4rem",width:"4rem", minWidth:"4rem"}} onClick={handleRotUpPress}>rot up</button><br/>
+                        <button style={{position:"absolute",pointerEvents:"all",bottom:"8rem",left:"0rem",height:"4rem",width:"4rem", minWidth:"2rem"}} onClick={handleRotLeftPress}>rot left</button>
+                        <button style={{position:"absolute",pointerEvents:"all",bottom:"8rem",left:"6rem",height:"4rem",width:"4rem", minWidth:"2rem"}} onClick={handleRotRightPress}>rot right</button><br/>
+                        <button style={{position:"absolute",pointerEvents:"all",bottom:"4rem",left:"3rem",height:"4rem",width:"4rem", minWidth:"4rem"}} onClick={handleRotDownPress}>rot down</button>
+
+                    </div> */}
                     <button style={{position:"absolute",bottom:"0rem",left:"0rem",height:"4rem",width:"4rem", minWidth:"4rem"}} onClick={handleAddPress}>up</button>
                     <button style={{position:"absolute",bottom:"0rem",left:"5rem",height:"4rem",width:"4rem", minWidth:"4rem"}} onClick={handleDeletePress}>down</button>
                 </>
