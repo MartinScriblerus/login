@@ -51,7 +51,7 @@ button {
   /* border: solid 1px transparent; */
   background-color: transparent;
   border-radius: 32px;
-  margin: 2%;
+  /* margin: 2%; */
   color: rgba(255,255,255,0.9);
   font-weight: 100;
   font-size: 20px;
@@ -75,9 +75,9 @@ button:active {
   width: 4rem;
   display: flex;
   flex-direction: column;
-  bottom: 12%;
+  bottom: 4%;
   position: absolute;
-  left: calc(50% - 4rem);
+  right:8rem;
 }
 
 #unityStartBtn {
@@ -112,4 +112,16 @@ button:active {
 .__next-auth-theme-auto, .__next-auth-theme-dark {
   --color-background: rgba(20,180,255,.8);
   --color-text: rgba(255,255,255,.8);
+}
+
+.vmsg-record-row {
+  position: absolute;
+  right:1rem;
+  top:11rem;
+}
+
+.vmsg-popup, audio {
+  position: absolute;
+  right:1rem;
+  top: 13rem;
 }

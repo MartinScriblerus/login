@@ -2268,26 +2268,26 @@ var tempDouble;
 var tempI64;
 
 var ASM_CONSTS = {
- 5082216: function() {
+ 5082632: function() {
   Module["emscripten_get_now_backup"] = performance.now;
  },
- 5082271: function($0) {
+ 5082687: function($0) {
   performance.now = function() {
    return $0;
   };
  },
- 5082319: function($0) {
+ 5082735: function($0) {
   performance.now = function() {
    return $0;
   };
  },
- 5082367: function() {
+ 5082783: function() {
   performance.now = Module["emscripten_get_now_backup"];
  },
- 5082422: function() {
+ 5082838: function() {
   return Module.webglContextAttributes.premultipliedAlpha;
  },
- 5082483: function() {
+ 5082899: function() {
   return Module.webglContextAttributes.preserveDrawingBuffer;
  }
 };
@@ -2632,15 +2632,6 @@ function _JS_DOM_UnityCanvasSelector() {
   _JS_DOM_UnityCanvasSelector.ptr = stringToNewUTF8(canvasSelector);
  }
  return _JS_DOM_UnityCanvasSelector.ptr;
-}
-
-function _JS_Eval_EvalJS(ptr) {
- var str = UTF8ToString(ptr);
- try {
-  eval(str);
- } catch (exception) {
-  console.error(exception);
- }
 }
 
 function _JS_Eval_OpenURL(ptr) {
@@ -14862,7 +14853,6 @@ var asmLibraryArg = {
  "JS_Cursor_SetShow": _JS_Cursor_SetShow,
  "JS_DOM_MapViewportCoordinateToElementLocalCoordinate": _JS_DOM_MapViewportCoordinateToElementLocalCoordinate,
  "JS_DOM_UnityCanvasSelector": _JS_DOM_UnityCanvasSelector,
- "JS_Eval_EvalJS": _JS_Eval_EvalJS,
  "JS_Eval_OpenURL": _JS_Eval_OpenURL,
  "JS_FileSystem_Initialize": _JS_FileSystem_Initialize,
  "JS_FileSystem_Sync": _JS_FileSystem_Sync,

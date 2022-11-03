@@ -33,7 +33,7 @@ export default function Home(props) {
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
     //console.log("full user data: ", fullUserData.current);
-    if(fullUserData.current){
+    if(fullUserData.current && fullUserData.current[0].subusers_array){
       listSubusers = fullUserData.current[0].subusers_array.map(i=>i);
     }
     if(fullUserData.current){

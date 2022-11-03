@@ -73,9 +73,9 @@ export default function LogInOutButton(props, user) {
         return (
         <div id="main">
             <span style={{
-                fontSize: "52px",
+                fontSize: "32px",
                 width: "60%",
-                left: "22%",
+                left: "20%",
                 textAlign: "center",
                 position: "absolute",
                 bottom: "60%"

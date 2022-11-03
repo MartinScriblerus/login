@@ -135,7 +135,7 @@ export default function Dashboard({session, listSubusers}, props){
                     {
                     startedUnity
                     ?
-                        <Unity style={{minHeight:"100%"}} width={width} height={height} unityProvider={unityProvider} sendMessage={sendMessage} longitude={longitude} latitude={latitude} loadingProgression={loadingProgression}></Unity>
+                        <Unity style={{minHeight:"100%", zIndex:9999,pointerEvents:"all"}} width={width} height={height} unityProvider={unityProvider} sendMessage={sendMessage} longitude={longitude} latitude={latitude} loadingProgression={loadingProgression}></Unity>
                
                     // ADD NEW PATH
                     :
@@ -171,26 +171,35 @@ export default function Dashboard({session, listSubusers}, props){
  
                         <LogInOutButton />
                     </h1>
-                    <button id="unityStartBtn" onClick={startUnity}>Start</button>
-                    <select style={{
-                        display:"flex", 
-                        id:"subusersSelect",
-                        class:"select",
-                        flexDirection:"row",
-                        zIndex: 7,
-                        position: "absolute",
-                        top: "4%",
-                        width: "10rem",
-                        maxWidth: "10rem",
-                        right: "2rem",
-                        textAlign: "center",
-                        borderRadius:"24px",
-                        border: "solid 1px rgba(50,220,300,1)"
-                    }}    
+                    <button id="unityStartBtn" style={{marginBottom:"12px"}} onClick={startUnity}>Start</button>
+                    <select 
+                        defaultValue={"--Aliases--"}
+                        style={{
+                            display:"flex", 
+                            id:"subusersSelect",
+                            class:"select",
+                            flexDirection:"row",
+                            zIndex: 7,
+                            width: "100%",
+                            position: "absolute",
+                            right: "2rem",
+                            bottom: "9rem",
+                            textAlign:"center",
+                            justifyContent: "center",
+                            textAlign: "center",
+                            borderRadius:"24px",
+                            border: "solid 1px rgba(50,220,300,1)",
+                            background:"transparent",
+                            maxWidth:"10rem",
+                            position:"absolute"    
+                        }}    
                     >
-                    <option  disabled>--Subusers--</option>
+                    
+                    <option disabled>--Aliases--</option>
                     {listSubusers}
                 </select>
+                    <h1 style={{fontSize:"64px",position:"absolute",color:"rgba(50,220,300,1)",width:"100%",textAlign:"center",top:"2rem"}}>Commons</h1>
+                    
                     </>
                 }
                 </main>
