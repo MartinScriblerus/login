@@ -15,34 +15,47 @@ import GlobalDataUI from '../components/GlobalDataView';
 import GlobalViewUI from '../components/VRView';
 import { fetchData } from 'next-auth/client/_utils';
 import {record} from "../components/vmsg";
+const { InteractiveBrowserCredential } = require("@azure/identity");
+const { BlobServiceClient } = require("@azure/storage-blob");
 
+
+async function uploadFileToBlob(blobService,file) {
+    if (!file) return [];
+    let containerName = "audiofiles"
+    // get Container - full public read access
+    const containerClient = blobService.getContainerClient(containerName);
+    await containerClient.createIfNotExists({
+        access: 'container',
+    });
+
+    // upload file
+    await createBlobInContainer(containerClient, file);
+
+    // get list of blobs in container
+    return getBlobsInContainer(containerClient);
+};
 
 export default function UnityWebGLBuild(props){
-
-
-    console.log("PROPS: ", props);
-
+    
     const [unity,setUnity] = useState([]);
-    //const [cameraHeightInput,setCameraHeightInput]=useState(55);
-
     const [isRecording,setIsRecording] = useState(false);
-    const [audioTrack,setAudioTrack] = useState({});
     const [deviceStateNum, setDeviceStateNum] = useState(3);
+    const [audioUploadState,setAudioUploadState] = useState();
     const valueRef = useRef('');
-    valueRef.current = 'Campus';
+    valueRef.current = 'Campus View';
     const isRecordingRef = useRef();
     const soundClips = useRef();
    
     
-    async function handleClickSpawnEnemies() {
-        
-        let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
-        .then((response) => response.json())
-        .then((data) => {
-            props.sendMessage("InteropController","GetMap", JSON.stringify(data));
-        });   
-    }
+    // async function handleClickSpawnEnemies() {
+    //     let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         props.sendMessage("InteropController","GetMap", JSON.stringify(data));
+    //     });   
+    // }
 
+    // The Unity Game Component
     useEffect(()=>{
     
         setUnity(<Unity style={{width:props.width, height:props.height, minHeight:"100vh"}} key={1} id="unityWindow" unityProvider={props.unityProvider} />)
@@ -73,8 +86,8 @@ export default function UnityWebGLBuild(props){
                 break;
             // case 86:
             //     props.sendMessage("MainCamera","CameraStyle");
-          default: 
-              break;
+            default: 
+                break;
         }
     }
 
@@ -92,49 +105,39 @@ export default function UnityWebGLBuild(props){
     },[props, props.longitude, props.latitude])
     
     function handleDeviceSelect(num){
-        
         document.getElementById('deviceDropdown').value = num;
-        console.log("WTF IS NUM??? ", num);
         updateView(num);       
         
         switch(num){
             case 'AR Data':
-                console.log("...in AR Data");
                 setDeviceStateNum(0);
                 props.sendMessage("MainCamera","CameraProjection",0);
                 break;
             case 'AR':
-                console.log("...in AR");
                 setDeviceStateNum(1);
                 props.sendMessage("MainCamera","CameraProjection",1);
                 break;
-            case 'Campus':
-                console.log("...in Campus (default)");
+            case 'Campus View':
                 setDeviceStateNum(3);
                 props.sendMessage("MainCamera","CameraProjection",3);
                 break;
             case 'Campus Data':
                 setDeviceStateNum(2);
-                console.log("...in Campus Data");
                 props.sendMessage("MainCamera","CameraProjection",2);
                 break;
             case 'VR':
-                console.log("...in VR");
                 setDeviceStateNum(7);
                 props.sendMessage("MainCamera","CameraProjection",7);
                 break;
             case 'Cardboard VR':
-                console.log("...in Cardboard VR");
                 setDeviceStateNum(5);
                 props.sendMessage("MainCamera","CameraProjection",5);
                 break;
             case 'Hololens':
-                console.log("...in Global Hololens");
                 setDeviceStateNum(4)
                 props.sendMessage("MainCamera","CameraProjection",4);
                 break;
             case 'Global Data':
-                console.log("...in Global Data");
                 setDeviceStateNum(6);
                 props.sendMessage("MainCamera","CameraProjection",6);
                 break;
@@ -176,6 +179,94 @@ export default function UnityWebGLBuild(props){
         sendData();
     }
 
+    async function uploadToAzureBlob(form,blobName){
+        if(!props.blobServiceClient){
+            return;
+        } else {
+            // console.log(props.blobServiceClient);
+        }
+
+        console.log("FORM IN UPLOAD: ", form);
+        console.log("WTF ISS THIS? ", props.blobServiceClient);
+        
+        const signInOptions = {
+            // the client id is the application id, from your earlier app registration
+            clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID,
+    
+            // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
+            tenantId: process.env.NEXT_PUBLIC_AZURE_TENANT_ID,
+
+        }
+    
+        const blobStorageClient = new BlobServiceClient(
+            // this is the blob endpoint of your storage acccount. Available from the portal 
+            // they follow this format: <accountname>.blob.core.windows.net for Azure global
+            // the endpoints may be slightly different from national clouds like US Gov or Azure China
+            "https://audblobs.blob.core.windows.net/",
+            new InteractiveBrowserCredential(signInOptions)
+        )
+
+
+        // this uses our container we created earlier - I named mine "private"
+        var containerClient = await blobStorageClient.getContainerClient("audiofiles");
+        
+        // var localBlobList = [];
+        // // now let's query our container for some blobs!
+        // for await (const blob of containerClient.listBlobsFlat()) {
+        //     // and plunk them in a local array...
+        //     localBlobList.push(blob);
+        //     console.log("LOCAL BLOB LIST: ", localBlobList);
+        // }
+
+        console.log("CONTAINER CLIENT: ", containerClient);
+        console.log("blobName: ", blobName);
+        const blockBlobClient = await containerClient.getBlockBlobClient(blobName);
+        console.log("BLOCKBLOBCLIENT: ", blockBlobClient);
+        
+        let fileList = document.createElement('select');
+        const listFiles = async () => {
+            fileList.size = 0;
+            fileList.innerHTML = "";
+            try {
+                console.log("Retrieving file list...");
+                let iter = containerClient.listBlobsFlat();
+                let blobItem = await iter.next();
+                while (!blobItem.done) {
+                    fileList.size += 1;
+                    fileList.innerHTML += `<option>${blobItem.value.name}</option>`;
+                    blobItem = await iter.next();
+                }
+                if (fileList.size > 0) {
+                    console.log("Done.");
+                    fileList.id="blobSelect";
+                    document.append(fileList);
+                } else {
+                    console.log("The container does not contain any files.");
+                }
+            } catch (error) {
+                console.log(error.message);
+            }
+        };
+
+        const uploadFiles = async () => {
+            try {
+                console.log("Uploading files...");
+                const promises = [];
+
+                const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+                promises.push(blockBlobClient.uploadBrowserData(form));
+         
+                await Promise.all(promises);
+                console.log("Done. ");
+                listFiles();
+            }
+            catch (error) {
+                    console.log(error.message);
+            }
+        }
+        uploadFiles();
+    }
+
     function toggleRecording(){
         if(isRecording){
             setIsRecording(false);
@@ -197,26 +288,21 @@ export default function UnityWebGLBuild(props){
                 document.body.appendChild(preview);
                 // Can be used like this:
                 //
-                // const form = new FormData();
-                // form.append("file[]", blob, "record.mp3");
-                // fetch("/upload.php", {
-                //   credentials: "include",
-                //   method: "POST",
-                //   body: form,
-                // }).then(resp => {
-                // });
+                const utcTimestamp = Date.now();
+                const form = new FormData();
+                console.log("BBLLOOBB ", blob);
+                form.append("file[]", blob, `${props.longitude}_${props.latitude}_${utcTimestamp}.mp3`);
+                console.log("HEY FORM HERE! ", form.getAll("file[]")[0]);
+                uploadToAzureBlob(form.getAll("file[]")[0],form.getAll("file[]")[0].name);
               });
         }
-        // const aCtx = new AudioContext();
-       
     }
         
-    let gameLevel = ["Campus","Campus Data","AR", "AR Data", "Cardboard VR", "VR", "Hololens", "Global Data"];
+    let gameLevel = ["Campus View","Campus Data","AR", "AR Data", "Cardboard VR", "VR", "Hololens", "Global Data"];
     let listLevels = gameLevel.map((level, i) =>
         <option label={level} value={level} key={i}>{level}</option>
     );
 
- 
     return (
         <>
         <Head>
@@ -266,7 +352,7 @@ export default function UnityWebGLBuild(props){
                         { listLevels }
 
                     </select>
-                    <button id="masterRecordBtn" ref={isRecordingRef} style={{pointerEvents:"all",position:"absolute",top:"7rem",right:"1rem",height:"3rem",width:"12rem"}} onClick={toggleRecording}>
+                    <button id="masterRecordBtn" ref={isRecordingRef} style={{pointerEvents:"all",position:"absolute",top:"6rem",right:"0rem",margin:"2%",height:"3rem",width:"12rem"}} onClick={toggleRecording}>
                         {
                         isRecording
                         ?
@@ -287,37 +373,37 @@ export default function UnityWebGLBuild(props){
                     :
                         deviceStateNum === 0
                         ?
-                        <ARDataView style={{pointerEvents:"none"}}/>
+                            <ARDataView style={{pointerEvents:"none"}}/>
                         :
                         deviceStateNum === 1
                         ?
-                        <ARView style={{pointerEvents:"none"}}/>
+                            <ARView style={{pointerEvents:"none"}}/>
                         :
                         deviceStateNum === 2
                         ?
-                        <CampusData style={{pointerEvents:"none"}} />
+                            <CampusData style={{pointerEvents:"none"}} />
                         :
                         deviceStateNum === 3 
                         ?
-                        <CampusView style={{pointerEvents:"none"}} unity={unity} />
+                            <CampusView style={{pointerEvents:"none"}} unity={unity} />
                         :
                         deviceStateNum === 4
                         ?
-                        <HololensView style={{pointerEvents:"none"}}/>
+                            <HololensView style={{pointerEvents:"none"}}/>
                         :            
                         deviceStateNum === 5
                         ?
-                        <CardboardVRView style={{pointerEvents:"none"}}/>
+                            <CardboardVRView style={{pointerEvents:"none"}}/>
                         :
                         deviceStateNum === 6
                         ?
-                        <GlobalDataUI style={{pointerEvents:"none"}}/>
+                            <GlobalDataUI style={{pointerEvents:"none"}}/>
                         :
                         deviceStateNum === 7
                         ?
-                        <GlobalViewUI style={{pointerEvents:"none"}}/>
+                            <GlobalViewUI style={{pointerEvents:"none"}}/>
                         :
-                        null
+                            null
             }
                
             {

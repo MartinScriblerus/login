@@ -168,7 +168,7 @@ if(!passCheck){
     },
     async jwt({ token, user, account, profile }) {
 
-      console.log("Check for token: ", token);
+      // console.log("Check for token: ", token);
       if(token){
         return token
       } 

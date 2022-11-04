@@ -1,15 +1,13 @@
 import Head from 'next/head';
-// import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { useSession } from "next-auth/react";
 import Dashboard from './dashboard';
 import { prisma, PrismaClient } from "@prisma/client";
-// import {useState} from 'react';
 import { useRouter } from 'next/router';
-// import LogInOutButton from '../components/login-btn';
 import {useEffect, useRef,useState} from 'react';
 import LoginWrapper from './login';
 import getAllUsers from './api/getAllUsers';
+
 
 
 export default function Home(props) {
@@ -17,15 +15,9 @@ export default function Home(props) {
   const { data: session } = useSession();
   const [inUnity,setInUnity] = useState(false);
   const fullUserData = useRef({});
-  //console.log("PROPSS IN HOME: ", props);
-  //console.log("session in index: ", session);
-  // console.log("PROPS ARE USERS HERE? ", props);
   const router = useRouter()
   let listSubusers = []
- let subusers = []
- //console.log("sesh check: ", session);
- //console.log("sesh user check: ", session.user);
- //console.log("props check: ", props);
+  let subusers = []
 
   if(session && props){
     // console.log('SESSION--------------- ', session);
@@ -45,6 +37,7 @@ export default function Home(props) {
     // console.log("no session yet");
   }
 
+  
 
   return (
     <div id="pageWrapper" className={styles.container}>
@@ -78,36 +71,14 @@ export default function Home(props) {
             <LoginWrapper allUsers={props.allUsers}></LoginWrapper>
           </>
         :
-          <>
-      
-            {/* <select style={{
-                display:"flex", 
-                id:"subusersSelect",
-                class:"select",
-                flexDirection:"row",
-                zIndex: 7,
-                position: "absolute",
-                top: "4%",
-                width: "8rem",
-                maxWidth: "8rem",
-                right: "2rem",
-                textAlign: "center",
-                borderRadius:"24px",
-                border: "solid 1px rgba(50,220,300,1)"
-                }}    
-            >
-                    <option  disabled>--Subusers--</option>
-                    {listSubusers}
-                </select> */}
-            <Dashboard inUnity={setInUnity} listSubusers={listSubusers} session={session} fullUserData={fullUserData} allUsers={props.allUsers}/>     
-          </>
+          <Dashboard inUnity={setInUnity} listSubusers={listSubusers} session={session} fullUserData={fullUserData} allUsers={props.allUsers} blobServiceClient={props.blobServiceClient}/>     
         }
 
       </main>
 
-      <footer className={styles.footer}>
-{/* Hello */}
-      </footer>
+      {/* <footer className={styles.footer}>
+
+      </footer> */}
     </div>
   )
 }
@@ -116,11 +87,21 @@ export default function Home(props) {
 
 
 export async function getStaticProps(){
+  const { DefaultAzureCredential } = require("@azure/identity");
+  const { BlobServiceClient } = require("@azure/storage-blob");
+  // Enter your storage account name
+  const account = "audblobs";
+  const connStr = process.env.NEXT_PUBLIC_AZURE_CONN_STRING;
+
+  const blobServiceClient = BlobServiceClient.fromConnectionString(connStr); 
+  console.log("BLOB Service Client: ", blobServiceClient);
+
   let allUsers = await getAllUsers();
   return {
     props: 
     {
-      allUsers: JSON.parse(JSON.stringify(allUsers))
+      allUsers: JSON.parse(JSON.stringify(allUsers)),
+      blobServiceClient: JSON.parse(JSON.stringify(blobServiceClient))
     },
     revalidate: 10 // 10 seconds 
   }

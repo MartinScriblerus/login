@@ -32,7 +32,7 @@ async function RedirectPage() {
 }
 
 
-export default function Dashboard({session, listSubusers}, props){
+export default function Dashboard({session, listSubusers, blobServiceClient}, props){
     // console.log("PROPS IN DASHBOARD: ", props);
     const { unityProvider, sendMessage, loadingProgression } = useUnityContext({
         loaderUrl: "ResearchBuild/Build/ResearchBuild.loader.js",
@@ -96,9 +96,9 @@ export default function Dashboard({session, listSubusers}, props){
             console.log('Your current position is:');
             // console.log(`Latitude : ${crd.latitude}`);
             // console.log(`Longitude: ${crd.longitude}`);
-            console.log(`Latitude : ${latitude}`);
-            console.log(`Longitude: ${longitude}`);
-            console.log(`More or less ${crd.accuracy} meters.`);
+            // console.log(`Latitude : ${latitude}`);
+            // console.log(`Longitude: ${longitude}`);
+            // console.log(`More or less ${crd.accuracy} meters.`);
             return crd;
         };
         function error(err) {
@@ -135,7 +135,7 @@ export default function Dashboard({session, listSubusers}, props){
                     {
                     startedUnity
                     ?
-                        <Unity style={{minHeight:"100%", zIndex:9999,pointerEvents:"all"}} width={width} height={height} unityProvider={unityProvider} sendMessage={sendMessage} longitude={longitude} latitude={latitude} loadingProgression={loadingProgression}></Unity>
+                        <Unity style={{minHeight:"100%", zIndex:9999,pointerEvents:"all"}} width={width} height={height} unityProvider={unityProvider} sendMessage={sendMessage} longitude={longitude} latitude={latitude} loadingProgression={loadingProgression} blobServiceClient={blobServiceClient}></Unity>
                
                     // ADD NEW PATH
                     :
