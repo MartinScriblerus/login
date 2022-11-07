@@ -32,6 +32,7 @@ async function RedirectPage() {
 }
 
 
+
 export default function Dashboard({session, listSubusers, blobServiceClient}, props){
     // console.log("PROPS IN DASHBOARD: ", props);
     const { unityProvider, sendMessage, loadingProgression } = useUnityContext({
@@ -45,8 +46,12 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
     const [height, setHeight] = useState(800);
     const [latitude,setLatitude] = useState(0);
     const [longitude,setLongitude] = useState(0);
+    
     const [startedUnity,setStartedUnity] = useState(false);
-    const [parsedProg,setParsedProg]=useState(0);
+    // const [parsedProg,setParsedProg]=useState(0);
+    // const [maxElevation,setMaxElevation]=useState(0);
+    // const [minElevation,setMinElevation]=useState(0);
+    // const [avgElevation,setAvgElevation]=useState(0);
     const [awake,setAwake] = useState(true)
 
     if (typeof window !== 'undefined' && awake === true) {
@@ -63,6 +68,13 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
     //     console.log("All Users in Dashboard: ", allUsers.current);
     // }
     
+
+    useEffect(()=>{
+        if(!unityProvider){
+            setLoadingProgression(0);
+        }
+    },[unityProvider])
+
       // UI MAIN TICK
       useEffect(() => {
         
@@ -82,18 +94,49 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
    
     }, []);
 
+    function tryGetAltitude(){
+        function sortProper(a,b){
+            return a-b;
+        }
+        // if(latitude !== 0 && longitude !== 0){
+            
+        //     fetch(`https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${longitude},${latitude}.json?&access_token=pk.eyJ1IjoibWF0dGhld2ZyZWlsbHkiLCJhIjoiY2s1dW9mYmR1MWJ0cjNtb25lY240N3oxYyJ9.oUoPX11hY_Rz6ausgTENyw`)
+        //     .then(res=>res.json())
+        //     .then(data=>{
+        //         // console.log("DATA: ", data);
+        //         let geoEleArr = [];
+        //         if(!data || data.length <= 0){
+        //             return;
+        //         } else {
+        //             data.features.map(i=>geoEleArr.push(i.properties.ele));
+        //             setMaxElevation(geoEleArr.sort(sortProper)[geoEleArr.length - 1]);
+        //             setMinElevation(geoEleArr.sort(sortProper)[0]);
+        //             let total = 0;
+        //             geoEleArr.map((i,ind)=>{
+        //                 total = total + i;
+        //                 setAvgElevation(total/(ind+1));
+        //             });
+                    
+        //         }
+        //     });
+        // }
+    }
+
     async function getUserPosition(){
         const options = {
             enableHighAccuracy: true,
             timeout: 5000,
             maximumAge: 0
         };
+        let unityContext = unityProvider;
         function success(pos) {
             const crd = pos.coords;
             
             setLongitude(crd.longitude);
             setLatitude(crd.latitude);
             console.log('Your current position is:');
+            console.log("WTF ISS UNITY CTX: ", unityContext);
+            // unityContext.unload();
             // console.log(`Latitude : ${crd.latitude}`);
             // console.log(`Longitude: ${crd.longitude}`);
             // console.log(`Latitude : ${latitude}`);
@@ -106,10 +149,11 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
         };  
         if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
             navigator.geolocation.getCurrentPosition(success, error, options);
+            // tryGetAltitude();
         }
     }
     getUserPosition();
-
+    // edit to place getUsrPosition in a requestAnimationFrame
 
     // console.log("WHAT IS SESSION? ", session);
     const user = session?.user;
@@ -125,17 +169,34 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
 
         function startUnity(){
             setStartedUnity(true);
-
         }
 
         return (
             <div className={styles.container}>
 
-                <main style={{objectFit:"cover"}}>               
+                <main style={{objectFit:"cover",height:"100%"}}>               
                     {
                     startedUnity
                     ?
-                        <Unity style={{minHeight:"100%", zIndex:9999,pointerEvents:"all"}} width={width} height={height} unityProvider={unityProvider} sendMessage={sendMessage} longitude={longitude} latitude={latitude} loadingProgression={loadingProgression} blobServiceClient={blobServiceClient}></Unity>
+                        <Unity 
+                            style={{
+                                minHeight:"100%", 
+                                zIndex:9999,
+                                pointerEvents:"all"}} 
+                                width={width} 
+                                height={height} 
+                               
+                                user={user}
+                                unityProvider={unityProvider} 
+                                sendMessage={sendMessage} 
+                                longitude={longitude} 
+                                latitude={latitude} 
+                                // maxElevation={maxElevation}
+                                // minElevation={minElevation}
+                                // avgElevation={avgElevation}
+                                loadingProgression={loadingProgression} 
+                                blobServiceClient={blobServiceClient}
+                        ></Unity>
                
                     // ADD NEW PATH
                     :
@@ -171,7 +232,7 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
  
                         <LogInOutButton />
                     </h1>
-                    <button id="unityStartBtn" style={{marginBottom:"12px"}} onClick={startUnity}>Start</button>
+                    <button id="unityStartBtn" style={{marginBottom:"12px",fontSize:"28px"}} onClick={startUnity}>Start</button>
                     <select 
                         defaultValue={"--Aliases--"}
                         style={{
@@ -188,17 +249,18 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
                             justifyContent: "center",
                             textAlign: "center",
                             borderRadius:"24px",
-                            border: "solid 1px rgba(50,220,300,1)",
+                            border: "solid 1px rgb(12, 95, 80)",
                             background:"transparent",
                             maxWidth:"10rem",
-                            position:"absolute"    
+                            position:"absolute",
+                            fontWeight:"100"
                         }}    
                     >
                     
                     <option disabled>--Aliases--</option>
                     {listSubusers}
                 </select>
-                    <h1 style={{fontSize:"64px",position:"absolute",color:"rgba(50,220,300,1)",width:"100%",textAlign:"center",top:"2rem"}}>Commons</h1>
+                    <h1 style={{fontSize:"128px",position:"absolute",color:"#501214",fontWeight:"100",font:"Inter",width:"100%",textAlign:"center",top:"2rem"}}>Mosaic</h1>
                     
                     </>
                 }

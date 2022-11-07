@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 dynamic(import("react-unity-webgl").then(mod => mod), { ssr: false }) 
 import Head from 'next/head'
-import { Unity, UnityEvent } from "react-unity-webgl";
+import { Unity, UnityEvent} from "react-unity-webgl";
 import React, { useEffect, useState, useRef } from "react";
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 import LoadingBar from "../components/loadingBar";
@@ -15,6 +15,9 @@ import GlobalDataUI from '../components/GlobalDataView';
 import GlobalViewUI from '../components/VRView';
 import { fetchData } from 'next-auth/client/_utils';
 import {record} from "../components/vmsg";
+import UmbrellaSlider from "../components/umbrellaSlider";
+import { useRouter } from 'next/router';
+import Babylon from "../pages/babylon";
 const { InteractiveBrowserCredential } = require("@azure/identity");
 const { BlobServiceClient } = require("@azure/storage-blob");
 
@@ -41,27 +44,32 @@ export default function UnityWebGLBuild(props){
     const [isRecording,setIsRecording] = useState(false);
     const [deviceStateNum, setDeviceStateNum] = useState(3);
     const [audioUploadState,setAudioUploadState] = useState();
+    const [sliderReady,setSliderReady] = useState(false);
+    const [switchUrl,setSwitchUrl]=useState(false);
+    const [readyForBabylon,setReadyForBabylon] = useState(false);
+    const [alertMsg,setAlertMsg] = useState('');
     const valueRef = useRef('');
     valueRef.current = 'Campus View';
     const isRecordingRef = useRef();
     const soundClips = useRef();
-   
+    const unityRef = useRef();
     
-    // async function handleClickSpawnEnemies() {
-    //     let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         props.sendMessage("InteropController","GetMap", JSON.stringify(data));
-    //     });   
-    // }
+    console.log("PROPS IN UNITY: ", props.user);
+
+    const router = useRouter();
 
     // The Unity Game Component
     useEffect(()=>{
     
-        setUnity(<Unity style={{width:props.width, height:props.height, minHeight:"100vh"}} key={1} id="unityWindow" unityProvider={props.unityProvider} />)
-       
-    },[props.unityProvider, props.width, props.height])
+        setUnity(<Unity ref={unityRef} style={{width:props.width, height:props.height, minHeight:"100vh"}} key={1} id="unityWindow" unityProvider={props.unityProvider} />)
 
+    },[props.unityProvider, props,props.width, props.height])
+
+    useEffect(()=>{
+        if(props.loadingProgression >= 1){
+            setSliderReady(true);
+        }
+    },[sliderReady,setSliderReady,props.loadingProgression])
 
     function handleKeyDown(event) {
         console.log(event.keyCode);
@@ -83,13 +91,42 @@ export default function UnityWebGLBuild(props){
                 break;
             case 69:
                 props.sendMessage("CameraParentObject","ZoomIn");
-                break;
-            // case 86:
-            //     props.sendMessage("MainCamera","CameraStyle");
+                break;  
             default: 
                 break;
         }
     }
+
+
+
+    useEffect(()=>{
+        function handleBabylonSwitch(){
+            setAlertMsg("Safely Removing Unity...");
+            setTimeout(()=>{
+                // let canvasToRemove = document.getElementById("unity");
+                // if(canvasToRemove){
+                //     canvasToRemove.remove();
+                //     canvasToRemove = null;
+                // }
+                // clearTimeout();
+                setReadyForBabylon(true);
+                setAlertMsg("");
+            },4000);
+            
+            // router.push('/babylon');
+        };
+        if(deviceStateNum === 5 || deviceStateNum === 1){
+            
+            if(!readyForBabylon){
+                props.sendMessage("MainCamera","applicationQuit");
+                handleBabylonSwitch();
+            } else {
+                
+            }
+            
+
+        }
+    },[props,readyForBabylon,deviceStateNum,router]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
@@ -99,31 +136,60 @@ export default function UnityWebGLBuild(props){
         }
     });
 
+    // useEffect(function () {
+    //     console.log("PROPS UNITY PROVIDER: ", props.unityProvider);
+    //     // props.unityContext.on("quitted", function () {
+    //     //     setReadyForBabylon(true);
+    //     // });
+    //   }, [props]);
+
     useEffect(()=>{
-        props.sendMessage("MainCamera", "UserLongitude", props.longitude);
-        props.sendMessage("MainCamera", "UserLatitude", props.latitude);
+        if(props.unityProvider){
+            props.sendMessage("MainCamera", "UserLongitude", props.longitude);
+            props.sendMessage("MainCamera", "UserLatitude", props.latitude);
+        }
     },[props, props.longitude, props.latitude])
     
     function handleDeviceSelect(num){
         document.getElementById('deviceDropdown').value = num;
+        
         updateView(num);       
         
         switch(num){
             case 'AR Data':
                 setDeviceStateNum(0);
-                props.sendMessage("MainCamera","CameraProjection",0);
+                if(props.loadingProgression >= 1 && !readyForBabylon){
+                    props.sendMessage("MainCamera","CameraProjection",0);
+                } else {
+                    setReadyForBabylon(false);
+                    // router.push('/');
+                }
                 break;
             case 'AR':
                 setDeviceStateNum(1);
                 props.sendMessage("MainCamera","CameraProjection",1);
+                props.sendMessage("quitted", () => {
+                    // Now we can for example go back to another page
+                    console.log("Log quitted")
+                });
                 break;
             case 'Campus View':
                 setDeviceStateNum(3);
-                props.sendMessage("MainCamera","CameraProjection",3);
+                if(props.loadingProgression >= 1 && !readyForBabylon){
+                    props.sendMessage("MainCamera","CameraProjection",3);
+                } else {
+                    setReadyForBabylon(false);
+                    // router.push('/');
+                }
                 break;
             case 'Campus Data':
                 setDeviceStateNum(2);
-                props.sendMessage("MainCamera","CameraProjection",2);
+                if(props.loadingProgression >= 1 && !readyForBabylon){
+                    props.sendMessage("MainCamera","CameraProjection",2);
+                } else {
+                    setReadyForBabylon(false);
+                    // router.push('/');
+                }
                 break;
             case 'VR':
                 setDeviceStateNum(7);
@@ -132,6 +198,13 @@ export default function UnityWebGLBuild(props){
             case 'Cardboard VR':
                 setDeviceStateNum(5);
                 props.sendMessage("MainCamera","CameraProjection",5);
+                props.sendMessage("quitted", () => {
+                    // Now we can for example go back to another page
+                    console.log("Log quitted")
+                });
+                console.log("THE UNITY INSTANCE: ", unityRef.current);
+                // router.push('/babylon');
+              
                 break;
             case 'Hololens':
                 setDeviceStateNum(4)
@@ -185,9 +258,6 @@ export default function UnityWebGLBuild(props){
         } else {
             // console.log(props.blobServiceClient);
         }
-
-        console.log("FORM IN UPLOAD: ", form);
-        console.log("WTF ISS THIS? ", props.blobServiceClient);
         
         const signInOptions = {
             // the client id is the application id, from your earlier app registration
@@ -267,14 +337,32 @@ export default function UnityWebGLBuild(props){
         uploadFiles();
     }
 
+    function saveFile(){
+        console.log("save file here: ...");
+    };
+
     function toggleRecording(){
         if(isRecording){
             setIsRecording(false);
             if(document.getElementsByTagName('audio').length > 1){
-
+                let doSave = confirm("Would you like to save this recording?");
+                if(doSave){
+                    console.log("SAVING FILE?");
+                    saveFile(); // turn line 302 into a componentwide ref
+                    props.sendMessage("MainCamera","displayPlacedUmbrella");
+                    setTimeout(()=>{
+                        props.sendMessage("MainCamera","resetUmbrella");
+                    },2000);
+                    clearTimeout();
+                } else {
+                    // handle not saving condition here (what is needed?)
+                }
+            } else {
+                alert("You'll need to record some audio first!");
             }
         } else {
             setIsRecording(true);
+            // props.sendMessage("MainCamera","createAudioUmbrella");
             record({wasmURL: "/vmsg.wasm"}).then(blob => {
                 console.log("Recorded MP3", blob);
                 var url = URL.createObjectURL(blob);
@@ -290,9 +378,9 @@ export default function UnityWebGLBuild(props){
                 //
                 const utcTimestamp = Date.now();
                 const form = new FormData();
-                console.log("BBLLOOBB ", blob);
+                // console.log("BBLLOOBB ", blob);
                 form.append("file[]", blob, `${props.longitude}_${props.latitude}_${utcTimestamp}.mp3`);
-                console.log("HEY FORM HERE! ", form.getAll("file[]")[0]);
+                console.log("audio file to save: ", form.getAll("file[]")[0]);
                 uploadToAzureBlob(form.getAll("file[]")[0],form.getAll("file[]")[0].name);
               });
         }
@@ -313,11 +401,27 @@ export default function UnityWebGLBuild(props){
             rel="stylesheet"
             />
         </Head>
+        <span style={{position:"absolute",left:"1rem",top:"1rem",fontSize:"32px"}}>
+        {
+            alertMsg !== ''
+            ?
+            alertMsg
+            :
+            null
+        }
+        </span>
             {
                 props.loadingProgression >= 1
                 ?
                 <span>
 
+                    {
+                        sliderReady && isRecording
+                        ?
+                        <UmbrellaSlider sendMessage={props.sendMessage} />
+                        :
+                        null
+                    }
                     <ul ref={soundClips} style={{position:"absolute",top:"4rem",left:"0rem",height:"3rem",width:"4rem"}}></ul>
 
                     <select 
@@ -343,7 +447,7 @@ export default function UnityWebGLBuild(props){
                             justifyContent: "center",
                             textAlign: "center",
                             borderRadius:"24px",
-                            border: "solid 1px rgba(50,220,300,1)",
+                            border: "solid 1px rgb(12, 95, 80)",
                             background:"transparent",
                             pointerEvents:"all"
                         }}
@@ -356,7 +460,7 @@ export default function UnityWebGLBuild(props){
                         {
                         isRecording
                         ?
-                            <span>Stop Recording</span>
+                            <span>Place Recording</span>
                         :
                             <span>Record</span>
                         }
@@ -409,6 +513,10 @@ export default function UnityWebGLBuild(props){
             {
                 unity
             ?
+                (deviceStateNum === 5 || deviceStateNum === 1) && readyForBabylon
+                ?
+                <Babylon style={{width:"100%",height:"100%",position:"absolute"}}></Babylon>
+                :
                 unity
             :
                 null

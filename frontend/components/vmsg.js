@@ -343,7 +343,7 @@ function pad2(n) {
       popup.addEventListener("click", (e) => e.stopPropagation());
   
       const progress = document.createElement("div");
-      console.log("wtf is progresss? ", progress);
+     
       progress.className = "vmsg-progress";
       for (let i = 0; i < 3; i++) {
         const progressDot = document.createElement("div");
@@ -530,7 +530,11 @@ function pad2(n) {
    */
   export function record(opts) {
     return new Promise((resolve, reject) => {
-      if (shown) throw new Error("Record form is already opened");
+      if(shown){
+        console.log("Record form is already open");
+        return;
+      }
+      // if (shown) throw new Error("Record form is already opened");
       shown = true;
       new Form(opts, resolve, reject);
     // Use `.finally` once it's available in Safari and Edge.

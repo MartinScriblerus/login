@@ -37,7 +37,7 @@ export default function ARDataView(){
                 style={{
                     minHeight: "44px",
                     minWidth: "160px",
-                    border: "solid 1px rgba(50,220,300,1)",
+                    border: "solid 1px #501214",
                     /* border: solid 1px transparent; */
                     backgroundColor: "transparent",
                     borderRadius: "32px",

@@ -63,9 +63,9 @@ export default function Home(props) {
               {
                 session
               ?
-                <span style={{color:"rgba(50,220,300,1)"}}> logged in</span>
+                <span style={{color:"rgb(12, 95, 80)"}}> logged in</span>
               :
-                <span style={{color:"rgba(50,220,300,1)"}}> logged out</span>
+                <span style={{color:"rgb(12, 95, 80)"}}> logged out</span>
               }
             </h1>
             <LoginWrapper allUsers={props.allUsers}></LoginWrapper>

@@ -31,7 +31,7 @@ export default function CampusView(){
                 style={{
                     minHeight: "44px",
                     minWidth: "160px",
-                    border: "solid 1px rgba(50,220,300,1)",
+                    border: "solid 1px rgb(12, 95, 80)",
                     /* border: solid 1px transparent; */
                     backgroundColor: "transparent",
                     borderRadius: "32px",

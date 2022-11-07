@@ -73,15 +73,17 @@ export default function LogInOutButton(props, user) {
         return (
         <div id="main">
             <span style={{
-                fontSize: "32px",
+                // fontSize: "32px",
                 width: "60%",
                 left: "20%",
                 textAlign: "center",
                 position: "absolute",
-                bottom: "60%"
+                bottom: "56%",
+                fontWeight:"100", 
+                fontSize:"22px",
             }}>
                 Logged in as 
-                <span style={{color:"rgba(50,220,300,1)"}}>
+                <span style={{color:"#501214"}}>
                      {" " + session.user.name} <br/>
                 </span>
             </span>
