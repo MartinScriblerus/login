@@ -2,27 +2,27 @@ import React, {useState,useEffect} from 'react';
 import { Range } from 'react-range';
 
 export default function UmbrellaSlider(props) {
-    const [size,setSize] = useState({ values: [10] });
+    // const [size,setSize] = useState({ values: [10] });
 
     useEffect(()=>{
-        console.log("SIZE IS/... ", size.values[0]);
-        console.log("SIZE IS type/... ", typeof size.values[0]);
+        console.log("SIZE IS/... ", props.size.values[0]);
+        console.log("SIZE IS type/... ", typeof props.size.values[0]);
         // if(size.values[0]){
             // setTimeout(()=>{
-                props.sendMessage("MainCamera","resizeAudioUmbrella",size.values[0]);
+                props.sendMessage("MainCamera","resizeAudioUmbrella",props.size.values[0]);
             // },100);
             // clearTimeout();
         // }
-    },[size,props]);
+    },[props]);
 
     return (
         <Range
             id="umbrellaSlider"
             step={1}
             min={1}
-            max={20}
-            values={size.values}
-            onChange={(values) => setSize({ values })}
+            max={100}
+            values={props.size.values}
+            onChange={(values) => props.handleSetSize(values)}
             renderTrack={({ props, children }) => (
             <div
                 {...props}
@@ -47,7 +47,7 @@ export default function UmbrellaSlider(props) {
                 pointerEvents:"all",
                 height: '24px',
                 width: '24px',
-                backgroundColor: '#501214',
+                backgroundColor: 'rgb(12, 95, 80)',
                 borderRadius:'50%'
             }}
             />

@@ -48,6 +48,9 @@ export default function UnityWebGLBuild(props){
     const [switchUrl,setSwitchUrl]=useState(false);
     const [readyForBabylon,setReadyForBabylon] = useState(false);
     const [alertMsg,setAlertMsg] = useState('');
+    const [createdAudio,setCreatedAudio] = useState(false);
+    const [latLonString,setLatLonString] = useState('');
+    const [size,setSize] = useState({ values: [10] });
     const valueRef = useRef('');
     valueRef.current = 'Campus View';
     const isRecordingRef = useRef();
@@ -65,11 +68,19 @@ export default function UnityWebGLBuild(props){
 
     },[props.unityProvider, props,props.width, props.height])
 
+    const initialized = useRef(false);
+
     useEffect(()=>{
         if(props.loadingProgression >= 1){
             setSliderReady(true);
+            if(latLonString !== '' && initialized.current === false){
+                setTimeout(()=>{props.sendMessage("Map", "UserLatLon", latLonString);},2000);
+                clearTimeout();
+                console.log("INIT WORKED");
+                initialized.current = true;
+            }
         }
-    },[sliderReady,setSliderReady,props.loadingProgression])
+    },[sliderReady,latLonString,props,setSliderReady,props.loadingProgression])
 
     function handleKeyDown(event) {
         console.log(event.keyCode);
@@ -144,11 +155,15 @@ export default function UnityWebGLBuild(props){
     //   }, [props]);
 
     useEffect(()=>{
-        if(props.unityProvider){
-            props.sendMessage("MainCamera", "UserLongitude", props.longitude);
-            props.sendMessage("MainCamera", "UserLatitude", props.latitude);
+        if(props.unityProvider && props.loadingProgression >=1 && props.latitude && props.longitude){
+            props.sendMessage("MainCamera", "UserLongitude", props.longitude.toString());
+            props.sendMessage("MainCamera", "UserLatitude", props.latitude.toString());
+            setLatLonString(props.latitude.toString() + "_" + props.longitude.toString());
+            // console.log("LATLONSTRING: ", typeof latLonString);
+            //props.sendMessage("Map", "UserLatLon", latLonString);
+            // props.sendMessage("Map", "UserLatitude", props.latitude.toString());
         }
-    },[props, props.longitude, props.latitude])
+    },[props,latLonString])
     
     function handleDeviceSelect(num){
         document.getElementById('deviceDropdown').value = num;
@@ -252,6 +267,63 @@ export default function UnityWebGLBuild(props){
         sendData();
     }
 
+    // async function getAudioFiles(){
+    //     const signInOptions = {
+    //         // the client id is the application id, from your earlier app registration
+    //         clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID,
+    
+    //         // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
+    //         tenantId: process.env.NEXT_PUBLIC_AZURE_TENANT_ID,
+
+    //     }
+    
+    //     const blobStorageClient = new BlobServiceClient(
+    //         // this is the blob endpoint of your storage acccount. Available from the portal 
+    //         // they follow this format: <accountname>.blob.core.windows.net for Azure global
+    //         // the endpoints may be slightly different from national clouds like US Gov or Azure China
+    //         "https://audblobs.blob.core.windows.net/",
+    //         new InteractiveBrowserCredential(signInOptions)
+    //     )
+
+
+    //     // this uses our container we created earlier - I named mine "private"
+    //     var containerClient = await blobStorageClient.getContainerClient("audiofiles");
+    //     let fileList = document.createElement('select');
+    //     const listFiles_Init = async () => {
+    //         fileList.size = 0;
+    //         fileList.innerHTML = "";
+    //         try {
+    //             console.log("Retrieving file list...");
+    //             let iter = containerClient.listBlobsFlat();
+    //             let blobItem = await iter.next();
+    //             while (!blobItem.done) {
+    //                 fileList.size += 1;
+    //                 fileList.innerHTML += `<option>${blobItem.value.name}</option>`;
+    //                 blobItem = await iter.next();
+    //                 if(blobItem.value.name){
+    //                     props.sendMessage("MainCamera","createAudioEnvironment",JSON.stringify(blobItem));
+    //                     console.log("BLOBITEM!: ", blobItem.value.name);
+    //                 }
+    //             }
+    //             if (fileList.size > 0) {
+    //                 console.log("Done.");
+    //                 fileList.id="blobSelect";
+    //                 fileList.style.top="8rem";
+    //                 fileList.style.left="2rem";
+    //                 fileList.style.position="absolute";
+    //                 console.log("FILIE LIST!!! ", fileList);
+    //                 // document.body.append(fileList);
+    //             } else {
+    //                 console.log("The container does not contain any files.");
+    //             }
+    //         } catch (error) {
+    //             console.log(error.message);
+    //         }
+    //     };
+    //     let result = await listFiles_Init();
+    //     return result;
+    // }
+
     async function uploadToAzureBlob(form,blobName){
         if(!props.blobServiceClient){
             return;
@@ -308,8 +380,12 @@ export default function UnityWebGLBuild(props){
                 }
                 if (fileList.size > 0) {
                     console.log("Done.");
-                    fileList.id="blobSelect";
-                    document.append(fileList);
+                    //fileList.id="blobSelect";
+                    fileList = null;
+                    // fileList.style.top="8rem";
+                    // fileList.style.left="2rem";
+                    // fileList.style.position="absolute";
+                    // document.body.append(fileList);
                 } else {
                     console.log("The container does not contain any files.");
                 }
@@ -379,9 +455,11 @@ export default function UnityWebGLBuild(props){
                 const utcTimestamp = Date.now();
                 const form = new FormData();
                 // console.log("BBLLOOBB ", blob);
-                form.append("file[]", blob, `${props.longitude}_${props.latitude}_${utcTimestamp}.mp3`);
-                console.log("audio file to save: ", form.getAll("file[]")[0]);
-                uploadToAzureBlob(form.getAll("file[]")[0],form.getAll("file[]")[0].name);
+                if(size.values){
+                    form.append("file[]", blob, `${props.longitude}_${props.latitude}_${utcTimestamp}_${size.values}_${props.user.name}.mp3`);
+                    console.log("audio file to save: ", form.getAll("file[]")[0]);
+                    uploadToAzureBlob(form.getAll("file[]")[0],form.getAll("file[]")[0].name);
+                }
               });
         }
     }
@@ -390,6 +468,83 @@ export default function UnityWebGLBuild(props){
     let listLevels = gameLevel.map((level, i) =>
         <option label={level} value={level} key={i}>{level}</option>
     );
+
+    useEffect(()=>{
+        if(props.loadingProgression >=1 && !createdAudio){
+            async function getAudioFiles(){
+                const signInOptions = {
+                    // the client id is the application id, from your earlier app registration
+                    clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID,
+            
+                    // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
+                    tenantId: process.env.NEXT_PUBLIC_AZURE_TENANT_ID,
+        
+                }
+            
+                const blobStorageClient = new BlobServiceClient(
+                    // this is the blob endpoint of your storage acccount. Available from the portal 
+                    // they follow this format: <accountname>.blob.core.windows.net for Azure global
+                    // the endpoints may be slightly different from national clouds like US Gov or Azure China
+                    "https://audblobs.blob.core.windows.net/",
+                    new InteractiveBrowserCredential(signInOptions)
+                )
+        
+        
+                // this uses our container we created earlier - I named mine "private"
+                var containerClient = await blobStorageClient.getContainerClient("audiofiles");
+                let fileList = document.createElement('select');
+                const listFiles_Init = async () => {
+                    fileList.size = 0;
+                    fileList.innerHTML = "";
+                    try {
+                        console.log("Retrieving file list...");
+                        let iter = containerClient.listBlobsFlat();
+                        let blobItem = await iter.next();
+                        while (!blobItem.done) {
+                            fileList.size += 1;
+                            fileList.innerHTML += `<option>${blobItem.value.name}</option>`;
+                            blobItem = await iter.next();
+                            let columnCount = blobItem.value.name.split("_").length;
+                            if(blobItem.value.name){
+                                
+                                console.log("BLOBITEM OBJ!: ", blobItem.value.name);
+                                console.log("BLOBITEM COUNT!: ", columnCount);
+                                if(columnCount === 5){
+                                    console.log("HIT A 5er!: ", blobItem.value.name);
+                                    props.sendMessage("MainCamera","createAudioEnvironment",JSON.stringify(blobItem));
+                                    props.sendMessage("MainCamera","createAudioEnvironment",blobItem.value.name);
+                                }
+                            }
+                        }
+                        if (fileList.size > 0) {
+                            console.log("Done.");
+                            fileList.id="blobSelect";
+                            fileList.style.top="8rem";
+                            fileList.style.left="2rem";
+                            fileList.style.position="absolute";
+                            console.log("FILIE LIST!!! ", fileList);
+                            // document.body.append(fileList);
+                            
+                        } else {
+                            console.log("The container does not contain any files.");
+                        }
+                    } catch (error) {
+                        console.log(error.message);
+                    }
+                    setCreatedAudio(true);
+                };
+                let result = await listFiles_Init();
+                return result;
+            }
+           
+                getAudioFiles();
+          
+        }
+    },[props,props.loadingProgression,createdAudio])
+
+    function handleSetSize(values){
+        setSize({ values });
+    }
 
     return (
         <>
@@ -416,9 +571,9 @@ export default function UnityWebGLBuild(props){
                 <span>
 
                     {
-                        sliderReady && isRecording
+                        sliderReady
                         ?
-                        <UmbrellaSlider sendMessage={props.sendMessage} />
+                        <UmbrellaSlider size={size} handleSetSize={handleSetSize} sendMessage={props.sendMessage} />
                         :
                         null
                     }

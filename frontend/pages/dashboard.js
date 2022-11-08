@@ -134,8 +134,8 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
             
             setLongitude(crd.longitude);
             setLatitude(crd.latitude);
-            console.log('Your current position is:');
-            console.log("WTF ISS UNITY CTX: ", unityContext);
+            
+         
             // unityContext.unload();
             // console.log(`Latitude : ${crd.latitude}`);
             // console.log(`Longitude: ${crd.longitude}`);
