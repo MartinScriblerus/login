@@ -1,6 +1,6 @@
 import styles from '../styles/Home.module.css'
 import LogInOutButton from '../components/login-btn';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import { getSession } from "next-auth/react";
 import Unity from '../pages/unity'
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import { useUnityContext } from "react-unity-webgl";
   
 async function RedirectPage() {
     const [routing,setRouting] = useState(false);
+    
     const session = getSession();
     const user = session.user;
     const router = useRouter();
@@ -33,9 +34,9 @@ async function RedirectPage() {
 
 
 
-export default function Dashboard({session, listSubusers, blobServiceClient}, props){
-    // console.log("PROPS IN DASHBOARD: ", props);
-    const { unityProvider, sendMessage, loadingProgression } = useUnityContext({
+export default function Dashboard({session, listSubusers, blobServiceClient,userAlias}, props){
+    console.log("PROPS IN DASHBOARD: ", userAlias);
+    const { unityProvider, sendMessage, loadingProgression, addEventListener, removeEventListener } = useUnityContext({
         loaderUrl: "ResearchBuild/Build/ResearchBuild.loader.js",
         dataUrl: "ResearchBuild/Build/ResearchBuild.data",
         frameworkUrl: "ResearchBuild/Build/ResearchBuild.framework.js",
@@ -46,7 +47,8 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
     const [height, setHeight] = useState(800);
     const [latitude,setLatitude] = useState(0);
     const [longitude,setLongitude] = useState(0);
-    
+
+
     const [startedUnity,setStartedUnity] = useState(false);
     // const [parsedProg,setParsedProg]=useState(0);
     // const [maxElevation,setMaxElevation]=useState(0);
@@ -60,7 +62,8 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
         setAwake(false);
     }
 
-    console.log("LOADING PROG: ", loadingProgression);
+
+    //console.log("LOADING PROG: ", loadingProgression);
 
     // const allUsers = useRef();
     // if(props && props.allUsers){
@@ -69,15 +72,23 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
     // }
     
 
+
+
+
     useEffect(()=>{
         if(!unityProvider){
             setLoadingProgression(0);
+        } else {
+            console.log("UNITY PROVIDER: ", unityProvider);
         }
     },[unityProvider])
 
       // UI MAIN TICK
       useEffect(() => {
-        
+        //         if(window.playAud && window.playAud.length > audioToPlayArray.current.length){
+        //     audioToPlayArray.current = window.playAud;
+        //     console.log("audio to play array HOORAY! ", audioToPlayArray.current);  
+        // }
         const updateWindowDimensions = () => {
             if (typeof window !== 'undefined') {  
                 const newWidth = window.innerWidth;
@@ -173,7 +184,7 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
 
         return (
             <div className={styles.container}>
-
+                <span id="userAliasDisplay" style={{position:"fixed",top:"8px",left:"8px",background:"transparent",width:"25%"}}>{userAlias}</span>
                 <main style={{objectFit:"cover",height:"100%"}}>               
                     {
                     startedUnity
@@ -185,7 +196,8 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
                                 pointerEvents:"all"}} 
                                 width={width} 
                                 height={height} 
-                               
+                                addEventListener={addEventListener}
+                                removeEventListener={removeEventListener}
                                 user={user}
                                 unityProvider={unityProvider} 
                                 sendMessage={sendMessage} 
@@ -201,38 +213,15 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
                     // ADD NEW PATH
                     :
                     <>
-                    <h1 className={styles.title}>   
-                        {/* <img 
-                            id="loginDashboardImg"
-                            style={{
-                                zIndex:"-1",
-                                    
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat",
-                                minWidth: "600px",
-                                minHeight: "100%",
-                                width:"100%",
-                                position: "absolute",
-                                inset: "0px",
-                                boxSizing: "border-box",
-                                padding: "0px",
+                    <div id="titleStartWrapperDiv" styles={{width:"100%",top:"0px"}}>
+                        <h1 style={{fontSize:"80px",position:"absolute",color:"#501214",fontFamily:"monospace",fontWeight:"100",width:"50%",left:"25%",textAlign:"center"}}>Mosaic</h1>
+                        <button id="unityStartBtn" style={{marginBottom:"12px",fontSize:"28px"}} onClick={startUnity}>Start</button>
+                        {/* <h1 className={styles.title}>    */}
+                            {/* CAN PLACE BACKGROUND HERE */}
+                            <LogInOutButton />
+                        {/* </h1> */}
 
-                                margin: "auto",
-                                display: "block",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                
-  
-                            }}
-                            
-                            alt="RiverScene"
-  
-                            src={src}
-                        /> */}
- 
-                        <LogInOutButton />
-                    </h1>
-                    <button id="unityStartBtn" style={{marginBottom:"12px",fontSize:"28px"}} onClick={startUnity}>Start</button>
+                    </div>
                     <select 
                         defaultValue={"--Aliases--"}
                         style={{
@@ -243,25 +232,26 @@ export default function Dashboard({session, listSubusers, blobServiceClient}, pr
                             zIndex: 7,
                             width: "100%",
                             position: "absolute",
-                            right: "2rem",
-                            bottom: "9rem",
+                            right: "24px",
+                            top: "8px",
                             textAlign:"center",
                             justifyContent: "center",
                             textAlign: "center",
                             borderRadius:"24px",
-                            border: "solid 1px rgb(12, 95, 80)",
-                            background:"transparent",
+                            // border: "solid 1px rgb(12, 95, 80)",
+                            border:"transparent",
+                            // background:"rgba(12, 95, 80,0.5)",
                             maxWidth:"10rem",
                             position:"absolute",
-                            fontWeight:"100"
+                            fontWeight:"100",
+                            minHeight:"46px"
                         }}    
                     >
                     
                     <option disabled>--Aliases--</option>
                     {listSubusers}
                 </select>
-                    <h1 style={{fontSize:"128px",position:"absolute",color:"#501214",fontWeight:"100",font:"Inter",width:"100%",textAlign:"center",top:"2rem"}}>Mosaic</h1>
-                    
+   
                     </>
                 }
                 </main>

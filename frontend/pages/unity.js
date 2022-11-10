@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 dynamic(import("react-unity-webgl").then(mod => mod), { ssr: false }) 
 import Head from 'next/head'
 import { Unity, UnityEvent} from "react-unity-webgl";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 import LoadingBar from "../components/loadingBar";
 import ARDataView from '../components/ARDataView';
@@ -18,6 +18,7 @@ import {record} from "../components/vmsg";
 import UmbrellaSlider from "../components/umbrellaSlider";
 import { useRouter } from 'next/router';
 import Babylon from "../pages/babylon";
+import { transparent } from 'material-ui/styles/colors';
 const { InteractiveBrowserCredential } = require("@azure/identity");
 const { BlobServiceClient } = require("@azure/storage-blob");
 
@@ -51,16 +52,107 @@ export default function UnityWebGLBuild(props){
     const [createdAudio,setCreatedAudio] = useState(false);
     const [latLonString,setLatLonString] = useState('');
     const [size,setSize] = useState({ values: [10] });
+    const [audioReady,setAudioReady] = useState("");
+    const [count,setCount] = useState(0); 
+    const [blob,setBlob] = useState(null);
+
     const valueRef = useRef('');
     valueRef.current = 'Campus View';
     const isRecordingRef = useRef();
     const soundClips = useRef();
     const unityRef = useRef();
-    
-    console.log("PROPS IN UNITY: ", props.user);
+    const audioToPlayArray = useRef();
+    audioToPlayArray.current = [];
+    const audToPlayRef = useRef([]);
+    const hiddenAudioPlayerRef = useRef(null); 
+    // console.log("PROPS IN UNITY: ", props.user);
 
     const router = useRouter();
 
+
+    // Use useRef for mutable variables that we want to persist
+    // without triggering a re-render on their change
+    const requestRef = useRef();
+    const previousTimeRef = useRef();
+    
+    const animate = time => {
+        if (previousTimeRef.current != undefined) {
+        const deltaTime = time - previousTimeRef.current;
+        
+        // Pass on a function to the setter of the state
+        // to make sure we always have the latest state
+        setCount(prevCount => (prevCount + deltaTime * 1) % 100);
+        }
+        previousTimeRef.current = time;
+        requestRef.current = requestAnimationFrame(animate);
+    }
+  
+    useEffect(() => {
+        requestRef.current = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(requestRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Make sure the effect runs only once
+
+    async function queryBlobToPlay(trackName){
+        console.log("T R A C K N A M E : ", trackName.split('_')[[2]])
+        let trimmedURL = (trackName.replace('EU_',''));
+        console.log("trimmed audio url we collided with: ", trimmedURL);
+        
+        const signInOptions = {
+            // the client id is the application id, from your earlier app registration
+            clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID,
+    
+            // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
+            tenantId: process.env.NEXT_PUBLIC_AZURE_TENANT_ID,
+        }
+    
+        const blobStorageClient = new BlobServiceClient(
+            "https://audblobs.blob.core.windows.net/",
+            new InteractiveBrowserCredential(signInOptions)
+        )
+
+        var containerClient = await blobStorageClient.getContainerClient("audiofiles");
+        const blobClient = containerClient.getBlobClient(trimmedURL);
+        const downloadBlockBlobResponse = await blobClient.download();
+        const downloaded = await blobToUrl(await downloadBlockBlobResponse.blobBody);
+        console.log("Downloaded blob content", downloaded);
+
+        async function blobToUrl(blob) {
+            var url = URL.createObjectURL(blob);
+            var preview; 
+            let audDOM = document.getElementById("playbackAudioDOM");
+            if(audDOM){
+                preview = audDOM;
+            } else {
+                preview = document.createElement('audio');
+            }
+            preview.id = "playbackAudioDOM"
+            preview.controls = false;
+            preview.src = url;
+            if(document.getElementById("existingRecordedAudio")){
+                document.getElementById("existingRecordedAudio").remove();
+            }
+            preview.play();
+        }
+
+    }
+
+    function updateAudRef(){
+        if(window.playAud && window.playAud.length && window.playAud.length === audToPlayRef.current.length){
+        } else {
+            audToPlayRef.current.push(window.playAud[window.playAud.length-1]);  
+            window.playAud.map(i=>queryBlobToPlay(i));
+        }
+    }
+
+    useEffect(()=>{
+        // This effectively runs as a main game loop... adjust count for delta
+        if(window.playAud && window.playAud.length > 0){
+            updateAudRef();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[count])
+      
     // The Unity Game Component
     useEffect(()=>{
     
@@ -109,22 +201,13 @@ export default function UnityWebGLBuild(props){
     }
 
 
-
     useEffect(()=>{
         function handleBabylonSwitch(){
             setAlertMsg("Safely Removing Unity...");
             setTimeout(()=>{
-                // let canvasToRemove = document.getElementById("unity");
-                // if(canvasToRemove){
-                //     canvasToRemove.remove();
-                //     canvasToRemove = null;
-                // }
-                // clearTimeout();
                 setReadyForBabylon(true);
                 setAlertMsg("");
             },4000);
-            
-            // router.push('/babylon');
         };
         if(deviceStateNum === 5 || deviceStateNum === 1){
             
@@ -134,34 +217,23 @@ export default function UnityWebGLBuild(props){
             } else {
                 
             }
-            
-
         }
     },[props,readyForBabylon,deviceStateNum,router]);
 
     useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
+        props.addEventListener('keydown', handleKeyDown);
 
         return function cleanup() {
-          document.removeEventListener('keydown', handleKeyDown);
+            props.removeEventListener('keydown', handleKeyDown);
         }
     });
 
-    // useEffect(function () {
-    //     console.log("PROPS UNITY PROVIDER: ", props.unityProvider);
-    //     // props.unityContext.on("quitted", function () {
-    //     //     setReadyForBabylon(true);
-    //     // });
-    //   }, [props]);
 
     useEffect(()=>{
         if(props.unityProvider && props.loadingProgression >=1 && props.latitude && props.longitude){
             props.sendMessage("MainCamera", "UserLongitude", props.longitude.toString());
             props.sendMessage("MainCamera", "UserLatitude", props.latitude.toString());
             setLatLonString(props.latitude.toString() + "_" + props.longitude.toString());
-            // console.log("LATLONSTRING: ", typeof latLonString);
-            //props.sendMessage("Map", "UserLatLon", latLonString);
-            // props.sendMessage("Map", "UserLatitude", props.latitude.toString());
         }
     },[props,latLonString])
     
@@ -217,7 +289,7 @@ export default function UnityWebGLBuild(props){
                     // Now we can for example go back to another page
                     console.log("Log quitted")
                 });
-                console.log("THE UNITY INSTANCE: ", unityRef.current);
+                // console.log("THE UNITY INSTANCE: ", unityRef.current);
                 // router.push('/babylon');
               
                 break;
@@ -233,7 +305,7 @@ export default function UnityWebGLBuild(props){
     };
 
     function updateView(num){
-        
+        // Pass geoJSON depending on the game/device state (in dropdown) 
         async function sendData(){
             if( num === 0){
                 let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
@@ -248,13 +320,15 @@ export default function UnityWebGLBuild(props){
                 .then((data) => {
                     props.sendMessage("InteropController","GetMapGlocal", JSON.stringify(data));
                 });  
+                console.log("Get GeoJSON device state 2: ", geoJSON);
             }
-            if(num === 4){
+            if(num === 3){
                 let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
                 .then((response) => response.json())
                 .then((data) => {
                     props.sendMessage("InteropController","GetMapLobal", JSON.stringify(data));
                 });  
+                console.log("Get GeoJSON device state 3: ", geoJSON);
             }
             if(num === 6){
                 let geoJSON = await fetch("https://raw.githubusercontent.com/blackmad/neighborhoods/master/austin.geojson")
@@ -266,63 +340,6 @@ export default function UnityWebGLBuild(props){
         }
         sendData();
     }
-
-    // async function getAudioFiles(){
-    //     const signInOptions = {
-    //         // the client id is the application id, from your earlier app registration
-    //         clientId: process.env.NEXT_PUBLIC_AZURE_CLIENT_ID,
-    
-    //         // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
-    //         tenantId: process.env.NEXT_PUBLIC_AZURE_TENANT_ID,
-
-    //     }
-    
-    //     const blobStorageClient = new BlobServiceClient(
-    //         // this is the blob endpoint of your storage acccount. Available from the portal 
-    //         // they follow this format: <accountname>.blob.core.windows.net for Azure global
-    //         // the endpoints may be slightly different from national clouds like US Gov or Azure China
-    //         "https://audblobs.blob.core.windows.net/",
-    //         new InteractiveBrowserCredential(signInOptions)
-    //     )
-
-
-    //     // this uses our container we created earlier - I named mine "private"
-    //     var containerClient = await blobStorageClient.getContainerClient("audiofiles");
-    //     let fileList = document.createElement('select');
-    //     const listFiles_Init = async () => {
-    //         fileList.size = 0;
-    //         fileList.innerHTML = "";
-    //         try {
-    //             console.log("Retrieving file list...");
-    //             let iter = containerClient.listBlobsFlat();
-    //             let blobItem = await iter.next();
-    //             while (!blobItem.done) {
-    //                 fileList.size += 1;
-    //                 fileList.innerHTML += `<option>${blobItem.value.name}</option>`;
-    //                 blobItem = await iter.next();
-    //                 if(blobItem.value.name){
-    //                     props.sendMessage("MainCamera","createAudioEnvironment",JSON.stringify(blobItem));
-    //                     console.log("BLOBITEM!: ", blobItem.value.name);
-    //                 }
-    //             }
-    //             if (fileList.size > 0) {
-    //                 console.log("Done.");
-    //                 fileList.id="blobSelect";
-    //                 fileList.style.top="8rem";
-    //                 fileList.style.left="2rem";
-    //                 fileList.style.position="absolute";
-    //                 console.log("FILIE LIST!!! ", fileList);
-    //                 // document.body.append(fileList);
-    //             } else {
-    //                 console.log("The container does not contain any files.");
-    //             }
-    //         } catch (error) {
-    //             console.log(error.message);
-    //         }
-    //     };
-    //     let result = await listFiles_Init();
-    //     return result;
-    // }
 
     async function uploadToAzureBlob(form,blobName){
         if(!props.blobServiceClient){
@@ -337,7 +354,6 @@ export default function UnityWebGLBuild(props){
     
             // this is your tenant id - the id of your azure ad tenant. available from your app registration overview
             tenantId: process.env.NEXT_PUBLIC_AZURE_TENANT_ID,
-
         }
     
         const blobStorageClient = new BlobServiceClient(
@@ -470,6 +486,11 @@ export default function UnityWebGLBuild(props){
     );
 
     useEffect(()=>{
+        console.log("CHECK IT OUT!!!!!! AUDIO READY!!!!!!");
+        
+    },[audioReady])
+
+    useEffect(()=>{
         if(props.loadingProgression >=1 && !createdAudio){
             async function getAudioFiles(){
                 const signInOptions = {
@@ -499,7 +520,9 @@ export default function UnityWebGLBuild(props){
                     try {
                         console.log("Retrieving file list...");
                         let iter = containerClient.listBlobsFlat();
+                        console.log("GIVE THE WHOLE THING!!! ", containerClient.listBlobsFlat());
                         let blobItem = await iter.next();
+                        console.log("WTF IS BLOB ITEM? ", blobItem);
                         while (!blobItem.done) {
                             fileList.size += 1;
                             fileList.innerHTML += `<option>${blobItem.value.name}</option>`;
@@ -509,9 +532,10 @@ export default function UnityWebGLBuild(props){
                                 
                                 console.log("BLOBITEM OBJ!: ", blobItem.value.name);
                                 console.log("BLOBITEM COUNT!: ", columnCount);
-                                if(columnCount === 5){
+                                if(columnCount === 5 && blobItem.value){
                                     console.log("HIT A 5er!: ", blobItem.value.name);
-                                    props.sendMessage("MainCamera","createAudioEnvironment",JSON.stringify(blobItem));
+                                   // props.sendMessage("MainCamera","createAudioEnvironment",JSON.stringify(blobItem));
+                                   console.log("#####$$$$$$ ", blobItem.value.name);
                                     props.sendMessage("MainCamera","createAudioEnvironment",blobItem.value.name);
                                 }
                             }
@@ -536,15 +560,27 @@ export default function UnityWebGLBuild(props){
                 let result = await listFiles_Init();
                 return result;
             }
-           
+            setTimeout(()=>{
                 getAudioFiles();
-          
+            },5000);
+            clearTimeout();
         }
     },[props,props.loadingProgression,createdAudio])
 
     function handleSetSize(values){
         setSize({ values });
     }
+
+    const handleAudioReady = useCallback((fileName) => {
+        setAudioReady(fileName);
+        console.log("HOLY COW IT WORKS! ", fileName);
+      }, []);
+      useEffect(() => {
+        props.addEventListener("CheckAudioCollisionValue", handleAudioReady);
+        return () => {
+          props.removeEventListener("CheckAudioCollisionValue", handleAudioReady);
+        };
+      }, [props,handleAudioReady]);
 
     return (
         <>
@@ -556,6 +592,7 @@ export default function UnityWebGLBuild(props){
             rel="stylesheet"
             />
         </Head>
+        <audio ref={hiddenAudioPlayerRef} style={{visibility:"hidden"}} id="existingRecordedAudio" type="audio/mp3" />
         <span style={{position:"absolute",left:"1rem",top:"1rem",fontSize:"32px"}}>
         {
             alertMsg !== ''
@@ -602,7 +639,8 @@ export default function UnityWebGLBuild(props){
                             justifyContent: "center",
                             textAlign: "center",
                             borderRadius:"24px",
-                            border: "solid 1px rgb(12, 95, 80)",
+                            // border: "solid 1px rgb(12, 95, 80)",
+                            border: "transparent",
                             background:"transparent",
                             pointerEvents:"all"
                         }}
@@ -630,38 +668,38 @@ export default function UnityWebGLBuild(props){
                     ?
                         <LoadingBar style={{position:"absolute", pointerEvents:"none"}} loadingProgression={props.loadingProgression} />      
                     :
-                        deviceStateNum === 0
-                        ?
-                            <ARDataView style={{pointerEvents:"none"}}/>
-                        :
-                        deviceStateNum === 1
-                        ?
-                            <ARView style={{pointerEvents:"none"}}/>
-                        :
-                        deviceStateNum === 2
-                        ?
-                            <CampusData style={{pointerEvents:"none"}} />
-                        :
-                        deviceStateNum === 3 
-                        ?
-                            <CampusView style={{pointerEvents:"none"}} unity={unity} />
-                        :
-                        deviceStateNum === 4
-                        ?
-                            <HololensView style={{pointerEvents:"none"}}/>
-                        :            
-                        deviceStateNum === 5
-                        ?
-                            <CardboardVRView style={{pointerEvents:"none"}}/>
-                        :
-                        deviceStateNum === 6
-                        ?
-                            <GlobalDataUI style={{pointerEvents:"none"}}/>
-                        :
-                        deviceStateNum === 7
-                        ?
-                            <GlobalViewUI style={{pointerEvents:"none"}}/>
-                        :
+                        // deviceStateNum === 0
+                        // ?
+                        //     <ARDataView style={{pointerEvents:"none"}}/>
+                        // :
+                        // deviceStateNum === 1
+                        // ?
+                        //     <ARView style={{pointerEvents:"none"}}/>
+                        // :
+                        // deviceStateNum === 2
+                        // ?
+                        //     <CampusData style={{pointerEvents:"none"}} />
+                        // :
+                        // deviceStateNum === 3 
+                        // ?
+                        //     <CampusView style={{pointerEvents:"none"}} unity={unity} />
+                        // :
+                        // deviceStateNum === 4
+                        // ?
+                        //     <HololensView style={{pointerEvents:"none"}}/>
+                        // :            
+                        // deviceStateNum === 5
+                        // ?
+                        //     <CardboardVRView style={{pointerEvents:"none"}}/>
+                        // :
+                        // deviceStateNum === 6
+                        // ?
+                        //     <GlobalDataUI style={{pointerEvents:"none"}}/>
+                        // :
+                        // deviceStateNum === 7
+                        // ?
+                        //     <GlobalViewUI style={{pointerEvents:"none"}}/>
+                        // :
                             null
             }
                

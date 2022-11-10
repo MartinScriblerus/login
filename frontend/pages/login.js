@@ -44,7 +44,7 @@ export default function LoginWrapper(props){
                     ?
                         <span>Welcome back, {session.user.name}!</span>
                     :
-                        <span style={{fontSize:"32px"}}>You will need to log in!</span>
+                        <span style={{fontSize:"24px",fontWeight:"100"}}>Create New User</span>
                     }
                     <LogInOutButton allUsers={allUsers.current} />
                     {/* <RegisterNewUser /> */}

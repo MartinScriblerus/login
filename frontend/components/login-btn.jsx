@@ -78,7 +78,7 @@ export default function LogInOutButton(props, user) {
                 left: "20%",
                 textAlign: "center",
                 position: "absolute",
-                bottom: "56%",
+                bottom: "100px",
                 fontWeight:"100", 
                 fontSize:"22px",
             }}>
@@ -225,7 +225,7 @@ export default function LogInOutButton(props, user) {
         {
         theme
         ?
-            <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "20%", paddingRight:"20%",paddingTop:"4%"}}>
+            <div style={{ position:"relative",display:"flex",flexDirection:"column",paddingLeft: "32%", paddingRight:"32%",paddingTop:"4%"}}>
                 <input maxLength={32} id="name_NewUserRegistration" placeholder="Choose a username..." inputref={nameRef} onChange={()=>{handleNameUpdate()}}></input>
                 {
                 nameVerified
@@ -246,17 +246,17 @@ export default function LogInOutButton(props, user) {
                 {
                 passMismatch
                 ?
-                    <label style={{color:"red"}}>Password Mismatch</label>
+                    <label>Password Mismatch<span style={{color:"red",fontWeight:"300"}}>&#10060;</span></label>
                 :
-                    <label style={{color:"green"}}>Passwords Match</label>
+                    <label>Passwords Match<span style={{color:"green",fontWeight:"300"}}>&#10003;</span></label>
                 }
                 <input maxLength={32}type="password" id="pass2_NewUserRegistration" placeholder="Confirm" inputref={passRef2} onChange={()=>handlePassRef2Update()}></input>
                 {
                 passMismatch
                 ?
-                    <label style={{color:"red"}}>Password Mismatch</label>
+                    <label>Password Mismatch <span style={{color:"red",fontWeight:"300"}}>&#10060;</span></label>
                 :
-                    <label style={{color:"green"}}>Passwords Match</label>
+                    <label>Passwords Match<span style={{color:"green",fontWeight:"300"}}>&#10003;</span></label>
                 }
                 {
                     hasMatchingNameCantSubmit

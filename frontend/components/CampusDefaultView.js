@@ -9,7 +9,7 @@ export default function CampusView(){
     function positionAudio(){
         console.log("let's position some audio in the database");
     }
-    console.log("HIT CAMPUS VIEW");
+    // console.log("HIT CAMPUS VIEW");
     return (
         <span 
             style={{

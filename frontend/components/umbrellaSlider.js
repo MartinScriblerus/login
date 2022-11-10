@@ -5,8 +5,8 @@ export default function UmbrellaSlider(props) {
     // const [size,setSize] = useState({ values: [10] });
 
     useEffect(()=>{
-        console.log("SIZE IS/... ", props.size.values[0]);
-        console.log("SIZE IS type/... ", typeof props.size.values[0]);
+        // console.log("SIZE IS/... ", props.size.values[0]);
+        // console.log("SIZE IS type/... ", typeof props.size.values[0]);
         // if(size.values[0]){
             // setTimeout(()=>{
                 props.sendMessage("MainCamera","resizeAudioUmbrella",props.size.values[0]);
@@ -31,7 +31,7 @@ export default function UmbrellaSlider(props) {
                     height: '6px',
                     width: '16rem',
                     position:"absolute",
-                    top: "calc(100% - 12rem)",
+                    top: "calc(100% - 4rem)",
                     left: "2rem",
                     backgroundColor: 'rgba(0,0,0,.9)'
                 }}

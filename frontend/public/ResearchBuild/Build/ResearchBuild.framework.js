@@ -2268,26 +2268,26 @@ var tempDouble;
 var tempI64;
 
 var ASM_CONSTS = {
- 5083432: function() {
+ 5083608: function() {
   Module["emscripten_get_now_backup"] = performance.now;
  },
- 5083487: function($0) {
+ 5083663: function($0) {
   performance.now = function() {
    return $0;
   };
  },
- 5083535: function($0) {
+ 5083711: function($0) {
   performance.now = function() {
    return $0;
   };
  },
- 5083583: function() {
+ 5083759: function() {
   performance.now = Module["emscripten_get_now_backup"];
  },
- 5083638: function() {
+ 5083814: function() {
   return Module.webglContextAttributes.premultipliedAlpha;
  },
- 5083699: function() {
+ 5083875: function() {
   return Module.webglContextAttributes.preserveDrawingBuffer;
  }
 };
@@ -2399,8 +2399,15 @@ function _BindWebGLTexture(texture) {
  GLctx.bindTexture(GLctx.TEXTURE_2D, GL.textures[texture]);
 }
 
+function _CheckAudioCollisionValue(str) {
+ console.log("ran check collision in JSLib");
+ window.playAud = window.playAud || [];
+ window.playAud.push(Pointer_stringify(str));
+ return Pointer_stringify(str);
+}
+
 function _Hello() {
- window.alert("Hello, world!");
+ window.alert("Hello, world! THIS JSLIB WORKS A CHARM!!!");
 }
 
 function _HelloString(str) {
@@ -14844,6 +14851,7 @@ function intArrayFromString(stringy, dontAddNull, length) {
 var asmLibraryArg = {
  "AddNumbers": _AddNumbers,
  "BindWebGLTexture": _BindWebGLTexture,
+ "CheckAudioCollisionValue": _CheckAudioCollisionValue,
  "Hello": _Hello,
  "HelloString": _HelloString,
  "JS_Accelerometer_IsRunning": _JS_Accelerometer_IsRunning,

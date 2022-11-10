@@ -21,7 +21,7 @@ export default function Home(props) {
 
   if(session && props){
     // console.log('SESSION--------------- ', session);
-    console.log('full user data: ', fullUserData.current[0]);
+    // console.log('full user data: ', fullUserData.current[0]);
     fullUserData.current = props.allUsers.filter(i=>i.user_name === session.user.name);
     //console.log("FULL USER DATA: ", fullUserData.current);
     //console.log("full user data: ", fullUserData.current);
@@ -59,19 +59,19 @@ export default function Home(props) {
           ?
           <>
             <h1 className={styles.title}>
-              Status:  
+              <span style={{fontSize:"40px"}}>Status:</span>
               {
                 session
               ?
-                <span style={{color:"rgb(12, 95, 80)"}}> logged in</span>
+                <span style={{fontSize:"40px",color:"rgb(12, 95, 80)"}}> logged in</span>
               :
-                <span style={{color:"rgb(12, 95, 80)"}}> logged out</span>
+                <span style={{fontSize:"40px",color:"rgb(12, 95, 80)"}}> logged out</span>
               }
             </h1>
             <LoginWrapper allUsers={props.allUsers}></LoginWrapper>
           </>
         :
-          <Dashboard inUnity={setInUnity} listSubusers={listSubusers} session={session} fullUserData={fullUserData} allUsers={props.allUsers} blobServiceClient={props.blobServiceClient}/>     
+          <Dashboard userAlias={fullUserData.current[0].user_name} inUnity={setInUnity} listSubusers={listSubusers} session={session} fullUserData={fullUserData} allUsers={props.allUsers} blobServiceClient={props.blobServiceClient}/>     
         }
 
       </main>

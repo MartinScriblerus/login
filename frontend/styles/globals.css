@@ -27,7 +27,7 @@ input, select {
   background: transparent;
   border: solid 0.5px white;
   color: rgba(255,255,255,1);
-  background: rgba(25,194,241,.1);;
+ 
   margin: 0%;
   min-height: 40px;
   line-height: 1;
@@ -37,6 +37,8 @@ input, select {
   line-height:1.5;  
   font-size:20px;
   font-weight: 100;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 label {
@@ -45,13 +47,19 @@ label {
   text-align:left;
 }
 
+select {
+  border:transparent;
+  font-size:24px;
+}
+
 button {
   min-height: 44px;
   min-width: 160px;
-  border:solid 1px rgb(12, 95, 80);
+  border:transparent;
+  /* background-color: rgba(12, 95, 80,0.5); */
   /* border: solid 1px transparent; */
-  background-color: transparent;
-  border-radius: 32px;
+  background-color: rgba(0,0,0,0.1);
+  /*border-radius: 32px;
   /* margin: 2%; */
   color: rgba(255,255,255,0.9);
   font-weight: 100;
@@ -59,6 +67,9 @@ button {
   font-weight: 100;
   cursor: pointer;
   margin-top:16px;
+  margin:8px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 span {
@@ -83,14 +94,15 @@ button:active {
 }
 
 #unityStartBtn {
-  border: solid 1px rgb(12, 95, 80);
-  /* background-color: rgba(50,220,300,1); */
-  width: 4rem;
+  border: transparent;
+  width: 28%;
   position: absolute;
-  left: calc(48% - 4rem);
-  bottom: 42%;
+  left: 35%;
+  top: 36%;
   text-align: center;
   justify-content: center;
+  font-family: monospace;
+  min-height: 92px;
 }
 
 #loginDashboardImg {
@@ -127,6 +139,12 @@ button:active {
   position: absolute;
   right:1rem;
   top: 13rem;
+}
+
+#userAliasDisplay {
+  font-weight:100;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 
